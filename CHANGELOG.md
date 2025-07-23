@@ -1,12 +1,12 @@
-What to put in this:
-Use bullet points and keep it shorter
-A timeline of changes
+## CHANGELOG
+# * v0.1.0-alpha
+- Main logic and functionality of habit actions set up and working.
 
-Purpose: As you release new versions, update this file with what's new, what's fixed, and what's
-to come in the future. 
+# * v0.1.1-alpha
+- Note-taking system updated
+  - Note for the habit, and general notes were made into dictionary with the date of the note as the key for the note.
 
-For each update
-Version
-Features
-Bug fixes
-Known issues
+# * v
+- Features
+- Bug fixes
+- Known issues
