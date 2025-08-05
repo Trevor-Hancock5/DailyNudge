@@ -1,4 +1,4 @@
-## DailyNudge(v0.1.0-alpha)
+## DailyNudge(v0.1.2-alpha)
 A daily habit tracker meant to keep track of your habits, list statistics, and customize your
 habits' functionality.
 
@@ -16,7 +16,8 @@ See the [CHANGELOG](CHANGELOG.md) for a list of changes
    MainApp.java
    ''
 
-Dependencies - Gson
+# Dependencies 
+- Gson
 
 # Usage
 **Work in progress**
