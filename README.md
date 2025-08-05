@@ -16,6 +16,8 @@ See the [CHANGELOG](CHANGELOG.md) for a list of changes
    MainApp.java
    ''
 
+Dependencies - Gson
+
 # Usage
 **Work in progress**
 

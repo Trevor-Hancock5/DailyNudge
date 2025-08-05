@@ -6,7 +6,9 @@
 - Note-taking system updated
   - Note for the habit, and general notes were made into dictionary with the date of the note as the key for the note.
 
-# * v
-- Features
-- Bug fixes
-- Known issues
+# * v0.1.2-alpha
+- Converted Python code to Java in the Habit class. 
+- Set up a rough draft for the UI of the app. 
+- Implemented initial storage solution. 
+- App can be opened in a window. 
+- Set up the manager for user habits.

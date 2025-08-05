@@ -1,13 +1,44 @@
+/*
+ * DailyNudge
+ * Name: Trevor Hancock
+ * Last Updated: 7/23/2025
+ */
 package app;
 
-import java.util.Scanner;
 
-public class DailyNudge {
-    //Basically for each habit load a habitcard that is inputed into a slot of the grid pane.
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import model.HabitManager;
+
+import java.io.IOException;
+
+public class DailyNudge extends Application {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        launch(args);
+    }
 
+    @Override
+    public void start(Stage stage) throws IOException {
+        FXMLLoader dashboardLoader = new FXMLLoader();
+        dashboardLoader.setLocation(getClass().getResource("../ui/Dashboard.fxml"));
+        Parent dashRoot = dashboardLoader.load();
 
-        scanner.close();
+        final int width = 800;
+        final int height = 600;
+        stage.setScene(new Scene(dashRoot, width, height));
+        stage.setTitle("DailyNudge");
+        stage.show();
+
+        //Save on window Close
+        stage.setOnCloseRequest(e -> {
+            if(HabitManager.saveHabits()) {  // calls FileManager under the hood
+                System.out.println("Habits saved!");
+            } else{
+                System.out.println("Failed save.");
+            }
+        });
     }
 }
