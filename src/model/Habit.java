@@ -13,42 +13,28 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/*
-To convert this to UI based. Just replace all the scanners and system.out
-inputs/outputs with UI controller based ones.
-
-Controllers will call these methods, so instead of a scanner just have the needed data as the
-parameter to call the method.
-
-The system.out can be returned to whatever called it.
- */
-
 
 public class Habit {
-    HashMap<LocalDate, String> notes;
-    String habitNote;
-    String name;
-    double completionPercent;
-    int priority;
-    Set<String> habitLog;
-    ArrayList<Integer> frequency;
-    LocalDate startDate;
-    int currentStreak;
-    int longestStreak;
-    Scanner scan;
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
+    private HashMap<LocalDate, String> notes;
+    private String habitNote;
+    private String name;
+    private double completionPercent;
+    private int priority;
+    private Set<String> habitLog;
+    private ArrayList<Integer> frequency;
+    private LocalDate startDate;
+    private int currentStreak;
+    private int longestStreak;
 
-    public Habit(String name, int priority, String habitNote, Scanner scan){
-        this.scan = scan;
+    public Habit(String name, int priority, String habitNote, ArrayList<Integer> freq, LocalDate startDate){
         notes = new HashMap<>();
         this.habitNote = habitNote;
         this.name = name;
         completionPercent = 0;
         this.priority = priority;
         habitLog = new HashSet<>();
-        frequency = new ArrayList<>();
-        setFrequency();
-        startDate = setStartDate();
+        setFrequency(freq);
+        this.startDate = startDate;
         currentStreak = -1;
         longestStreak = -1;
     }
@@ -62,7 +48,7 @@ public class Habit {
     }
 
     public String getStartDate(){
-        return startDate.format(formatter);
+        return startDate.format(DateTimeFormatter.ofPattern("M/d/yyyy"));
     }
 
     public ArrayList<Integer> getFrequency(){
@@ -90,169 +76,72 @@ public class Habit {
         return frequency.contains(LocalDate.now().getDayOfWeek().getValue());
     }
 
-    private LocalDate setStartDate(){
-        //Rework this to have it have today as the default and ask instead for a change.
-        System.out.print("When would you like the start date to be for this habit?\nEnter (T) " +
-                "for today or (C) for custom: ");
-        String startDate = scan.next();
-        LocalDate formattedDate = null;
-        if(startDate.toUpperCase().charAt(0) == 'T'){
-            return LocalDate.now();
+    private void setStartDate(LocalDate date){
+        //This stuff will happen in newHabit UI
+
+        startDate = date;
+    }
+
+    protected boolean complete(LocalDate date){
+        //True if date in frequency. False if not.
+        if(frequency.contains(date.getDayOfWeek().getValue())) {
+            this.habitLog.add(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+            this.streakAndPercentage(); // Update values
+            return true;
         } else{
-            boolean badInput;
-            String customDate = "";
-            do{
-                try {
-                    System.out.print("Enter the date(yyyy-mm-dd): ");
-                    customDate = scan.next();
-                    formattedDate = LocalDate.parse(customDate, DateTimeFormatter.ISO_LOCAL_DATE);
-                    badInput = false;
-                } catch (DateTimeException e) {
-                    System.out.println("Bad value. Try again!");
-                    badInput = true;
-                }
-            } while(badInput);
-            return formattedDate;
+            return false;
         }
     }
 
-//Only add date to habit log if completed and specific day of week listed in frequency, otherwise don't list
-    protected void complete(){
-        LocalDate formattedDate = null;
-        ArrayList<Integer> weekdays = new ArrayList<>();
-        weekdays.add(1);
-        weekdays.add(2);
-        weekdays.add(3);
-        weekdays.add(4);
-        weekdays.add(5);
-
-        System.out.print("Enter 0 for today, 1 for custom date: ");
-        int input = Integer.parseInt(scan.next());
-        if(input == 1){
-            boolean badInput = true;
-            String customDate = "";
-            while (badInput) {
-                try{
-                    System.out.print("Enter in the date(yyyy-mm-dd): ");
-                    String date = scan.next();
-                    formattedDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-                    if (LocalDate.now().compareTo(formattedDate) >= 0 && formattedDate.compareTo(this.startDate) >= 0){
-                        badInput = false;
-                    } else{
-                        System.out.println("Date has to be today or in the past, can't be in the future!");
-                    }
-                } catch(DateTimeParseException e){
-                    System.out.println("Date must be in format yyyy-mm-dd");
-                } catch (RuntimeException e) {
-                    System.out.println("For dev, enter passcode: ");
-                    int code = scan.nextInt();
-                    if (code == 4079){
-                        System.out.println(e + "\n");
-                        System.out.println(Arrays.toString(e.getStackTrace()));
-                    } else {
-                        System.out.println("Error. Try again");
-                    }
-                }
-            }
-            if(frequency.contains(formattedDate)) {
-                this.habitLog.add(formattedDate.format(formatter));
-                this.streakAndPercentage(); // Update values
-            } else{
-                System.out.println("Given date not in frequency.");
-            }
-
-        } else{
-            //Assuming complete for today can only happen if in frequency
-            habitLog.add(LocalDate.now().format(formatter));
-            this.streakAndPercentage(); //Update values
-        }
+    protected void takeNote(String note, LocalDate date){
+        notes.put(date, note);
     }
 
-    protected void takeNote(){
-        char again;
-        do{
-            System.out.println("Enter note here: ");
-            scan.nextLine();
-            String note = scan.nextLine();
-            System.out.print("Enter (T) for today, or (C) for custom: ");
-            String input = scan.next();
-            LocalDate date = null;
-            if(input.toUpperCase().charAt(0) == 'T'){
-                date = LocalDate.now();
-            } else{
-                boolean badInput;
-                do{
-                    try{
-                        System.out.print("Enter date(yyyy-mm-dd): ");
-                        String testDate = scan.next();
-                        date = LocalDate.parse(testDate, DateTimeFormatter.ISO_LOCAL_DATE);
-                        badInput = false;
-                    } catch (RuntimeException e){
-                        System.out.println("Error. Try again! \n");
-                        badInput = true;
-                    }
-                } while(badInput);
-            }
-
-            notes.put(date, note);
-            System.out.print("Would you like to add another note(y or n)?");
-            String another = scan.next();
-            again = another.toLowerCase().charAt(0);
-        } while (again == 'y');
+    protected void setHabitNote(String note){
+        habitNote = note;
     }
 
-    protected void setHabitNote(){
-        System.out.println("Enter a new note for " + name + ": ");
-        scan.nextLine();
-        habitNote = scan.nextLine();
+    protected void setName(String newName){
+        name = newName;
     }
 
-    protected void setName(){
-        System.out.print("Enter changed name for " + name + ": ");
-        scan.nextLine();
-        name = scan.nextLine();
+    protected void setPriority(int newPriority){
+        priority = newPriority;
     }
 
-    protected void setPriority(){
-        System.out.println("Enter changed priority here: ");
-        priority = scan.nextInt();
-    }
-
-    private void setFrequency(){
-        System.out.println("Setting frequency");
-        System.out.println("Monday = M\nTuesday = T\nWednesday = W\nThursday = R\nFriday = F\nSaturday = S\n" +
-                "Sunday = J\nDaily = D\nWeekdays = WD");
-        ArrayList<Character> validDays = new ArrayList<>(Arrays.asList('M', 'T', 'W', 'R', 'F', 'S', 'J'));
-        Map<Character, Integer> dayConversion = Map.ofEntries(
-                Map.entry('M', 1),
-                Map.entry('T', 2),
-                Map.entry('W', 3),
-                Map.entry('R', 4),
-                Map.entry('F', 5),
-                Map.entry('S', 6),
-                Map.entry('J', 7)
-        );
-        char again = 'y';
-        while (again == 'y'){
-            System.out.print("\nEnter a day, daily, or weekdays: ");
-            String day = scan.next().toUpperCase();
-            if (validDays.contains(day.charAt(0))){
-                frequency.add(dayConversion.get(day));
-                System.out.print("Add another day (y or n): ");
-                again = scan.next().toLowerCase().charAt(0);
-            } else if(day.startsWith("D")){
-                frequency = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7));
-                again = 'n'; //Stop loop
-            } else if(day.startsWith("WD")){
-                frequency = new ArrayList<>(Arrays.asList(1,2,3,4,5));
-                again = 'n'; //Stop loop
-            } else{
-                System.out.println("Enter a valid day please - MTWRFSJ or D or WD");
-                //Go again
-            }
-
-            Collections.sort(frequency);
-        }
+    private void setFrequency(ArrayList<Integer> freq) {
+        //Use this code for the ui.
+//        ArrayList<Character> validDays = new ArrayList<>(Arrays.asList('M', 'T', 'W', 'R', 'F', 'S', 'J'));
+//        Map<Character, Integer> dayConversion = Map.ofEntries(
+//                Map.entry('M', 1),
+//                Map.entry('T', 2),
+//                Map.entry('W', 3),
+//                Map.entry('R', 4),
+//                Map.entry('F', 5),
+//                Map.entry('S', 6),
+//                Map.entry('J', 7)
+//        );
+//        char again = 'y';
+//        while (again == 'y'){
+//            System.out.print("\nEnter a day, daily, or weekdays: ");
+//            String day = scan.next().toUpperCase();
+//            if (validDays.contains(day.charAt(0))){
+//                frequency.add(dayConversion.get(day.charAt(0)));
+//                System.out.print("Add another day (y or n): ");
+//                again = scan.next().toLowerCase().charAt(0);
+//            } else if(day.startsWith("D")){
+//                frequency = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7));
+//                again = 'n'; //Stop loop
+//            } else if(day.startsWith("WD")){
+//                frequency = new ArrayList<>(Arrays.asList(1,2,3,4,5));
+//                again = 'n'; //Stop loop
+//            } else{
+//                System.out.println("Enter a valid day please - MTWRFSJ or D or WD");
+//                //Go again
+//            }
+//    }
+            Collections.sort(freq);
+            frequency = freq;
     }
 
     private void streakAndPercentage(){
@@ -316,18 +205,5 @@ public class Habit {
         } else{
             this.completionPercent = ((double) totalComplete / freqDayList.size()) * 100;
         }
-    }
-
-    @Override
-    public String toString() {
-        return String.format("""
-                Habit Name: %s
-                Starting Date: %s
-                Habit Note: %s
-                Priority: %d
-                Completion Percent: %.2f
-                Current Streak: %d
-                Longest Streak: %d
-                """, name, startDate, habitNote, priority, completionPercent, currentStreak, longestStreak);
     }
 }

@@ -34,6 +34,12 @@ public class HabitDetailsController {
     @FXML
     private Label longStreak;
 
+//    private SceneSwitcher switcher;
+//
+//    public HabitDetailsController(SceneSwitcher switcher){
+//        this.switcher = switcher;
+//    }
+
     protected void setInfo(Habit habit){
         habitName.setText(habit.getName());
         habitNote.setText(habit.getHabitNote());

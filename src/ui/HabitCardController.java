@@ -23,6 +23,11 @@ public class HabitCardController {
     private Label longestStreak;
 
     private Parent habitDetails;
+//    private SceneSwitcher switcher;
+//
+//    public HabitCardController (SceneSwitcher switcher) {
+//        this.switcher = switcher;
+//    }
 
     @FXML
     private void moreInfo(){

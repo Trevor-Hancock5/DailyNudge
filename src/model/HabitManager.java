@@ -34,7 +34,7 @@ public class HabitManager {
         return StorageManager.saveHabits(habits);
     }
 
-    public void addHabit(Habit habit) {
+    public static void addHabit(Habit habit) {
         habits.add(habit);
     }
 

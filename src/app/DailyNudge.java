@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.HabitManager;
+import ui.SceneSwitcher;
 
 import java.io.IOException;
 
@@ -22,14 +23,8 @@ public class DailyNudge extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader dashboardLoader = new FXMLLoader();
-        dashboardLoader.setLocation(getClass().getResource("../ui/Dashboard.fxml"));
-        Parent dashRoot = dashboardLoader.load();
-
-        final int width = 800;
-        final int height = 600;
-        stage.setScene(new Scene(dashRoot, width, height));
-        stage.setTitle("DailyNudge");
+        SceneSwitcher sceneSwitcher = new SceneSwitcher(stage);
+        sceneSwitcher.switchTo("/ui/Dashboard.fxml");
         stage.show();
 
         //Save on window Close

@@ -1,0 +1,101 @@
+/*
+ * Course: CSC1110A-111
+ * Fall 2024
+ * Assignment
+ * Name: Trevor Hancock
+ * Last Updated: 8/7/2025
+ */
+package ui;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import model.Habit;
+import model.HabitManager;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+public class NewHabitController {
+    @FXML
+    private DatePicker startDate;
+    @FXML
+    private TextField habitName;
+    @FXML
+    private TextField priority;
+    @FXML
+    private TextField habitNote;
+    @FXML
+    private ToggleButton mon;
+    @FXML
+    private ToggleButton tues;
+    @FXML
+    private ToggleButton wed;
+    @FXML
+    private ToggleButton thurs;
+    @FXML
+    private ToggleButton fri;
+    @FXML
+    private ToggleButton sat;
+    @FXML
+    private ToggleButton sun;
+
+    private ArrayList<ToggleButton> daysOfWeek;
+    private SceneSwitcher switcher;
+
+    public NewHabitController(SceneSwitcher switcher){
+        this.switcher = switcher;
+    }
+
+    @FXML
+    public void initialize() {
+        startDate.setValue(LocalDate.now());
+        daysOfWeek = new ArrayList<>();
+
+        daysOfWeek.add(mon);
+        daysOfWeek.add(tues);
+        daysOfWeek.add(wed);
+        daysOfWeek.add(thurs);
+        daysOfWeek.add(fri);
+        daysOfWeek.add(sat);
+        daysOfWeek.add(sun);
+
+        //Initialize chosen days to be Mon through Fri
+        for(int i = 0; i < 5; i++){
+            daysOfWeek.get(i).setSelected(true);
+        }
+    }
+
+    @FXML
+    private void makeNewHabit(){
+        String habitName = this.habitName.getText();
+        if(habitName.isBlank()){
+            DashboardController.showAlert("Name cannot be blank!");
+        } else {
+            int priority;
+            try{
+                priority = Integer.parseInt(this.priority.getText());
+                if(priority < 0){
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e){
+                DashboardController.showAlert("Invalid value entered. Priority set to 1.");
+                priority = 1;
+            }
+
+            String habitNote = this.habitNote.getText();
+            ArrayList<Integer> frequency = new ArrayList<>();
+            for (int i = 1; i < 8; i++) {
+                if (daysOfWeek.get(i - 1).isSelected()) {
+                    frequency.add(i);
+                }
+            }
+            LocalDate startDate = this.startDate.getValue();
+
+            HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate));
+        }
+    }
+
+//TODO - Use scene switcher class to switch back to the Dashboard
+}

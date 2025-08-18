@@ -5,11 +5,16 @@
  */
 package ui;
 
+import app.DailyNudge;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
@@ -23,6 +28,16 @@ public class DashboardController {
     @FXML
     private GridPane gridpane;
 
+    private SceneSwitcher switcher;
+
+    public DashboardController(SceneSwitcher switcher) {
+        this.switcher = switcher;
+    }
+
+    public DashboardController(){
+
+    }
+
     @FXML
     private void openSettings(){
         //No UI made yet
@@ -30,9 +45,22 @@ public class DashboardController {
     }
 
     @FXML
-    private void makeNewHabit(){
-        //UI needs to be made
-        System.out.println("New habit");
+    private void makeNewHabit(ActionEvent event) throws IOException{
+        switcher.switchTo("/ui/NewHabit.fxml");
+
+//        FXMLLoader newHabitLoader = new FXMLLoader();
+//        newHabitLoader.setLocation(getClass().getResource("../ui/NewHabit.fxml"));
+//        try {
+//            Parent newHabitRoot = newHabitLoader.load();
+//            final int width = 583;
+//            final int height = 500;
+//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow(); // get current stage
+//            stage.setScene(new Scene(newHabitRoot, width, height));
+//            stage.setTitle("Making a New Habit");
+//            stage.show();
+//        } catch (IOException e) {
+//            showAlert("Error loading new habit screen");
+//        }
     }
 
     @FXML
