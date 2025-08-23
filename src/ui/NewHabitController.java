@@ -1,9 +1,7 @@
 /*
- * Course: CSC1110A-111
- * Fall 2024
- * Assignment
+ * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/7/2025
+ * Last Updated: 8/23/2025
  */
 package ui;
 
@@ -14,6 +12,7 @@ import javafx.scene.control.ToggleButton;
 import model.Habit;
 import model.HabitManager;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -42,10 +41,15 @@ public class NewHabitController {
     private ToggleButton sun;
 
     private ArrayList<ToggleButton> daysOfWeek;
-    private SceneSwitcher switcher;
+    private final SceneSwitcher switcher;
+    private static DashboardController dashboardController;
 
     public NewHabitController(SceneSwitcher switcher){
         this.switcher = switcher;
+    }
+
+    public static void setDashboardController(DashboardController controller){
+        dashboardController = controller;
     }
 
     @FXML
@@ -68,7 +72,12 @@ public class NewHabitController {
     }
 
     @FXML
-    private void makeNewHabit(){
+    private void returnToDashboard(){
+        switcher.switchTo("/ui/Dashboard.fxml");
+    }
+
+    @FXML
+    private void makeNewHabit() throws IOException {
         String habitName = this.habitName.getText();
         if(habitName.isBlank()){
             DashboardController.showAlert("Name cannot be blank!");
@@ -94,8 +103,9 @@ public class NewHabitController {
             LocalDate startDate = this.startDate.getValue();
 
             HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate));
+            switcher.switchTo("/ui/Dashboard.fxml");
+            dashboardController.updateHabits();
         }
     }
 
-//TODO - Use scene switcher class to switch back to the Dashboard
 }

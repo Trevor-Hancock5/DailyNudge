@@ -1,15 +1,12 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 7/23/2025
+ * Last Updated: 8/23/2025
  */
 package app;
 
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.HabitManager;
 import ui.SceneSwitcher;

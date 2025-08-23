@@ -1,7 +1,7 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 7/23/2025
+ * Last Updated: 8/23/2025
  */
 package model;
 
@@ -12,12 +12,11 @@ import app.StorageManager;
 public class HabitManager {
     private static List<Habit> habits = new ArrayList<>();
 
-    public static List<Habit> loadHabits() {
+    public static void loadHabits() {
         List<Habit> loaded = StorageManager.loadHabits();
         if (loaded != null) {
             habits = loaded;
         }
-        return habits;
     }
 
     public static List<Habit> getTodayHabits(){

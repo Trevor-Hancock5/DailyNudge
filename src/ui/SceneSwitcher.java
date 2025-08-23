@@ -1,9 +1,7 @@
 /*
- * Course: CSC1110A-111
- * Fall 2024
- * Assignment
+ * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/18/2025
+ * Last Updated: 8/23/2025
  */
 package ui;
 
@@ -14,7 +12,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +25,6 @@ public class SceneSwitcher {
 
     public void switchTo(String fxmlFile) {
         try {
-
             // If already loaded, just reuse it
             if (scenes.containsKey(fxmlFile)) {
                 stage.setScene(scenes.get(fxmlFile));

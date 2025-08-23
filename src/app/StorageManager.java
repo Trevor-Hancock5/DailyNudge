@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StorageManager {
-//    Possibly creating default files if none exist yet
     private static final File USER_DATA = new File("data/userData.json");
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new TypeAdapter<LocalDate>() {

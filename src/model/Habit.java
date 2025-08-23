@@ -1,14 +1,12 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 7/25/2025
+ * Last Updated: 8/23/2025
  */
 package model;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -25,6 +23,7 @@ public class Habit {
     private LocalDate startDate;
     private int currentStreak;
     private int longestStreak;
+    private int completionState;
 
     public Habit(String name, int priority, String habitNote, ArrayList<Integer> freq, LocalDate startDate){
         notes = new HashMap<>();
@@ -37,6 +36,7 @@ public class Habit {
         this.startDate = startDate;
         currentStreak = -1;
         longestStreak = -1;
+        completionState = 0;
     }
 
     public String getName(){
@@ -71,24 +71,45 @@ public class Habit {
         return longestStreak;
     }
 
+    public int getCompletionState(){
+        return completionState;
+    }
+
+    public void setCompletionState(int newState){
+        completionState = newState; //0 is gray (not completed or failed), 1 is green (completed), 2 is red (failed)
+    }
+
     public boolean activeToday(){
         //Returns true if the habit is active today, false otherwise
         return frequency.contains(LocalDate.now().getDayOfWeek().getValue());
     }
 
     private void setStartDate(LocalDate date){
-        //This stuff will happen in newHabit UI
-
         startDate = date;
     }
 
-    protected boolean complete(LocalDate date){
-        //True if date in frequency. False if not.
+    public boolean complete(LocalDate date){
+        //If the habit is active today, return true, false otherwise. (True if date in frequency. False if not.)
         if(frequency.contains(date.getDayOfWeek().getValue())) {
+            completionState = 1;
             this.habitLog.add(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
             this.streakAndPercentage(); // Update values
             return true;
         } else{
+            completionState = 0;
+            return false;
+        }
+    }
+
+    public boolean uncomplete(LocalDate date){
+        //This is useful so that if the user completes it, then marks it failed it can be removed.
+        if(frequency.contains(date.getDayOfWeek().getValue())) {
+            completionState = 2;
+            this.habitLog.remove(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+            this.streakAndPercentage(); // Update values
+            return true;
+        } else{
+            completionState = 0;
             return false;
         }
     }
@@ -110,36 +131,6 @@ public class Habit {
     }
 
     private void setFrequency(ArrayList<Integer> freq) {
-        //Use this code for the ui.
-//        ArrayList<Character> validDays = new ArrayList<>(Arrays.asList('M', 'T', 'W', 'R', 'F', 'S', 'J'));
-//        Map<Character, Integer> dayConversion = Map.ofEntries(
-//                Map.entry('M', 1),
-//                Map.entry('T', 2),
-//                Map.entry('W', 3),
-//                Map.entry('R', 4),
-//                Map.entry('F', 5),
-//                Map.entry('S', 6),
-//                Map.entry('J', 7)
-//        );
-//        char again = 'y';
-//        while (again == 'y'){
-//            System.out.print("\nEnter a day, daily, or weekdays: ");
-//            String day = scan.next().toUpperCase();
-//            if (validDays.contains(day.charAt(0))){
-//                frequency.add(dayConversion.get(day.charAt(0)));
-//                System.out.print("Add another day (y or n): ");
-//                again = scan.next().toLowerCase().charAt(0);
-//            } else if(day.startsWith("D")){
-//                frequency = new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7));
-//                again = 'n'; //Stop loop
-//            } else if(day.startsWith("WD")){
-//                frequency = new ArrayList<>(Arrays.asList(1,2,3,4,5));
-//                again = 'n'; //Stop loop
-//            } else{
-//                System.out.println("Enter a valid day please - MTWRFSJ or D or WD");
-//                //Go again
-//            }
-//    }
             Collections.sort(freq);
             frequency = freq;
     }

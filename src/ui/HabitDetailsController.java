@@ -1,7 +1,7 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 7/25/2025
+ * Last Updated: 8/23/2025
  */
 package ui;
 
@@ -33,12 +33,6 @@ public class HabitDetailsController {
     private Label currStreak;
     @FXML
     private Label longStreak;
-
-//    private SceneSwitcher switcher;
-//
-//    public HabitDetailsController(SceneSwitcher switcher){
-//        this.switcher = switcher;
-//    }
 
     protected void setInfo(Habit habit){
         habitName.setText(habit.getName());

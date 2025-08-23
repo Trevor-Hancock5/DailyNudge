@@ -10,8 +10,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="583.0" spacing="30.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.NewHabitController">
+<VBox alignment="CENTER" prefHeight="500.0" prefWidth="583.0" spacing="25.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.NewHabitController">
    <children>
+      <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="583.0">
+         <VBox.margin>
+            <Insets right="15.0" top="-20.0" />
+         </VBox.margin>
+         <children>
+            <Button mnemonicParsing="false" onAction="#returnToDashboard" text="Return To Dashboard" />
+         </children>
+      </HBox>
       <Button mnemonicParsing="false" onAction="#makeNewHabit" text="Make New Habit">
          <font>
             <Font size="24.0" />
@@ -45,4 +53,7 @@
       </VBox>
       <DatePicker fx:id="startDate" promptText="Start Date" />
    </children>
+   <padding>
+      <Insets top="-30.0" />
+   </padding>
 </VBox>
