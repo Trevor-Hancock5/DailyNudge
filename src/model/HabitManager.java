@@ -37,7 +37,7 @@ public class HabitManager {
         habits.add(habit);
     }
 
-    public void removeHabit(Habit habit) {
+    public static void removeHabit(Habit habit) {
         habits.remove(habit);
     }
 
