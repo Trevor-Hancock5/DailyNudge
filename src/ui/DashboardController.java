@@ -21,10 +21,10 @@ public class DashboardController {
     @FXML
     private GridPane gridpane;
 
-    private SceneSwitcher switcher;
+    public static SceneSwitcher switcher;
 
     public DashboardController(SceneSwitcher switcher) {
-        this.switcher = switcher;
+        DashboardController.switcher = switcher;
     }
 
     //Default controller

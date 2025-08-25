@@ -41,12 +41,7 @@ public class NewHabitController {
     private ToggleButton sun;
 
     private ArrayList<ToggleButton> daysOfWeek;
-    private final SceneSwitcher switcher;
     private static DashboardController dashboardController;
-
-    public NewHabitController(SceneSwitcher switcher){
-        this.switcher = switcher;
-    }
 
     public static void setDashboardController(DashboardController controller){
         dashboardController = controller;
@@ -73,7 +68,7 @@ public class NewHabitController {
 
     @FXML
     private void returnToDashboard(){
-        switcher.switchTo("/ui/Dashboard.fxml");
+        DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
     }
 
     @FXML
@@ -103,7 +98,7 @@ public class NewHabitController {
             LocalDate startDate = this.startDate.getValue();
 
             HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate));
-            switcher.switchTo("/ui/Dashboard.fxml");
+            DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
             dashboardController.updateHabits();
         }
     }

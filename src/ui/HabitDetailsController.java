@@ -67,4 +67,9 @@ public class HabitDetailsController {
         longStreak.setText(habit.getLongestStreak() + " Days");
 
     }
+
+    @FXML
+    private void deleteHabit(){
+
+    }
 }
