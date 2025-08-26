@@ -77,12 +77,14 @@ public class DashboardController {
             habitDetailsController.setInfo(habit);
             habitDetailsController.setGridpane(gridpane);
             habitDetailsController.setHabitCardRoot(habitCardRoot);
+            habitDetailsController.setDashboardController(this);
 
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
     }
 
     public void updateHabits() throws IOException {
+        gridpane.getChildren().clear();
         HabitManager.loadHabits();
         int column = 0;
         int row = 0;
@@ -110,6 +112,7 @@ public class DashboardController {
             habitDetailsController.setInfo(habit);
             habitDetailsController.setGridpane(gridpane);
             habitDetailsController.setHabitCardRoot(habitCardRoot);
+            habitDetailsController.setDashboardController(this);
 
             habitCardController.setHabitDetails(habitDetailsRoot);
         }

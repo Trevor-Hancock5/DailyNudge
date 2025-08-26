@@ -46,9 +46,14 @@ public class HabitDetailsController {
     private Stage window;
     private GridPane gridpane;
     private Parent habitCardRoot;
+    private DashboardController dashboardController;
 
     protected void setStage(Stage stage){
         window = stage;
+    }
+
+    protected void setDashboardController(DashboardController dashboardController){
+        this.dashboardController = dashboardController;
     }
 
     protected void setGridpane(GridPane gridpane){
@@ -95,7 +100,7 @@ public class HabitDetailsController {
     }
 
     @FXML
-    private void deleteHabit() {
+    private void deleteHabit() throws IOException {
         //alert to ensure user wants to delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Deletion Confirmation");
@@ -108,8 +113,7 @@ public class HabitDetailsController {
             HabitManager.saveHabits();
             DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
             window.close();
-            gridpane.getChildren().remove(habitCardRoot);
-            //TODO: Need to update the dashboard.
+            dashboardController.updateHabits();
         } else{
             alert.close();
         }
