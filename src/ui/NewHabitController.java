@@ -101,7 +101,22 @@ public class NewHabitController {
             HabitManager.saveHabits();
             DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
             dashboardController.updateHabits();
+            resetUI();
         }
     }
 
+    private void resetUI(){
+        startDate.setValue(LocalDate.now());
+        habitName.clear();
+        habitNote.clear();
+        priority.clear();
+        //Set frequency to be weekdays initially
+        mon.setSelected(true);
+        tues.setSelected(true);
+        wed.setSelected(true);
+        thurs.setSelected(true);
+        fri.setSelected(true);
+        sat.setSelected(false);
+        sun.setSelected(false);
+    }
 }
