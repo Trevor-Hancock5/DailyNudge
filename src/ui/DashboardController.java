@@ -75,18 +75,22 @@ public class DashboardController {
             HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
             habitCardController.setDetailsController(habitDetailsController);
             habitDetailsController.setInfo(habit);
+            habitDetailsController.setGridpane(gridpane);
+            habitDetailsController.setHabitCardRoot(habitCardRoot);
+
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
     }
 
     public void updateHabits() throws IOException {
+        HabitManager.loadHabits();
         int column = 0;
         int row = 0;
 
         List<Habit> todayHabits = HabitManager.getTodayHabits();
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority)).toList();
 
-        for(Habit habit: prioritizedHabits) {
+        for(Habit habit: prioritizedHabits){
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
             Parent habitCardRoot = habitCardLoader.load();
             HabitCardController habitCardController = habitCardLoader.getController();
@@ -94,7 +98,7 @@ public class DashboardController {
 
             //For every 3 columns(0,1,2), increase row by 1.
             gridpane.add(habitCardRoot, column, row);
-            if (++column > 2) {
+            if(++column > 2){
                 column = 0;
                 row++;
             }
@@ -102,10 +106,41 @@ public class DashboardController {
             FXMLLoader habitDetailsLoader = new FXMLLoader(getClass().getResource("HabitDetails.fxml"));
             Parent habitDetailsRoot = habitDetailsLoader.load();
             HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
+            habitCardController.setDetailsController(habitDetailsController);
             habitDetailsController.setInfo(habit);
+            habitDetailsController.setGridpane(gridpane);
+            habitDetailsController.setHabitCardRoot(habitCardRoot);
 
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
+
+//        int column = 0;
+//        int row = 0;
+//
+//        List<Habit> todayHabits = HabitManager.getTodayHabits();
+//        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority)).toList();
+//
+//        for(Habit habit: prioritizedHabits) {
+//            FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
+//            Parent habitCardRoot = habitCardLoader.load();
+//            HabitCardController habitCardController = habitCardLoader.getController();
+//            habitCardController.setHabit(habit);
+//
+//            //For every 3 columns(0,1,2), increase row by 1.
+//            gridpane.add(habitCardRoot, column, row);
+//            if (++column > 2) {
+//                column = 0;
+//                row++;
+//            }
+//
+//            FXMLLoader habitDetailsLoader = new FXMLLoader(getClass().getResource("HabitDetails.fxml"));
+//            Parent habitDetailsRoot = habitDetailsLoader.load();
+//            HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
+//            habitDetailsController.setInfo(habit);
+//
+//
+//            habitCardController.setHabitDetails(habitDetailsRoot);
+//        }
     }
 
     /**

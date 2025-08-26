@@ -98,6 +98,7 @@ public class NewHabitController {
             LocalDate startDate = this.startDate.getValue();
 
             HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate));
+            HabitManager.saveHabits();
             DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
             dashboardController.updateHabits();
         }

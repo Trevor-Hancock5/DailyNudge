@@ -10,10 +10,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -42,9 +44,19 @@ public class HabitDetailsController {
 
     private Habit habit;
     private Stage window;
+    private GridPane gridpane;
+    private Parent habitCardRoot;
 
     protected void setStage(Stage stage){
         window = stage;
+    }
+
+    protected void setGridpane(GridPane gridpane){
+        this.gridpane = gridpane;
+    }
+
+    protected void setHabitCardRoot(Parent root){
+        habitCardRoot = root;
     }
 
     protected void setInfo(Habit habit){
@@ -83,7 +95,7 @@ public class HabitDetailsController {
     }
 
     @FXML
-    private void deleteHabit(){
+    private void deleteHabit() {
         //alert to ensure user wants to delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Deletion Confirmation");
@@ -96,6 +108,7 @@ public class HabitDetailsController {
             HabitManager.saveHabits();
             DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
             window.close();
+            gridpane.getChildren().remove(habitCardRoot);
             //TODO: Need to update the dashboard.
         } else{
             alert.close();
