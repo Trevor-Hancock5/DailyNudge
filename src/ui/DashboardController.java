@@ -73,8 +73,8 @@ public class DashboardController {
             FXMLLoader habitDetailsLoader = new FXMLLoader(getClass().getResource("HabitDetails.fxml"));
             Parent habitDetailsRoot = habitDetailsLoader.load();
             HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
+            habitCardController.setDetailsController(habitDetailsController);
             habitDetailsController.setInfo(habit);
-
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
     }

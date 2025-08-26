@@ -28,15 +28,20 @@ public class HabitCardController {
     private VBox background;
 
     private Habit thisHabit;
-
     private Parent habitDetails;
+    private HabitDetailsController detailsController;
 
     @FXML
     private void moreInfo(){
         Stage stage = new Stage();
         stage.setScene(new Scene(habitDetails));
+        detailsController.setStage(stage);
         stage.setTitle("Habit Details");
         stage.show();
+    }
+
+    protected void setDetailsController(HabitDetailsController habitDetailsController){
+        detailsController = habitDetailsController;
     }
 
     @FXML

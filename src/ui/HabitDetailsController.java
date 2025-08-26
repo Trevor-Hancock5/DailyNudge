@@ -6,13 +6,17 @@
 package ui;
 
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 
 public class HabitDetailsController {
     @FXML
@@ -37,6 +41,11 @@ public class HabitDetailsController {
     private Label longStreak;
 
     private Habit habit;
+    private Stage window;
+
+    protected void setStage(Stage stage){
+        window = stage;
+    }
 
     protected void setInfo(Habit habit){
         this.habit = habit;
@@ -75,12 +84,23 @@ public class HabitDetailsController {
 
     @FXML
     private void deleteHabit(){
+        //alert to ensure user wants to delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-
-        HabitManager.removeHabit(habit);
-        //This is so that the data file has the correct information saved to load.
-        HabitManager.saveHabits();
-
-        //TODO: Need to update the dashboard.
+        alert.setTitle("Deletion Confirmation");
+        alert.setHeaderText("Are you sure you'd like to delete " + habitName.getText() + "?");
+        alert.setContentText("The action cannot be undone!");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK){
+            HabitManager.removeHabit(habit);
+            //This is so that the data file has the correct information saved to load.
+            HabitManager.saveHabits();
+            DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
+            window.close();
+            //TODO: Need to update the dashboard.
+        } else{
+            alert.close();
+        }
     }
 }
+
+
