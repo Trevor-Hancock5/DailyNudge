@@ -13,7 +13,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Habit;
 
+import java.net.URL;
 import java.time.LocalDate;
+import java.util.ResourceBundle;
 
 public class HabitCardController {
     @FXML
@@ -49,17 +51,36 @@ public class HabitCardController {
         int completionState = thisHabit.getCompletionState();
         if(completionState == 0) {
             thisHabit.setCompletionState(1);
-            background.setStyle("-fx-background-color: #58bf64;"); //light green
+            background.setStyle(
+                    "-fx-background-color: #58bf64;" +
+                    "-fx-border-radius: 15;" +
+                    "-fx-background-radius: 15;" +
+                    "-fx-border-color: #333333;" +
+                    "-fx-border-width: 1;"
+            ); //light green
+
             thisHabit.complete(LocalDate.now());
             setHabit(thisHabit);
         } else if(completionState == 1){
             thisHabit.setCompletionState(2);
-            background.setStyle("-fx-background-color: #ff575a;"); //red
+            background.setStyle(
+                    "-fx-background-color: #ff575a;" +
+                    "-fx-border-radius: 15;" +
+                    "-fx-background-radius: 15;" +
+                    "-fx-border-color: #333333;" +
+                    "-fx-border-width: 1;"
+            ); //red
             thisHabit.uncomplete(LocalDate.now());
             setHabit(thisHabit);
         } else if(completionState == 2){
             thisHabit.setCompletionState(0);
-            background.setStyle("-fx-background-color: lightgrey");
+            background.setStyle(
+                    "-fx-background-color: lightgrey;" +
+                    "-fx-border-radius: 15;" +
+                    "-fx-background-radius: 15;" +
+                    "-fx-border-color: #333333;" +
+                    "-fx-border-width: 1;"
+            );
         }
     }
 
@@ -67,11 +88,29 @@ public class HabitCardController {
         thisHabit = habit; //So that other methods have the habit that this card is for.
         int completionState = habit.getCompletionState();
         if(completionState == 0) {
-            background.setStyle("-fx-background-color: lightgrey");
+            background.setStyle(
+                    "-fx-background-color: lightgrey;" +
+                            "-fx-border-radius: 15;" +
+                            "-fx-background-radius: 15;" +
+                            "-fx-border-color: #333333;" +
+                            "-fx-border-width: 1;"
+            );
         } else if(completionState == 1){
-            background.setStyle("-fx-background-color: #58bf64;"); //light green
+            background.setStyle(
+                    "-fx-background-color: #58bf64;" +
+                            "-fx-border-radius: 15;" +
+                            "-fx-background-radius: 15;" +
+                            "-fx-border-color: #333333;" +
+                            "-fx-border-width: 1;"
+            ); //light green
         } else if(completionState == 2){
-            background.setStyle("-fx-background-color: #ff575a;"); //red
+            background.setStyle(
+                    "-fx-background-color: #ff575a;" +
+                            "-fx-border-radius: 15;" +
+                            "-fx-background-radius: 15;" +
+                            "-fx-border-color: #333333;" +
+                            "-fx-border-width: 1;"
+            ); //red
         }
 
         habitName.setText(habit.getName());

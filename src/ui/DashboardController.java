@@ -7,10 +7,15 @@ package ui;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import model.Habit;
 import model.HabitManager;
 
@@ -52,6 +57,9 @@ public class DashboardController {
     private void initialize() throws IOException {
         NewHabitController.setDashboardController(this);
         HabitManager.loadHabits();
+        gridpane.setHgap(15);
+        gridpane.setVgap(25);
+        gridpane.setPadding(new Insets(20));
         int column = 0;
         int row = 0;
 
@@ -61,11 +69,21 @@ public class DashboardController {
         for(Habit habit: prioritizedHabits){
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
             Parent habitCardRoot = habitCardLoader.load();
+            habitCardRoot.setStyle(
+                    "-fx-background-color: lightgrey;" +   // background
+                    "-fx-border-radius: 15;" +           // rounded corners
+                    "-fx-background-radius: 15;" +       // match background to border radius
+                    "-fx-border-color: #cccccc;" +       // border color
+                    "-fx-border-width: 1;"
+            );
             HabitCardController habitCardController = habitCardLoader.getController();
             habitCardController.setHabit(habit);
 
             //For every 3 columns(0,1,2), increase row by 1.
             gridpane.add(habitCardRoot, column, row);
+            //To center each card in it's cell
+            GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
+            GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
             if(++column > 2){
                 column = 0;
                 row++;
@@ -82,6 +100,11 @@ public class DashboardController {
 
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
+        //The following is to update the gridpane height and allow the scrollpane to adjust after
+        //all the cards have been added
+        gridpane.setMinHeight(Region.USE_PREF_SIZE);
+        gridpane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        gridpane.setMaxHeight(Region.USE_PREF_SIZE);
     }
 
     public void updateHabits() throws IOException {
