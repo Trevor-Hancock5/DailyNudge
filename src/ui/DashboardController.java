@@ -8,6 +8,7 @@ package ui;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.GridPane;
 import model.Habit;
@@ -38,7 +39,7 @@ public class DashboardController {
 
     @FXML
     private void makeNewHabit() {
-        switcher.switchTo("/ui/NewHabit.fxml");
+        SceneView.NEW_HABIT.switchTo(switcher);
     }
 
     @FXML

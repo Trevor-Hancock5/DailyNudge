@@ -1,7 +1,7 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/23/2025
+ * Last Updated: 8/27/2025
  */
 package ui;
 
@@ -23,15 +23,15 @@ public class SceneSwitcher {
         this.stage = stage;
     }
 
-    public void switchTo(String fxmlFile) {
+    public void switchTo(SceneView view) {
         try {
             // If already loaded, just reuse it
-            if (scenes.containsKey(fxmlFile)) {
-                stage.setScene(scenes.get(fxmlFile));
+            if (scenes.containsKey(view.getPath())) {
+                stage.setScene(scenes.get(view.getPath()));
                 return;
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(view.getPath()));
 
             loader.setControllerFactory(controllerClass -> {
                 try {
@@ -53,7 +53,7 @@ public class SceneSwitcher {
             int width = 800;
             int height = 600;
             Scene scene = new Scene(root, width, height);
-            scenes.put(fxmlFile, scene);
+            scenes.put(view.getPath(), scene);
             stage.setScene(scene);
 
         } catch (IOException e) {

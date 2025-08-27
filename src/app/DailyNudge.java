@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import model.HabitManager;
 import ui.SceneSwitcher;
+import ui.SceneView;
 
 import java.io.IOException;
 
@@ -20,8 +21,8 @@ public class DailyNudge extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        SceneSwitcher sceneSwitcher = new SceneSwitcher(stage);
-        sceneSwitcher.switchTo("/ui/Dashboard.fxml");
+        SceneSwitcher switcher = new SceneSwitcher(stage);
+        SceneView.DASHBOARD.switchTo(switcher);
         stage.show();
 
         //Save on window Close

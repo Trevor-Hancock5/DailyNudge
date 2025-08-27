@@ -6,6 +6,7 @@
 package ui;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -68,7 +69,7 @@ public class NewHabitController {
 
     @FXML
     private void returnToDashboard(){
-        DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
+        SceneView.DASHBOARD.switchTo(DashboardController.switcher);
     }
 
     @FXML
@@ -99,7 +100,7 @@ public class NewHabitController {
 
             HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate));
             HabitManager.saveHabits();
-            DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
+            returnToDashboard();
             dashboardController.updateHabits();
             resetUI();
         }

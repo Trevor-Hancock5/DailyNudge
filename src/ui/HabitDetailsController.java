@@ -111,7 +111,7 @@ public class HabitDetailsController {
             HabitManager.removeHabit(habit);
             //This is so that the data file has the correct information saved to load.
             HabitManager.saveHabits();
-            DashboardController.switcher.switchTo("/ui/Dashboard.fxml");
+            SceneView.DASHBOARD.switchTo(DashboardController.switcher);
             window.close();
             dashboardController.updateHabits();
         } else{
