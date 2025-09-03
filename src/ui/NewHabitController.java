@@ -77,6 +77,8 @@ public class NewHabitController {
         String habitName = this.habitName.getText();
         if(habitName.isBlank()){
             DashboardController.showAlert("Name cannot be blank!");
+        } else if(HabitManager.containsHabitName(habitName)){
+            DashboardController.showAlert("Habit with same name already exists. Rename!");
         } else {
             int priority;
             try{

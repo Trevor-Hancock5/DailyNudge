@@ -44,4 +44,13 @@ public class HabitManager {
     public List<Habit> getHabits() {
         return habits;
     }
+
+    public static boolean containsHabitName(String habitName){
+        for(Habit habit : habits){
+            if(habit.getName().strip().equalsIgnoreCase(habitName.strip())){
+                return true;
+            }
+        }
+        return false;
+    }
 }
