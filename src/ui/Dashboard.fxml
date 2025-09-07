@@ -36,7 +36,7 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <DatePicker fx:id="habitDate" prefHeight="30.0" prefWidth="185.0" />
+            <DatePicker fx:id="habitDate" onAction="#newDate" prefHeight="30.0" prefWidth="185.0" />
          </children>
       </HBox>
       <ScrollPane prefHeight="396.0" prefWidth="800.0">

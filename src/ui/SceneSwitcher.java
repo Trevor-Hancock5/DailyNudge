@@ -36,7 +36,11 @@ public class SceneSwitcher {
             loader.setControllerFactory(controllerClass -> {
                 try {
                     // Look for a constructor that takes SceneSwitcher
-                    return controllerClass.getConstructor(SceneSwitcher.class).newInstance(this);
+                    Object controller = controllerClass.getConstructor(SceneSwitcher.class).newInstance(this);
+                    if(controller instanceof DashboardController dashController){
+                        HabitCardController.setDashboardController(dashController); //I forget but convert to Dashboard Controller instance
+                    }
+                    return controller;
                 } catch (NoSuchMethodException e) {
                     // Otherwise just call the no-arg constructor
                     try {

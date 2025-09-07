@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import app.StorageManager;
@@ -19,10 +20,10 @@ public class HabitManager {
         }
     }
 
-    public static List<Habit> getTodayHabits(){
+    public static List<Habit> getTodayHabits(LocalDate date){
         List<Habit> todayHabits = new ArrayList<>();
         for(Habit habit : habits){
-            if(habit.activeToday()){
+            if(habit.activeToday(date)){
                 todayHabits.add(habit);
             }
         }

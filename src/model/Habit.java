@@ -23,7 +23,7 @@ public class Habit {
     private LocalDate startDate;
     private int currentStreak;
     private int longestStreak;
-    private int completionState;
+//    private int completionState;
 
     public Habit(String name, int priority, String habitNote, ArrayList<Integer> freq, LocalDate startDate){
         notes = new HashMap<>();
@@ -36,7 +36,7 @@ public class Habit {
         this.startDate = startDate;
         currentStreak = -1;
         longestStreak = -1;
-        completionState = 0;
+//        completionState = 0;
     }
 
     public String getName(){
@@ -71,32 +71,45 @@ public class Habit {
         return longestStreak;
     }
 
-    public int getCompletionState(){
-        return completionState;
-    }
+//    public int getCompletionState(){
+//        return completionState;
+//    }
 
-    public void setCompletionState(int newState){
-        completionState = newState; //0 is gray (not completed or failed), 1 is green (completed), 2 is red (failed)
-    }
+//    public void setCompletionState(int newState){
+//        completionState = newState; //0 is gray (not completed or failed), 1 is green (completed), 2 is red (failed)
+//    }
 
-    public boolean activeToday(){
+    public boolean activeToday(LocalDate date){
         //Returns true if the habit is active today, false otherwise
-        return frequency.contains(LocalDate.now().getDayOfWeek().getValue());
+        return frequency.contains(date.getDayOfWeek().getValue());
     }
 
     private void setStartDate(LocalDate date){
         startDate = date;
     }
 
+    public int getEntry(LocalDate date){
+        if(habitLog.contains(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")))){
+            return 1; //Complete Habit
+        } else{
+            if(date.isBefore(LocalDate.now())) {
+                return 2; //Failed habit
+            } else{
+                return 0; //Unmarked habit
+            }
+        }
+    }
+
     public boolean complete(LocalDate date){
         //If the habit is active today, return true, false otherwise. (True if date in frequency. False if not.)
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-            completionState = 1;
+//            completionState = 1;
             this.habitLog.add(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+            HabitManager.saveHabits();
             this.streakAndPercentage(); // Update values
             return true;
         } else{
-            completionState = 0;
+//            completionState = 0;
             return false;
         }
     }
@@ -104,12 +117,13 @@ public class Habit {
     public boolean uncomplete(LocalDate date){
         //This is useful so that if the user completes it, then marks it failed it can be removed.
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-            completionState = 2;
+//            completionState = 2;
             this.habitLog.remove(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+            HabitManager.saveHabits();
             this.streakAndPercentage(); // Update values
             return true;
         } else{
-            completionState = 0;
+//            completionState = 0;
             return false;
         }
     }

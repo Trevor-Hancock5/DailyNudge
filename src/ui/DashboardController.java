@@ -29,7 +29,7 @@ public class DashboardController {
     @FXML
     private GridPane gridpane;
     @FXML
-    private DatePicker habitDate;
+    protected DatePicker habitDate;
 
     public static SceneSwitcher switcher;
 
@@ -58,6 +58,11 @@ public class DashboardController {
     }
 
     @FXML
+    private void newDate() throws IOException {
+        updateHabits();
+    }
+
+    @FXML
     private void initialize() throws IOException {
         NewHabitController.setDashboardController(this);
         HabitManager.loadHabits();
@@ -68,7 +73,7 @@ public class DashboardController {
         int column = 0;
         int row = 0;
 
-        List<Habit> todayHabits = HabitManager.getTodayHabits();
+        List<Habit> todayHabits = HabitManager.getTodayHabits(habitDate.getValue());
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority)).toList();
 
         for(Habit habit: prioritizedHabits){
@@ -118,7 +123,7 @@ public class DashboardController {
         int column = 0;
         int row = 0;
 
-        List<Habit> todayHabits = HabitManager.getTodayHabits();
+        List<Habit> todayHabits = HabitManager.getTodayHabits(habitDate.getValue());
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority)).toList();
 
         for(Habit habit: prioritizedHabits){
