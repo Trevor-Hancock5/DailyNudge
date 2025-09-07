@@ -50,6 +50,11 @@ public class NewHabitController {
 
     @FXML
     public void initialize() {
+        //@FXML
+        //public void initialize() {
+        //    // Run after scene is displayed so focus actually takes effect
+        //    Platform.runLater(() -> habitNameField.requestFocus());
+        //}
         startDate.setValue(LocalDate.now());
         daysOfWeek = new ArrayList<>();
 

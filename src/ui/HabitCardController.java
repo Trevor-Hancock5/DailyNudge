@@ -80,7 +80,8 @@ public class HabitCardController {
                     "-fx-border-color: #333333;" +
                     "-fx-border-width: 1;"
             );
-
+            thisHabit.removeEntry(dashboardController.habitDate.getValue());
+            setHabit(thisHabit);
         }
     }
 

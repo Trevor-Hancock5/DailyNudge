@@ -74,7 +74,7 @@ public class DashboardController {
         int row = 0;
 
         List<Habit> todayHabits = HabitManager.getTodayHabits(habitDate.getValue());
-        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority)).toList();
+        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
 
         for(Habit habit: prioritizedHabits){
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
@@ -118,13 +118,17 @@ public class DashboardController {
     }
 
     public void updateHabits() throws IOException {
+        if(habitDate.getValue().isAfter(LocalDate.now())){
+            habitDate.setValue(LocalDate.now());
+            showAlert("Can't complete future habits. Back to today!");
+        }
         gridpane.getChildren().clear();
         HabitManager.loadHabits();
         int column = 0;
         int row = 0;
 
         List<Habit> todayHabits = HabitManager.getTodayHabits(habitDate.getValue());
-        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority)).toList();
+        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
 
         for(Habit habit: prioritizedHabits){
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));

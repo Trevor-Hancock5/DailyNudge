@@ -18,7 +18,7 @@ public class Habit {
     private String name;
     private double completionPercent;
     private int priority;
-    private Set<String> habitLog;
+    private HashMap<String, Integer> habitLog;
     private ArrayList<Integer> frequency;
     private LocalDate startDate;
     private int currentStreak;
@@ -31,7 +31,7 @@ public class Habit {
         this.name = name;
         completionPercent = 0;
         this.priority = priority;
-        habitLog = new HashSet<>();
+        habitLog = new HashMap<>();
         setFrequency(freq);
         this.startDate = startDate;
         currentStreak = -1;
@@ -81,7 +81,7 @@ public class Habit {
 
     public boolean activeToday(LocalDate date){
         //Returns true if the habit is active today, false otherwise
-        return frequency.contains(date.getDayOfWeek().getValue());
+        return frequency.contains(date.getDayOfWeek().getValue()) && !date.isBefore(this.startDate);
     }
 
     private void setStartDate(LocalDate date){
@@ -89,42 +89,37 @@ public class Habit {
     }
 
     public int getEntry(LocalDate date){
-        if(habitLog.contains(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")))){
-            return 1; //Complete Habit
-        } else{
-            if(date.isBefore(LocalDate.now())) {
-                return 2; //Failed habit
-            } else{
-                return 0; //Unmarked habit
-            }
-        }
+        String key = date.format(DateTimeFormatter.ofPattern("M/d/yyyy"));
+        //Unmarked Habit = 0
+        return habitLog.getOrDefault(key, 0);
     }
 
-    public boolean complete(LocalDate date){
+    public void complete(LocalDate date){
         //If the habit is active today, return true, false otherwise. (True if date in frequency. False if not.)
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-//            completionState = 1;
-            this.habitLog.add(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+//            completionState = 1; - completed
+            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 1);
             HabitManager.saveHabits();
             this.streakAndPercentage(); // Update values
-            return true;
-        } else{
-//            completionState = 0;
-            return false;
         }
     }
 
-    public boolean uncomplete(LocalDate date){
+    public void uncomplete(LocalDate date){
         //This is useful so that if the user completes it, then marks it failed it can be removed.
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-//            completionState = 2;
-            this.habitLog.remove(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+//            completionState = 2; - failed
+            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 2);
             HabitManager.saveHabits();
             this.streakAndPercentage(); // Update values
-            return true;
-        } else{
-//            completionState = 0;
-            return false;
+        }
+    }
+
+    public void removeEntry(LocalDate date){
+        String key = date.format(DateTimeFormatter.ofPattern("M/d/yyyy"));
+        if(habitLog.containsKey(key)){
+            habitLog.remove(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+            HabitManager.saveHabits();
+            streakAndPercentage();
         }
     }
 
@@ -167,14 +162,18 @@ public class Habit {
         for(int i = 0; i < daysList.size(); i++){
             LocalDate day = daysList.get(i);
             if(frequency.contains(day.getDayOfWeek().getValue())){
-                freqDayList.add(day.toString());
+                freqDayList.add(day.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
             }
         }
 
-        ArrayList<String> revFreqList = freqDayList.stream().distinct().sorted(Comparator.reverseOrder()).collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> revFreqList = freqDayList.stream()
+                                                   .distinct()
+                                                   .sorted(Comparator.reverseOrder())
+                                                   .collect(Collectors.toCollection(ArrayList::new));
         for(int i = 0; i < revFreqList.size(); i++){
             String day = revFreqList.get(i);
-            if(habitLog.contains(day)){
+
+            if(habitLog.containsKey(day)){
                 numComplete++;
                 totalComplete++;
                 strikeOne = false;
