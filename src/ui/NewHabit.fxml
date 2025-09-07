@@ -20,7 +20,7 @@
             <Button mnemonicParsing="false" onAction="#returnToDashboard" text="Return To Dashboard" />
          </children>
       </HBox>
-      <Button mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="50.0" prefWidth="250.0" text="Make New Habit">
+      <Button fx:id="newHabit" mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="50.0" prefWidth="250.0" text="Make New Habit">
          <font>
             <Font size="24.0" />
          </font>

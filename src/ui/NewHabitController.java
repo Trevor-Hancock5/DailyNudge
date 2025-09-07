@@ -5,8 +5,10 @@
  */
 package ui;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -40,6 +42,8 @@ public class NewHabitController {
     private ToggleButton sat;
     @FXML
     private ToggleButton sun;
+    @FXML
+    private Button newHabit;
 
     private ArrayList<ToggleButton> daysOfWeek;
     private static DashboardController dashboardController;
@@ -50,11 +54,64 @@ public class NewHabitController {
 
     @FXML
     public void initialize() {
-        //@FXML
-        //public void initialize() {
-        //    // Run after scene is displayed so focus actually takes effect
-        //    Platform.runLater(() -> habitNameField.requestFocus());
-        //}
+        // Run after scene is displayed so focus actually takes effect
+        Platform.runLater(() -> habitName.requestFocus());
+        habitName.setOnAction(_ -> priority.requestFocus());
+        priority.setOnAction(_ -> habitNote.requestFocus());
+        habitNote.setOnAction(_ -> mon.requestFocus());
+
+        ToggleButton[] dayButtons = new ToggleButton[]{mon, tues, wed, thurs, fri, sat, sun};
+
+        // Set navigation for each toggle button
+        for (int i = 0; i < dayButtons.length; i++) {
+            final int idx = i;
+            dayButtons[i].setOnKeyTyped(event -> {
+                switch (event.getCode()) {
+                    case ENTER, SPACE -> {
+                        dayButtons[idx].setSelected(!dayButtons[idx].isSelected());
+                        event.consume();
+                    }
+                }
+            });
+        }
+
+        for (int i = 0; i < dayButtons.length; i++) {
+            final int idx = i;
+            dayButtons[i].setOnKeyReleased(event -> {
+                switch (event.getCode()) {
+                    case RIGHT -> {
+                        if (idx + 1 < dayButtons.length) {
+                            dayButtons[idx + 1].requestFocus();
+                        } else {
+                            // Last button → focus startDayPicker
+                            startDate.requestFocus();
+                        }
+                        event.consume();
+                    }
+                    case LEFT -> {
+                        if (idx - 1 >= 0) dayButtons[idx - 1].requestFocus();
+                        event.consume();
+                    }
+                }
+            });
+        }
+
+        startDate.setOnAction(_ -> newHabit.requestFocus());
+        // Automatically show calendar when DatePicker gains focus
+        startDate.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) { // focus gained
+                startDate.show();
+            }
+        });
+
+        newHabit.setOnAction(_ -> {
+            try {
+                makeNewHabit();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         startDate.setValue(LocalDate.now());
         daysOfWeek = new ArrayList<>();
 
