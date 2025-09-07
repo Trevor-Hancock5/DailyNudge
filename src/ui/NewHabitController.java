@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import model.Habit;
 import model.HabitManager;
 
@@ -44,6 +46,8 @@ public class NewHabitController {
     private ToggleButton sun;
     @FXML
     private Button newHabit;
+    @FXML
+    private VBox root;
 
     private ArrayList<ToggleButton> daysOfWeek;
     private static DashboardController dashboardController;
@@ -109,6 +113,12 @@ public class NewHabitController {
                 makeNewHabit();
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+        });
+
+        root.setOnKeyPressed(e -> {
+            if(e.getCode() == KeyCode.ESCAPE){
+                returnToDashboard();
             }
         });
 
