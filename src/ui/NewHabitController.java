@@ -122,7 +122,7 @@ public class NewHabitController {
             }
         });
 
-        startDate.setValue(LocalDate.now());
+        startDate.setValue(dashboardController.habitDate.getValue());
         daysOfWeek = new ArrayList<>();
 
         daysOfWeek.add(mon);

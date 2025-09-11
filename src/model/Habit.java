@@ -100,7 +100,7 @@ public class Habit {
 //            completionState = 1; - completed
             this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 1);
             HabitManager.saveHabits();
-            this.streakAndPercentage(); // Update values
+            this.streakAndPercentage(date); // Update values
         }
     }
 
@@ -110,7 +110,7 @@ public class Habit {
 //            completionState = 2; - failed
             this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 2);
             HabitManager.saveHabits();
-            this.streakAndPercentage(); // Update values
+            this.streakAndPercentage(date); // Update values
         }
     }
 
@@ -119,7 +119,7 @@ public class Habit {
         if(habitLog.containsKey(key)){
             habitLog.remove(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
             HabitManager.saveHabits();
-            streakAndPercentage();
+            streakAndPercentage(date);
         }
     }
 
@@ -144,17 +144,17 @@ public class Habit {
             frequency = freq;
     }
 
-    private void streakAndPercentage(){
+    public void streakAndPercentage(LocalDate date){
         int numComplete = 0;
         int totalComplete = 0;
         boolean strikeOne = false;
         int tempStreak = -1;
         int longestStreak = 0;
         ArrayList<LocalDate> daysList = new ArrayList<>();
-        daysList.add(LocalDate.now());
+        daysList.add(date);
         ArrayList<String> freqDayList = new ArrayList<>();
 
-        long daysSinceStart = ChronoUnit.DAYS.between(startDate, LocalDate.now());
+        long daysSinceStart = ChronoUnit.DAYS.between(startDate, date);
         for (int day = 0; day < daysSinceStart; day++){
             daysList.add(startDate.plusDays(day));
         }
@@ -170,10 +170,13 @@ public class Habit {
                                                    .distinct()
                                                    .sorted(Comparator.reverseOrder())
                                                    .collect(Collectors.toCollection(ArrayList::new));
+        //Reset values
+        this.currentStreak = -1;
+        this.longestStreak = -1;
         for(int i = 0; i < revFreqList.size(); i++){
             String day = revFreqList.get(i);
 
-            if(habitLog.containsKey(day)){
+            if(habitLog.containsKey(day) && habitLog.get(day) == 1){
                 numComplete++;
                 totalComplete++;
                 strikeOne = false;
@@ -182,7 +185,7 @@ public class Habit {
             } else if(strikeOne){
                 strikeOne = false;
                 if(tempStreak == -1){
-                    this.currentStreak = numComplete;
+                    //this.currentStreak = numComplete;
                     longestStreak = numComplete;
                 } else{
                     if(numComplete > longestStreak){
@@ -201,7 +204,9 @@ public class Habit {
         if(this.longestStreak == -1){
             this.longestStreak = numComplete;
         } else{
-            this.longestStreak = longestStreak;
+            if(longestStreak > this.longestStreak) {
+                this.longestStreak = longestStreak;
+            }
         }
 
         if(freqDayList.isEmpty()){

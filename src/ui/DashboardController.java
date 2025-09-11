@@ -77,6 +77,7 @@ public class DashboardController {
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
 
         for(Habit habit: prioritizedHabits){
+            habit.streakAndPercentage(habitDate.getValue());
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
             Parent habitCardRoot = habitCardLoader.load();
             habitCardRoot.setStyle(
@@ -131,10 +132,14 @@ public class DashboardController {
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
 
         for(Habit habit: prioritizedHabits){
+            habit.streakAndPercentage(habitDate.getValue());
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
             Parent habitCardRoot = habitCardLoader.load();
             HabitCardController habitCardController = habitCardLoader.getController();
             habitCardController.setHabit(habit);
+
+            GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
+            GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
 
             //For every 3 columns(0,1,2), increase row by 1.
             gridpane.add(habitCardRoot, column, row);
