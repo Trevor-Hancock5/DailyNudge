@@ -172,7 +172,6 @@ public class Habit {
                                                    .collect(Collectors.toCollection(ArrayList::new));
         //Reset values
         this.currentStreak = -1;
-        this.longestStreak = -1;
         for(int i = 0; i < revFreqList.size(); i++){
             String day = revFreqList.get(i);
 
@@ -184,6 +183,7 @@ public class Habit {
                 strikeOne = true;
             } else if(strikeOne){
                 strikeOne = false;
+//                this.currentStreak = 0; ?????
                 if(tempStreak == -1){
                     //this.currentStreak = numComplete;
                     longestStreak = numComplete;
