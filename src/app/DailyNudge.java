@@ -13,6 +13,10 @@ import ui.SceneSwitcher;
 import ui.SceneView;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DailyNudge extends Application {
     public static void main(String[] args) {

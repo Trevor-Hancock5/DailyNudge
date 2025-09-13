@@ -9,14 +9,19 @@ package ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.ImageView;
+import model.Habit;
 import model.HabitManager;
 
+import java.awt.*;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -33,8 +38,6 @@ public class SettingsController {
     ToggleButton lightMd;
     @FXML
     ToggleButton darkMd;
-    @FXML
-    ToggleButton normalStr;
     @FXML
     ToggleButton flexibleStr;
 
@@ -54,26 +57,26 @@ public class SettingsController {
         Circle clip = new Circle(imageView.getFitWidth()/2,imageView.getFitHeight()/2, radius);
         imageView.setClip(clip);
 
-        name.requestFocus();
         lightMd.setSelected(true);
         darkMd.setSelected(false);
         flexibleStr.setSelected(true);
-        normalStr.setSelected(false);
     }
 
     @FXML
-    private void normalStreak(){
-
+    private void flexibleStreak() {
+        System.out.println(flexibleStr.isSelected());
+        System.out.println("If true, flexible streak enabled. False - normal");
+        Habit.setStreakRule(!flexibleStr.isSelected());
+        HabitManager.saveHabits();
     }
 
     @FXML
-    private void flexibleStreak(){
-
-    }
-
-    @FXML
-    private void feedback(){
-
+    private void feedback() {
+        try {
+            Desktop.getDesktop().browse(new URI("https://forms.gle/UVMA5KcSmc4Xyiqm7"));
+        } catch (URISyntaxException | IOException e){
+            DashboardController.showAlert("Error with opening feedback form. Sorry!");
+        }
     }
 
     @FXML
@@ -134,7 +137,14 @@ public class SettingsController {
 
     @FXML
     private void aboutMe(){
-
+        DashboardController.showAlert("""
+            Hello! I am Trevor Hancock, the creator of DailyNudge.
+            Thank you for using DailyNudge. I enjoyed working on this project.
+            I hope that it is a tool that you believe is useful.
+            It was definitely a challenge to make and get right, but I am so
+            glad with how far I was able to get it! 
+            Let me know of any bugs through the feedback button in settings! 
+            """);
     }
 
     @FXML

@@ -23,7 +23,7 @@ public class Habit {
     private LocalDate startDate;
     private int currentStreak;
     private int longestStreak;
-//    private int completionState;
+    private static boolean normalStreak = false;
 
     public Habit(String name, int priority, String habitNote, ArrayList<Integer> freq, LocalDate startDate){
         notes = new HashMap<>();
@@ -36,11 +36,14 @@ public class Habit {
         this.startDate = startDate;
         currentStreak = -1;
         longestStreak = -1;
-//        completionState = 0;
     }
 
     public String getName(){
         return name;
+    }
+
+    public static void setStreakRule(boolean streakRule){
+        normalStreak = streakRule;
     }
 
     public String getHabitNote(){
@@ -71,14 +74,6 @@ public class Habit {
         return longestStreak;
     }
 
-//    public int getCompletionState(){
-//        return completionState;
-//    }
-
-//    public void setCompletionState(int newState){
-//        completionState = newState; //0 is gray (not completed or failed), 1 is green (completed), 2 is red (failed)
-//    }
-
     public boolean activeToday(LocalDate date){
         //Returns true if the habit is active today, false otherwise
         return frequency.contains(date.getDayOfWeek().getValue()) && !date.isBefore(this.startDate);
@@ -97,7 +92,6 @@ public class Habit {
     public void complete(LocalDate date){
         //If the habit is active today, return true, false otherwise. (True if date in frequency. False if not.)
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-//            completionState = 1; - completed
             this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 1);
             HabitManager.saveHabits();
             this.streakAndPercentage(date); // Update values
@@ -107,8 +101,7 @@ public class Habit {
     public void uncomplete(LocalDate date){
         //This is useful so that if the user completes it, then marks it failed it can be removed.
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-//            completionState = 2; - failed
-            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 2);
+            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 2); //2 is fail
             HabitManager.saveHabits();
             this.streakAndPercentage(date); // Update values
         }
@@ -145,6 +138,10 @@ public class Habit {
     }
 
     public void streakAndPercentage(LocalDate date){
+        computeStreak(date, !normalStreak);
+    }
+
+    private void computeStreak(LocalDate date, boolean flexible){
         int numComplete = 0;
         int totalComplete = 0;
         boolean strikeOne = false;
@@ -167,9 +164,9 @@ public class Habit {
         }
 
         ArrayList<String> revFreqList = freqDayList.stream()
-                                                   .distinct()
-                                                   .sorted(Comparator.reverseOrder())
-                                                   .collect(Collectors.toCollection(ArrayList::new));
+                .distinct()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toCollection(ArrayList::new));
         //Reset values
         this.currentStreak = -1;
         for(int i = 0; i < revFreqList.size(); i++){
@@ -179,27 +176,42 @@ public class Habit {
                 numComplete++;
                 totalComplete++;
                 strikeOne = false;
-            } else if(!strikeOne){
-                strikeOne = true;
-            } else if(strikeOne){
-                strikeOne = false;
-//                this.currentStreak = 0; ?????
-                if(tempStreak == -1){
-                    //this.currentStreak = numComplete;
-                    longestStreak = numComplete;
-                } else{
-                    if(numComplete > longestStreak){
-                        longestStreak = numComplete;
+            } else{
+                if(flexible){
+                    if(!strikeOne){
+                        strikeOne = true;
+                    } else if(strikeOne){
+                        strikeOne = false;
+                        if(tempStreak == -1){
+                            //this.currentStreak = numComplete;
+                            longestStreak = numComplete;
+                        } else{
+                            if(numComplete > longestStreak){
+                                longestStreak = numComplete;
+                            }
+                        }
+                        tempStreak = numComplete;
+                        numComplete = 0;
                     }
+                } else{
+                    if(tempStreak == -1){
+                        //this.currentStreak = numComplete;
+                        longestStreak = numComplete;
+                    } else{
+                        if(numComplete > longestStreak){
+                            longestStreak = numComplete;
+                        }
+                    }
+                    tempStreak = numComplete;
+                    numComplete = 0;
                 }
-                tempStreak = numComplete;
-                numComplete = 0;
             }
+
         }
 
         //If it makes it fully through the loop, values still need to be updated
         if(this.currentStreak == -1){
-            this.currentStreak = numComplete;
+            this.currentStreak = numComplete + (strikeOne ? 1 : 0);
         }
         if(this.longestStreak == -1){
             this.longestStreak = numComplete;
@@ -207,6 +219,10 @@ public class Habit {
             if(longestStreak > this.longestStreak) {
                 this.longestStreak = longestStreak;
             }
+        }
+
+        if(currentStreak > this.longestStreak){
+            this.longestStreak = currentStreak;
         }
 
         if(freqDayList.isEmpty()){

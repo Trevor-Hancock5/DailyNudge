@@ -28,6 +28,7 @@ public class SceneSwitcher {
         try {
             // If already loaded, just reuse it
             if (scenes.containsKey(view.getPath())) {
+                System.out.println(scenes.get(view.getPath()) == null);
                 stage.setScene(scenes.get(view.getPath()));
                 return;
             }

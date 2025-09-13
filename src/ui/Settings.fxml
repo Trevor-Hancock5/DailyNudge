@@ -21,12 +21,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="600.0">
                      <children>
-                        <ToggleButton fx:id="normalStr" mnemonicParsing="false" onAction="#normalStreak" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Normal Streak">
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets>
-                        </ToggleButton>
-                        <ToggleButton fx:id="flexibleStr" mnemonicParsing="false" onAction="#flexibleStreak" style="-fx-background-color: darkgrey;" text="Flexible Streak" />
+                        <ToggleButton fx:id="flexibleStr" mnemonicParsing="false" onAction="#flexibleStreak" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Flexible Streak" />
                      </children>
                      <opaqueInsets>
                         <Insets />
