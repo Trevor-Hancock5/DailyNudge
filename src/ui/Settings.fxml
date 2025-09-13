@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,16 +17,30 @@
   <tabs>
     <Tab text="General">
          <content>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                <children>
-                  <HBox prefHeight="60.0" prefWidth="600.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="600.0">
                      <children>
-                        <ToggleButton mnemonicParsing="false" text="Flexible Streak" />
-                        <ToggleButton mnemonicParsing="false" text="Normal Streak" />
+                        <ToggleButton fx:id="normalStr" mnemonicParsing="false" onAction="#normalStreak" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Normal Streak">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </ToggleButton>
+                        <ToggleButton fx:id="flexibleStr" mnemonicParsing="false" onAction="#flexibleStreak" style="-fx-background-color: darkgrey;" text="Flexible Streak" />
                      </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Feedback/Report Bug" />
+                  <Button mnemonicParsing="false" onAction="#feedback" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Feedback/Report Bug" />
+                  <Button mnemonicParsing="false" onAction="#backToDash" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Back to Dashboard" />
                </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="15.0" top="15.0" />
+               </padding>
             </VBox>
          </content>
     </Tab>
@@ -46,8 +61,8 @@
                         <Insets left="15.0" top="15.0" />
                      </padding>
                      <children>
-                        <ToggleButton mnemonicParsing="false" style="-fx-background-color: white; -fx-text-fill: black;" text="Light Mode" />
-                        <ToggleButton mnemonicParsing="false" style="-fx-background-color: black; -fx-text-fill: white;" text="Dark Mode" />
+                        <ToggleButton fx:id="lightMd" mnemonicParsing="false" onAction="#lightMode" style="-fx-background-color: white; -fx-text-fill: black;" text="Light Mode" />
+                        <ToggleButton fx:id="darkMd" mnemonicParsing="false" onAction="#darkMode" style="-fx-background-color: black; -fx-text-fill: white;" text="Dark Mode" />
                      </children>
                   </HBox>
                </children>
@@ -56,35 +71,49 @@
     </Tab>
       <Tab text="Data">
          <content>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="45.0">
                <children>
-                  <Button mnemonicParsing="false" text="Save" />
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <Button fx:id="save" mnemonicParsing="false" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Save" />
+                  <HBox prefHeight="34.0" prefWidth="600.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" text="Backup" />
-                        <Button mnemonicParsing="false" text="Export" />
-                        <Button mnemonicParsing="false" text="Import" />
+                        <Button mnemonicParsing="false" onAction="#backup" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Backup" />
+                        <Button mnemonicParsing="false" onAction="#export" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Export" />
+                        <Button mnemonicParsing="false" onAction="#importData" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Import" />
                      </children>
                   </HBox>
-                  <Button mnemonicParsing="false" text="Reset All Data" />
-                  <Button mnemonicParsing="false" text="View All Habits" />
+                  <Button mnemonicParsing="false" onAction="#resetAllData" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Reset All Data" />
+                  <Button mnemonicParsing="false" onAction="#viewAllHabits" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="View All Habits" />
                </children>
+               <padding>
+                  <Insets left="15.0" top="15.0" />
+               </padding>
             </VBox>
          </content>
       </Tab>
       <Tab text="About">
          <content>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                <children>
-                  <Label text="Name: Bob?" />
                   <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true">
                      <image>
                         <Image url="@../../data/defaultAvatar.jpg" />
                      </image>
                   </ImageView>
-                  <Label text="Age: Old?" />
-                  <Button mnemonicParsing="false" text="About Me" />
-                  <Label text="Version: " />
+                  <TextField fx:id="name" maxWidth="200.0" promptText="Name" />
+                  <TextField fx:id="age" maxWidth="200.0" promptText="Age" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#aboutMe" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="About Me" />
+                              <Label fx:id="version" text="Version: " />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </content>

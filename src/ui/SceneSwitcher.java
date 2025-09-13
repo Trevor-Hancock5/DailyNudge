@@ -5,6 +5,7 @@
  */
 package ui;
 
+import com.sun.scenario.Settings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -39,6 +40,7 @@ public class SceneSwitcher {
                     Object controller = controllerClass.getConstructor(SceneSwitcher.class).newInstance(this);
                     if(controller instanceof DashboardController dashController){
                         HabitCardController.setDashboardController(dashController); //I forget but convert to Dashboard Controller instance
+                        SettingsController.setDashboardController(dashController);
                     }
                     return controller;
                 } catch (NoSuchMethodException e) {
