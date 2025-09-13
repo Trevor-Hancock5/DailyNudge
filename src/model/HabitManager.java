@@ -34,6 +34,10 @@ public class HabitManager {
         return StorageManager.saveHabits(habits);
     }
 
+    public static boolean saveHabits(List<Habit> habits){
+        return StorageManager.saveHabits(habits);
+    }
+
     public static void addHabit(Habit habit) {
         habits.add(habit);
     }
@@ -42,7 +46,7 @@ public class HabitManager {
         habits.remove(habit);
     }
 
-    public List<Habit> getHabits() {
+    public static List<Habit> getHabits() {
         return habits;
     }
 

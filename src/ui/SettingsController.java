@@ -7,6 +7,8 @@
  */
 package ui;
 
+import app.StorageManager;
+import com.google.gson.Gson;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
@@ -14,11 +16,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
+import java.io.FileWriter;
+import java.util.List;
+import com.google.gson.reflect.TypeToken;
+
 import java.awt.*;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -43,9 +52,14 @@ public class SettingsController {
 
     private SceneSwitcher switcher;
     private static DashboardController dashboardController;
+    private static Stage stage;
 
     public SettingsController(SceneSwitcher switcher){
         this.switcher = switcher;
+    }
+
+    public static void setStage(Stage stage){
+        SettingsController.stage = stage;
     }
 
     @FXML
@@ -81,17 +95,40 @@ public class SettingsController {
 
     @FXML
     private void lightMode(){
-
+        //TODO
     }
 
     @FXML
     private void darkMode(){
-
+        //TODO
     }
 
     @FXML
-    private void importData(){
+    private void importData() throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Habit Data");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("JSON Files", "*.json")
+        );
 
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            HabitManager.saveHabits(readJsonFile(selectedFile));
+        }
+    }
+
+    private List<Habit> readJsonFile(File file){
+        List<Habit> habits = null;
+        try (FileReader reader = new FileReader(file)) {
+            Gson gson = StorageManager.getGson();
+            habits = gson.fromJson(reader, new TypeToken<List<Habit>>() {}.getType());
+            for(Habit habit : habits){
+                habit.streakAndPercentage(dashboardController.habitDate.getValue());
+            }
+        } catch (IOException e) {
+            System.out.println("Error importing habits: " + e);
+        }
+        return habits;
     }
 
     @FXML
@@ -102,12 +139,31 @@ public class SettingsController {
 
     @FXML
     private void backup(){
-
+        File backupFile = new File("data/userData_backup.json");
+        try {
+            try (FileWriter writer = new FileWriter(backupFile)) {
+                Gson gson = StorageManager.getGson();
+                gson.toJson(HabitManager.getHabits(), writer);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
     private void export(){
-
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("File Location for Exported Data");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        File selectedFile = fileChooser.showSaveDialog(stage);
+        if(selectedFile != null){
+            try(FileWriter file = new FileWriter(selectedFile)){
+                Gson gson = StorageManager.getGson();
+                gson.toJson(HabitManager.getHabits(), file);
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
@@ -132,7 +188,7 @@ public class SettingsController {
 
     @FXML
     private void viewAllHabits(){
-
+        SceneView.ALL_HABITS.switchTo(switcher);
     }
 
     @FXML
@@ -148,8 +204,9 @@ public class SettingsController {
     }
 
     @FXML
-    private void backToDash(){
+    private void backToDash() throws IOException {
         SceneView.DASHBOARD.switchTo(switcher);
+        dashboardController.updateHabits();
     }
 
     protected static void setDashboardController(DashboardController dash){

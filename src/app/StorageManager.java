@@ -37,6 +37,10 @@ public class StorageManager {
             })
             .create();
 
+    public static Gson getGson(){
+        return gson;
+    }
+
     public static List<Habit> loadHabits(){
         List<Habit> ret = new ArrayList<>();
         try(FileReader reader = new FileReader(USER_DATA)){

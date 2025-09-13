@@ -22,13 +22,13 @@ public class SceneSwitcher {
 
     public SceneSwitcher(Stage stage) {
         this.stage = stage;
+        SettingsController.setStage(stage);
     }
 
     public void switchTo(SceneView view) {
         try {
             // If already loaded, just reuse it
             if (scenes.containsKey(view.getPath())) {
-                System.out.println(scenes.get(view.getPath()) == null);
                 stage.setScene(scenes.get(view.getPath()));
                 return;
             }
@@ -42,7 +42,9 @@ public class SceneSwitcher {
                     if(controller instanceof DashboardController dashController){
                         HabitCardController.setDashboardController(dashController); //I forget but convert to Dashboard Controller instance
                         SettingsController.setDashboardController(dashController);
+                        AllHabitsController.setDashboardController(dashController);
                     }
+
                     return controller;
                 } catch (NoSuchMethodException e) {
                     // Otherwise just call the no-arg constructor

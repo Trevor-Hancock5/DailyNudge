@@ -44,8 +44,6 @@ public class HabitDetailsController {
 
     private Habit habit;
     private Stage window;
-    private GridPane gridpane;
-    private Parent habitCardRoot;
     private DashboardController dashboardController;
 
     protected void setStage(Stage stage){
@@ -54,14 +52,6 @@ public class HabitDetailsController {
 
     protected void setDashboardController(DashboardController dashboardController){
         this.dashboardController = dashboardController;
-    }
-
-    protected void setGridpane(GridPane gridpane){
-        this.gridpane = gridpane;
-    }
-
-    protected void setHabitCardRoot(Parent root){
-        habitCardRoot = root;
     }
 
     protected void setInfo(Habit habit){
