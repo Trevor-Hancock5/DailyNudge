@@ -51,7 +51,7 @@ public class SettingsController {
     @FXML
     private void initialize(){
         Image img = new Image(Objects.requireNonNull(getClass().getResource("/ui/defaultAvatar.jpg")).toExternalForm());
-        imageView.setImage(img);  // ✅ works on ImageView
+        imageView.setImage(img);
 
         double radius = Math.min(imageView.getFitWidth(), imageView.getFitHeight()) / 2;
         Circle clip = new Circle(imageView.getFitWidth()/2,imageView.getFitHeight()/2, radius);
