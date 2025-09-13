@@ -42,8 +42,7 @@ public class DashboardController {
 
     @FXML
     private void openSettings(){
-        //TODO - Make UI
-        System.out.println("Settings");
+        SceneView.SETTINGS.switchTo(switcher);
     }
 
     @FXML

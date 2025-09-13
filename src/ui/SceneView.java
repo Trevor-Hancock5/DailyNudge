@@ -7,7 +7,8 @@ package ui;
 
 public enum SceneView {
     DASHBOARD("/ui/Dashboard.fxml"),
-    NEW_HABIT("/ui/NewHabit.fxml");
+    NEW_HABIT("/ui/NewHabit.fxml"),
+    SETTINGS("/ui/Settings.fxml");
 
     private final String path;
 

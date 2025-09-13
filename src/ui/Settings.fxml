@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.ToggleButtonGroup?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="150.0" tabMinWidth="119.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SettingsController">
   <tabs>
     <Tab text="General">
          <content>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="Streak Rules" />
-                  <Label text="Keyboard Shortcuts" />
-                  <Label text="Feedback/report bug" />
+                  <HBox prefHeight="60.0" prefWidth="600.0">
+                     <children>
+                        <ToggleButton mnemonicParsing="false" text="Flexible Streak" />
+                        <ToggleButton mnemonicParsing="false" text="Normal Streak" />
+                     </children>
+                  </HBox>
+                  <Button mnemonicParsing="false" text="Feedback/Report Bug" />
                </children>
             </VBox>
          </content>
@@ -37,17 +42,13 @@
                      </font>
                   </Label>
                   <HBox prefHeight="45.0" prefWidth="200.0">
-                     <children>
-                        <ToggleButtonGroup selectionType="SINGLE">
-                            <toggles>
-                                <ToggleButton style="-fx-background-color: white; -fx-text-fill: black; -fx-border-color: black;" text="Dark Mode" />
-                                <ToggleButton selected="true" style="-fx-background-color: black;" text="Light Mode" textFill="WHITE" />
-                            </toggles>
-                        </ToggleButtonGroup>
-                     </children>
                      <padding>
                         <Insets left="15.0" top="15.0" />
                      </padding>
+                     <children>
+                        <ToggleButton mnemonicParsing="false" style="-fx-background-color: white; -fx-text-fill: black;" text="Light Mode" />
+                        <ToggleButton mnemonicParsing="false" style="-fx-background-color: black; -fx-text-fill: white;" text="Dark Mode" />
+                     </children>
                   </HBox>
                </children>
             </VBox>
@@ -75,8 +76,15 @@
          <content>
             <VBox prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Label text="Profile" />
-                  <Label text="About/version info" />
+                  <Label text="Name: Bob?" />
+                  <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@../../data/defaultAvatar.jpg" />
+                     </image>
+                  </ImageView>
+                  <Label text="Age: Old?" />
+                  <Button mnemonicParsing="false" text="About Me" />
+                  <Label text="Version: " />
                </children>
             </VBox>
          </content>
