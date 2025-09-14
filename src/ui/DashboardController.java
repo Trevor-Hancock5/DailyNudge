@@ -51,6 +51,11 @@ public class DashboardController {
     @FXML
     private void showAllHabits() throws IOException {
         updateHabits(allHabits.isSelected());
+        if(allHabits.isSelected()){
+            allHabits.setText("Today's\nHabits");
+        } else{
+            allHabits.setText("All Habits");
+        }
     }
 
     @FXML

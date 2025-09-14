@@ -25,15 +25,9 @@
       </HBox>
       <HBox alignment="CENTER" minHeight="100.0" minWidth="225.0" prefHeight="100.0" prefWidth="600.0" spacing="100.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#openSettings" prefHeight="100.0" prefWidth="100.0" text="Settings">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-            <Button mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="100.0" prefWidth="100.0" text="New Habit">
-               <font>
-                  <Font size="14.0" />
-               </font></Button>
-            <ToggleButton fx:id="allHabits" mnemonicParsing="false" onAction="#showAllHabits" prefHeight="100.0" prefWidth="100.0" text="Show All Habits" />
+            <Button mnemonicParsing="false" onAction="#openSettings" prefHeight="75.0" prefWidth="75.0" text="Settings" />
+            <Button mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="75.0" prefWidth="75.0" text="New Habit" />
+            <ToggleButton fx:id="allHabits" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showAllHabits" prefHeight="75.0" prefWidth="75.0" text="All Habits" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
