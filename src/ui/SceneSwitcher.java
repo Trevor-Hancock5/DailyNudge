@@ -42,7 +42,6 @@ public class SceneSwitcher {
                     if(controller instanceof DashboardController dashController){
                         HabitCardController.setDashboardController(dashController); //I forget but convert to Dashboard Controller instance
                         SettingsController.setDashboardController(dashController);
-                        AllHabitsController.setDashboardController(dashController);
                     }
 
                     return controller;

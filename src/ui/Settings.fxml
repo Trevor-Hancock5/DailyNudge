@@ -77,7 +77,6 @@
                      </children>
                   </HBox>
                   <Button mnemonicParsing="false" onAction="#resetAllData" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="Reset All Data" />
-                  <Button mnemonicParsing="false" onAction="#viewAllHabits" style="-fx-background-color: lightgrey; -fx-text-fill: black;" text="View All Habits" />
                </children>
                <padding>
                   <Insets left="15.0" top="15.0" />
@@ -94,8 +93,8 @@
                         <Image url="@../../data/defaultAvatar.jpg" />
                      </image>
                   </ImageView>
-                  <TextField fx:id="name" maxWidth="200.0" promptText="Name" />
-                  <TextField fx:id="age" maxWidth="200.0" promptText="Age" />
+                  <TextField fx:id="name" maxWidth="200.0" onAction="#getName" promptText="Name" />
+                  <TextField fx:id="age" maxWidth="200.0" onAction="#getAge" promptText="Age" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">

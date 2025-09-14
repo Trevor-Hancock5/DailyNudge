@@ -103,7 +103,7 @@ public class HabitDetailsController {
             HabitManager.saveHabits();
             SceneView.DASHBOARD.switchTo(DashboardController.switcher);
             window.close();
-            dashboardController.updateHabits();
+            dashboardController.updateHabits(dashboardController.allHabits.isSelected());
         } else{
             alert.close();
         }

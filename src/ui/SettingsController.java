@@ -77,6 +77,19 @@ public class SettingsController {
     }
 
     @FXML
+    private void getName(){
+        //TODO: How to save for persistence btwn sessions.
+        //TODO: Make it {Name}'s DailyNudge
+        name.getText();
+        dashboardController.title.setText(name.getText() + "'s DailyNudge");
+    }
+
+    @FXML
+    private void getAge(){
+        age.getText();
+    }
+
+    @FXML
     private void flexibleStreak() {
         System.out.println(flexibleStr.isSelected());
         System.out.println("If true, flexible streak enabled. False - normal");
@@ -134,7 +147,7 @@ public class SettingsController {
     @FXML
     private void save() throws IOException {
         HabitManager.saveHabits();
-        dashboardController.updateHabits();
+        dashboardController.updateHabits(dashboardController.allHabits.isSelected());
     }
 
     @FXML
@@ -178,17 +191,12 @@ public class SettingsController {
             if(dataFile.exists()){
                 if(dataFile.delete()){
                     System.out.println("Data reset");
-                    dashboardController.updateHabits();
+                    dashboardController.updateHabits(dashboardController.allHabits.isSelected());
                 } else{
                     System.out.println("Reset failed");
                 }
             }
         }
-    }
-
-    @FXML
-    private void viewAllHabits(){
-        SceneView.ALL_HABITS.switchTo(switcher);
     }
 
     @FXML
@@ -206,7 +214,7 @@ public class SettingsController {
     @FXML
     private void backToDash() throws IOException {
         SceneView.DASHBOARD.switchTo(switcher);
-        dashboardController.updateHabits();
+        dashboardController.updateHabits(dashboardController.allHabits.isSelected());
     }
 
     protected static void setDashboardController(DashboardController dash){

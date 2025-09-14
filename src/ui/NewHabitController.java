@@ -175,7 +175,7 @@ public class NewHabitController {
             HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate));
             HabitManager.saveHabits();
             returnToDashboard();
-            dashboardController.updateHabits();
+            dashboardController.updateHabits(dashboardController.allHabits.isSelected());
             resetUI();
         }
     }

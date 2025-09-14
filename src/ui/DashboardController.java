@@ -15,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import model.Habit;
@@ -30,9 +32,13 @@ public class DashboardController {
     private GridPane gridpane;
     @FXML
     protected DatePicker habitDate;
+    @FXML
+    protected ToggleButton allHabits;
+    @FXML
+    protected Label title;
 
+//    protected String title;
     public static SceneSwitcher switcher;
-    private AllHabitsController allHabitsController;
 
     public DashboardController(SceneSwitcher switcher) {
         DashboardController.switcher = switcher;
@@ -41,9 +47,10 @@ public class DashboardController {
     //Default controller
     public DashboardController(){}
 
-    public void setAllHabitsController(AllHabitsController controller){
-        System.out.println("Wooh");
-        allHabitsController = controller;
+
+    @FXML
+    private void showAllHabits() throws IOException {
+        updateHabits(allHabits.isSelected());
     }
 
     @FXML
@@ -57,14 +64,8 @@ public class DashboardController {
     }
 
     @FXML
-    private void viewStats(){
-       //TODO - Make UI
-        System.out.println("stats");
-    }
-
-    @FXML
     private void newDate() throws IOException {
-        updateHabits();
+        updateHabits(allHabits.isSelected());
     }
 
     @FXML
@@ -121,10 +122,7 @@ public class DashboardController {
         gridpane.setMaxHeight(Region.USE_PREF_SIZE);
     }
 
-    public void updateHabits() throws IOException {
-        if (allHabitsController != null){
-            allHabitsController.updateHabits();
-        }
+    public void updateHabits(boolean allHabits) throws IOException {
         if(habitDate.getValue().isAfter(LocalDate.now())){
             habitDate.setValue(LocalDate.now());
             showAlert("Can't complete future habits. Back to today!");
@@ -134,8 +132,14 @@ public class DashboardController {
         int column = 0;
         int row = 0;
 
-        List<Habit> todayHabits = HabitManager.getTodayHabits(habitDate.getValue());
+        List<Habit> todayHabits;
+        if(!allHabits) {
+            todayHabits = HabitManager.getTodayHabits(habitDate.getValue());
+        } else{
+            todayHabits = HabitManager.getHabits();
+        }
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
+
 
         for(Habit habit: prioritizedHabits){
             habit.streakAndPercentage(habitDate.getValue());
