@@ -12,3 +12,17 @@
 - Implemented initial storage solution. 
 - App can be opened in a window. 
 - Set up the manager for user habits.
+
+# * v.0.6.0
+- Implement completion system
+- Return button to NewHabit UI
+- SceneSwitcher class
+- Update Dashboard after adding/deleting habit
+- Allow deletion of habits
+- Fix priority on Dashboard
+- Keyboard use for NewHabit
+- Improved Dashboard view
+- Enum for SceneSwitcher class
+- No duplicate habits
+- Completion state associated with data
+- Allow selected date for habit view
