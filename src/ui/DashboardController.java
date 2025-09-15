@@ -17,8 +17,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import model.Habit;
 import model.HabitManager;
 
@@ -36,6 +38,8 @@ public class DashboardController {
     protected ToggleButton allHabits;
     @FXML
     protected Label title;
+    @FXML
+    private VBox vBox;
 
 //    protected String title;
     public static SceneSwitcher switcher;
@@ -78,6 +82,13 @@ public class DashboardController {
         NewHabitController.setDashboardController(this);
         HabitManager.loadHabits();
         habitDate.setValue(LocalDate.now());
+        vBox.setOnKeyPressed(event -> {
+            if(event.isControlDown() && event.getCode() == KeyCode.D){
+                habitDate.requestFocus();
+                habitDate.show();
+            }
+        });
+
         gridpane.setHgap(15);
         gridpane.setVgap(25);
         gridpane.setPadding(new Insets(20));
