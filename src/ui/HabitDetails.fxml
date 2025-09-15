@@ -3,17 +3,21 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.HabitDetailsController">
    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="143.0">
-      <Label fx:id="habitName" text="Habit Name">
+      <TextField fx:id="habitName" alignment="CENTER" editable="false" text="Habit Name">
          <font>
-            <Font size="25.0" />
+            <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
       <Button mnemonicParsing="false" onAction="#deleteHabit" text="Delete Habit">
          <HBox.margin>
             <Insets />
@@ -32,11 +36,14 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="habitNote" text="Note">
+      <TextField fx:id="habitNote" editable="false" text="Note">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -47,11 +54,14 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="startDate" text="Date">
+      <TextField fx:id="startDate" editable="false" text="Date">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -62,11 +72,14 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="priority" text="#">
+      <TextField fx:id="priority" editable="false" text="#">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -77,11 +90,14 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="habitLog" text="log">
+      <TextField fx:id="habitLog" editable="false" text="log">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -92,11 +108,14 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="notes" text="notes">
+      <TextField fx:id="notes" editable="false" text="notes">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -107,11 +126,14 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="frequency" text="freq">
+      <TextField fx:id="frequency" editable="false" text="freq">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -122,11 +144,14 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="completionPercent" text="\%">
+      <TextField fx:id="completionPercent" editable="false" text="\%">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -137,25 +162,46 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <Label fx:id="currStreak" text="#">
+      <TextField fx:id="currStreak" editable="false" text="#">
          <font>
             <Font size="20.0" />
          </font>
-      </Label>
+         <padding>
+            <Insets top="-1.0" />
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
          <Insets left="25.0" />
       </padding>
-      <Label text="Longest Streak: ">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="longStreak" text="#">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
+      <HBox prefHeight="39.0" prefWidth="549.0">
+         <children>
+            <Label text="Longest Streak: ">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="longStreak" editable="false" text="#">
+               <font>
+                  <Font size="20.0" />
+               </font>
+               <padding>
+                  <Insets top="-1.0" />
+               </padding>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="385.0">
+         <children>
+            <Button fx:id="editingButton" mnemonicParsing="false" onAction="#allowEditing" text="Allow Editing" />
+         </children>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+         <padding>
+            <Insets right="10.0" />
+         </padding>
+      </HBox>
    </HBox>
 </VBox>

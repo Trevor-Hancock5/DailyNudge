@@ -5,46 +5,49 @@
  */
 package ui;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class HabitDetailsController {
     @FXML
-    private Label habitName;
+    private TextField habitName;
     @FXML
-    private Label habitNote;
+    private TextField habitNote;
     @FXML
-    private Label startDate;
+    private TextField startDate;
     @FXML
-    private Label priority;
+    private TextField priority;
     @FXML
-    private Label habitLog;
+    private TextField habitLog;
     @FXML
-    private Label notes;
+    private TextField notes;
     @FXML
-    private Label frequency;
+    private TextField frequency;
     @FXML
-    private Label completionPercent;
+    private TextField completionPercent;
     @FXML
-    private Label currStreak;
+    private TextField currStreak;
     @FXML
-    private Label longStreak;
+    private TextField longStreak;
+    @FXML
+    private Button editingButton;
 
     private Habit habit;
     private Stage window;
+    List<TextField> textFields;
     private DashboardController dashboardController;
+    private static final String NOT_EDITING = "Allow Editing";
+    private static final String EDITING = "Update Habit?";
 
     protected void setStage(Stage stage){
         window = stage;
@@ -52,6 +55,23 @@ public class HabitDetailsController {
 
     protected void setDashboardController(DashboardController dashboardController){
         this.dashboardController = dashboardController;
+    }
+
+    @FXML
+    private void initialize(){
+        textFields = new ArrayList<>(Arrays.asList(habitName, habitNote, startDate, priority, habitLog, notes,
+                completionPercent, currStreak, longStreak));
+        for(TextField tf : textFields){
+            Text text = new Text();
+            text.textProperty().bind(tf.textProperty());
+            text.setFont(tf.getFont()); // ensure same font for accurate measurement
+
+            tf.prefWidthProperty().bind(Bindings.createDoubleBinding(
+                    () -> text.getLayoutBounds().getWidth() + 20, // +20 for some padding
+                    text.textProperty()
+            ));
+            tf.setEditable(false);
+        }
     }
 
     protected void setInfo(Habit habit){
@@ -106,6 +126,24 @@ public class HabitDetailsController {
             dashboardController.updateHabits(dashboardController.allHabits.isSelected());
         } else{
             alert.close();
+        }
+    }
+
+    @FXML
+    private void allowEditing(){
+        if(editingButton.getText().equals(NOT_EDITING)){
+            //The user wants to allow editing
+            for(TextField tf : textFields){
+                tf.setEditable(true);
+            }
+            editingButton.setText(EDITING);
+        } else{
+            //The user wants to stop editing and update the habit
+            for(TextField tf : textFields){
+                tf.setEditable(false);
+            }
+            editingButton.setText(NOT_EDITING);
+            //TODO: Update habit values by getting the text from each box and assigning.
         }
     }
 }

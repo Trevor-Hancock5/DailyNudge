@@ -34,13 +34,19 @@ public class HabitCardController {
     private Parent habitDetails;
     private HabitDetailsController detailsController;
     private static DashboardController dashboardController;
+    private Scene details;
 
     @FXML
     private void moreInfo(){
+        if(details == null) {
+
+            details = new Scene(habitDetails);
+        }
         Stage stage = new Stage();
-        stage.setScene(new Scene(habitDetails));
+        stage.setScene(details);
         detailsController.setStage(stage);
         stage.setTitle("Habit Details");
+        detailsController.setInfo(thisHabit);
         stage.show();
     }
 
