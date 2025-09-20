@@ -5,6 +5,7 @@
  */
 package ui;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -16,6 +17,7 @@ import model.Habit;
 import model.HabitManager;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 public class HabitDetailsController {
@@ -24,15 +26,11 @@ public class HabitDetailsController {
     @FXML
     private TextField habitNote;
     @FXML
-    private TextField startDate;
+    private DatePicker startDate;
     @FXML
     private TextField priority;
     @FXML
     private TextField habitLog;
-    @FXML
-    private TextField notes;
-    @FXML
-    private TextField frequency;
     @FXML
     private TextField completionPercent;
     @FXML
@@ -41,10 +39,25 @@ public class HabitDetailsController {
     private TextField longStreak;
     @FXML
     private Button editingButton;
+    @FXML
+    private ToggleButton mon;
+    @FXML
+    private ToggleButton tues;
+    @FXML
+    private ToggleButton wed;
+    @FXML
+    private ToggleButton thurs;
+    @FXML
+    private ToggleButton fri;
+    @FXML
+    private ToggleButton sat;
+    @FXML
+    private ToggleButton sun;
 
     private Habit habit;
     private Stage window;
-    List<TextField> textFields;
+    private List<TextField> textFields;
+    private ArrayList<ToggleButton> freqButtons;
     private DashboardController dashboardController;
     private static final String NOT_EDITING = "Allow Editing";
     private static final String EDITING = "Update Habit?";
@@ -59,8 +72,10 @@ public class HabitDetailsController {
 
     @FXML
     private void initialize(){
-        textFields = new ArrayList<>(Arrays.asList(habitName, habitNote, startDate, priority, habitLog, notes,
-                completionPercent, currStreak, longStreak));
+        freqButtons = new ArrayList<>(Arrays.asList(mon, tues, wed, thurs, fri, sat, sun));
+        disableFreq();
+        //Only included textFields I wanted to allow editing to
+        textFields = new ArrayList<>(Arrays.asList(habitName, habitNote, priority));
         for(TextField tf : textFields){
             Text text = new Text();
             text.textProperty().bind(tf.textProperty());
@@ -74,35 +89,39 @@ public class HabitDetailsController {
         }
     }
 
+    private void disableFreq(){
+        for(ToggleButton tb : freqButtons){
+            tb.setDisable(true);
+            tb.setStyle("-fx-opacity: .75;");
+        }
+    }
+
     protected void setInfo(Habit habit){
         this.habit = habit;
         habitName.setText(habit.getName());
         habitNote.setText(habit.getHabitNote());
-        startDate.setText(habit.getStartDate());
+        startDate.setValue(habit.getStartDate());
         priority.setText(String.valueOf(habit.getPriority()));
         habitLog.setText("TODO"); //TODO
-        notes.setText("TODO"); //TODO
 
         //format frequency
         ArrayList<Integer> freq = habit.getFrequency();
-        Map<Integer, String> frequencyConversion = Map.ofEntries(
-                Map.entry(1, "Monday"),
-                Map.entry(2, "Tuesday"),
-                Map.entry(3, "Wednesday"),
-                Map.entry(4, "Thursday"),
-                Map.entry(5, "Friday"),
-                Map.entry(6, "Saturday"),
-                Map.entry(7, "Sunday")
+        Map<Integer, ToggleButton> frequencyConversion = Map.ofEntries(
+                Map.entry(1, mon),
+                Map.entry(2, tues),
+                Map.entry(3, wed),
+                Map.entry(4, thurs),
+                Map.entry(5, fri),
+                Map.entry(6, sat),
+                Map.entry(7, sun)
         );
-        String formattedFreq = "";
-        for(Integer i : freq){
-            formattedFreq += frequencyConversion.get(i) + ", ";
+        for(int i = 1; i < 8; i++){
+            (frequencyConversion.get(i)).setSelected(false); // initialize all to be unselected
         }
-        if(formattedFreq.length() > 2){
-            formattedFreq = formattedFreq.substring(0, formattedFreq.length() - 2);
+        for(Integer i : freq){
+            (frequencyConversion.get(i)).setSelected(true);
         }
 
-        frequency.setText(formattedFreq);
         completionPercent.setText(habit.getCompletionPercent() + "%");
         currStreak.setText(habit.getCurrStreak() + " Days");
         longStreak.setText(habit.getLongestStreak() + " Days");
@@ -136,14 +155,43 @@ public class HabitDetailsController {
             for(TextField tf : textFields){
                 tf.setEditable(true);
             }
+            for(ToggleButton tb : freqButtons){
+                tb.setDisable(false);
+                tb.setStyle("-fx-opacity: 1;");
+            }
+            startDate.setEditable(true);
             editingButton.setText(EDITING);
         } else{
             //The user wants to stop editing and update the habit
             for(TextField tf : textFields){
                 tf.setEditable(false);
             }
+            disableFreq();
+            startDate.setEditable(false);
+
             editingButton.setText(NOT_EDITING);
-            //TODO: Update habit values by getting the text from each box and assigning.
+            habit.setHabitNote(habitNote.getText());
+            habit.setName(habitName.getText());
+            habit.setStartDate(startDate.getValue());
+            try{
+                int newPriority = Integer.parseInt(priority.getText());
+                if(newPriority < 0){
+                    throw new NumberFormatException();
+                }
+                habit.setPriority(newPriority);
+            } catch (NumberFormatException _) {
+                DashboardController.showAlert("Invalid number!");
+            }
+            ArrayList<Integer> frequency = new ArrayList<>();
+            for (int i = 1; i < 8; i++) {
+                if (freqButtons.get(i - 1).isSelected()) {
+                    frequency.add(i);
+                }
+            }
+            habit.setFrequency(frequency);
+
+            habit.streakAndPercentage(LocalDate.now());
+            setInfo(habit);
         }
     }
 }

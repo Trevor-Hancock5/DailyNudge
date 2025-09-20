@@ -5,6 +5,8 @@
  */
 package model;
 
+import javafx.scene.control.ToggleButton;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -50,8 +52,8 @@ public class Habit {
         return habitNote;
     }
 
-    public String getStartDate(){
-        return startDate.format(DateTimeFormatter.ofPattern("M/d/yyyy"));
+    public LocalDate getStartDate(){
+        return startDate;
     }
 
     public ArrayList<Integer> getFrequency(){
@@ -79,7 +81,7 @@ public class Habit {
         return frequency.contains(date.getDayOfWeek().getValue()) && !date.isBefore(this.startDate);
     }
 
-    private void setStartDate(LocalDate date){
+    public void setStartDate(LocalDate date){
         startDate = date;
     }
 
@@ -116,23 +118,19 @@ public class Habit {
         }
     }
 
-    protected void takeNote(String note, LocalDate date){
-        notes.put(date, note);
-    }
-
-    protected void setHabitNote(String note){
+    public void setHabitNote(String note){
         habitNote = note;
     }
 
-    protected void setName(String newName){
+    public void setName(String newName){
         name = newName;
     }
 
-    protected void setPriority(int newPriority){
+    public void setPriority(int newPriority){
         priority = newPriority;
     }
 
-    private void setFrequency(ArrayList<Integer> freq) {
+    public void setFrequency(ArrayList<Integer> freq) {
             Collections.sort(freq);
             frequency = freq;
     }

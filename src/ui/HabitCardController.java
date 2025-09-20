@@ -39,7 +39,6 @@ public class HabitCardController {
     @FXML
     private void moreInfo(){
         if(details == null) {
-
             details = new Scene(habitDetails);
         }
         Stage stage = new Stage();
