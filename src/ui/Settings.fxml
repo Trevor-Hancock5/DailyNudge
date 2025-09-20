@@ -62,7 +62,7 @@
                <children>
                   <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true">
                      <image>
-                        <Image url="@../../data/defaultAvatar.jpg" />
+                        <Image url="@defaultAvatar.jpg" />
                      </image>
                   </ImageView>
                   <TextField fx:id="name" maxWidth="200.0" onAction="#getName" promptText="Name" />
