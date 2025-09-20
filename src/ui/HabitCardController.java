@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.Habit;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -124,7 +125,8 @@ public class HabitCardController {
         }
 
         habitName.setText(habit.getName());
-        completionPercent.setText(Double.toString(habit.getCompletionPercent()));
+        DecimalFormat df = new DecimalFormat("#.##");
+        completionPercent.setText(df.format(habit.getCompletionPercent()) + "%");
         currStreak.setText(String.valueOf(habit.getCurrStreak()));
         longestStreak.setText(String.valueOf(habit.getLongestStreak()));
     }

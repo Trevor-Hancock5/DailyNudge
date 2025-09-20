@@ -87,6 +87,8 @@ public class HabitDetailsController {
             ));
             tf.setEditable(false);
         }
+
+        habitName.setFocusTraversable(false); // So it doesn't automatically get highlighted on load up
     }
 
     private void disableFreq(){
