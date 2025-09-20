@@ -19,6 +19,7 @@ import java.util.Map;
 public class SceneSwitcher {
     private final Stage stage;
     private final Map<String, Scene> scenes = new HashMap<>();
+    private boolean lightTheme = true; //light theme - true, dark theme - false
 
     public SceneSwitcher(Stage stage) {
         this.stage = stage;
@@ -29,7 +30,10 @@ public class SceneSwitcher {
         try {
             // If already loaded, just reuse it
             if (scenes.containsKey(view.getPath())) {
-                stage.setScene(scenes.get(view.getPath()));
+                Scene scene = scenes.get(view.getPath());
+                scene.getStylesheets().clear();
+                scene.getStylesheets().add(getClass().getResource(getTheme()).toExternalForm());
+                stage.setScene(scene);
                 return;
             }
 
@@ -61,11 +65,20 @@ public class SceneSwitcher {
             int width = 800;
             int height = 600;
             Scene scene = new Scene(root, width, height);
+            scene.getStylesheets().add(getClass().getResource(getTheme()).toExternalForm());
             scenes.put(view.getPath(), scene);
             stage.setScene(scene);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getTheme(){
+        return lightTheme ? "../resources/light-theme.css" : "../resources/dark-theme.css";
+    }
+
+    public void setTheme(Boolean theme){
+        lightTheme = theme;
     }
 }

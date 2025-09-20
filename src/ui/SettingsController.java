@@ -71,7 +71,7 @@ public class SettingsController {
         scrollPane.setContent(backgroundVBox);
         scrollPane.setFitToWidth(true);
 
-        Image img = new Image(Objects.requireNonNull(getClass().getResource("/ui/defaultAvatar.jpg")).toExternalForm());
+        Image img = new Image(Objects.requireNonNull(getClass().getResource("/resources/defaultAvatar.jpg")).toExternalForm());
         imageView.setImage(img);
 
         double radius = Math.min(imageView.getFitWidth(), imageView.getFitHeight()) / 2;
@@ -81,6 +81,8 @@ public class SettingsController {
         lightMd.setSelected(true);
         darkMd.setSelected(false);
         flexibleStr.setSelected(true);
+
+        version.setText("v1.0.0");
     }
 
     @FXML
@@ -110,12 +112,12 @@ public class SettingsController {
 
     @FXML
     private void lightMode(){
-        //TODO
+        switcher.setTheme(true);
     }
 
     @FXML
     private void darkMode(){
-        //TODO
+        switcher.setTheme(false);
     }
 
     @FXML

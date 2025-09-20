@@ -109,7 +109,7 @@
             <Font size="20.0" />
          </font>
       </Label>
-      <HBox prefHeight="50.0" prefWidth="470.0" spacing="18.0">
+      <HBox spacing="18.0">
          <children>
             <ToggleButton fx:id="mon" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Mon" />
             <ToggleButton fx:id="tues" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Tues" />
