@@ -9,14 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -40,6 +35,10 @@ public class DashboardController {
     protected Label title;
     @FXML
     private VBox vBox;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox habitsVBox;
 
 //    protected String title;
     public static SceneSwitcher switcher;
@@ -79,6 +78,10 @@ public class DashboardController {
 
     @FXML
     private void initialize() throws IOException {
+        scrollPane.setContent(habitsVBox);
+        scrollPane.setFitToWidth(true); // makes VBox width match ScrollPane width
+        scrollPane.setFitToHeight(true);
+
         NewHabitController.setDashboardController(this);
         HabitManager.loadHabits();
         habitDate.setValue(LocalDate.now());

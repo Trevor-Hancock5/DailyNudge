@@ -12,8 +12,10 @@ import com.google.gson.Gson;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -36,19 +38,21 @@ import java.util.Optional;
 
 public class SettingsController {
     @FXML
-    ImageView imageView;
+    private ImageView imageView;
     @FXML
-    TextField name;
+    private TextField name;
     @FXML
-    TextField age;
+    private Label version;
     @FXML
-    Label version;
+    private ToggleButton lightMd;
     @FXML
-    ToggleButton lightMd;
+    private ToggleButton darkMd;
     @FXML
-    ToggleButton darkMd;
+    private ToggleButton flexibleStr;
     @FXML
-    ToggleButton flexibleStr;
+    private ScrollPane scrollPane;
+    @FXML
+    private VBox backgroundVBox;
 
     private SceneSwitcher switcher;
     private static DashboardController dashboardController;
@@ -64,6 +68,9 @@ public class SettingsController {
 
     @FXML
     private void initialize(){
+        scrollPane.setContent(backgroundVBox);
+        scrollPane.setFitToWidth(true);
+
         Image img = new Image(Objects.requireNonNull(getClass().getResource("/ui/defaultAvatar.jpg")).toExternalForm());
         imageView.setImage(img);
 
@@ -82,11 +89,6 @@ public class SettingsController {
         //TODO: Make it {Name}'s DailyNudge
         name.getText();
         dashboardController.title.setText(name.getText() + "'s DailyNudge");
-    }
-
-    @FXML
-    private void getAge(){
-        age.getText();
     }
 
     @FXML

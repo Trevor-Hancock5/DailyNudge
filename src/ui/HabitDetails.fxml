@@ -11,23 +11,29 @@
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.HabitDetailsController">
-   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="143.0">
-      <TextField fx:id="habitName" alignment="CENTER" editable="false" text="Habit Name">
-         <font>
-            <Font size="20.0" />
-         </font>
-         <padding>
-            <Insets top="-1.0" />
-         </padding>
-      </TextField>
-      <Button mnemonicParsing="false" onAction="#deleteHabit" text="Delete Habit">
-         <HBox.margin>
-            <Insets />
-         </HBox.margin>
-      </Button>
+   <HBox alignment="CENTER_RIGHT" minWidth="200.0">
+      <children>
+         <Button mnemonicParsing="false" onAction="#deleteHabit" text="Delete Habit">
+            <HBox.margin>
+               <Insets />
+            </HBox.margin>
+         </Button>
+      </children>
       <VBox.margin>
-         <Insets right="10.0" top="10.0" />
+         <Insets right="10.0" />
       </VBox.margin>
+   </HBox>
+   <HBox alignment="CENTER">
+      <children>
+         <TextField fx:id="habitName" alignment="CENTER" editable="false" text="Habit Name">
+            <font>
+               <Font size="20.0" />
+            </font>
+            <padding>
+               <Insets top="-1.0" />
+            </padding>
+         </TextField>
+      </children>
    </HBox>
    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
       <padding>
@@ -172,7 +178,7 @@
             </TextField>
          </children>
       </HBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="385.0">
+      <HBox alignment="CENTER_RIGHT" minWidth="100.0">
          <children>
             <Button fx:id="editingButton" mnemonicParsing="false" onAction="#allowEditing" text="Allow Editing" />
          </children>

@@ -40,9 +40,9 @@
             <DatePicker fx:id="habitDate" onAction="#newDate" prefHeight="30.0" prefWidth="185.0" />
          </children>
       </HBox>
-      <ScrollPane prefHeight="396.0" prefWidth="800.0">
+      <ScrollPane fx:id="scrollPane" prefHeight="396.0" prefWidth="800.0">
          <content>
-            <VBox alignment="TOP_CENTER" prefHeight="394.0" prefWidth="783.0">
+            <VBox fx:id="habitsVBox" alignment="TOP_CENTER" prefHeight="394.0" prefWidth="783.0">
                <children>
                   <GridPane fx:id="gridpane" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="600.0" style="-fx-background-color: transparent;">
                     <columnConstraints>
