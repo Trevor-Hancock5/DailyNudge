@@ -84,7 +84,7 @@ public class SceneSwitcher {
         return lightTheme ? "../resources/light-theme.css" : "../resources/dark-theme.css";
     }
 
-    public void setTheme(Boolean theme){
+    public static void setTheme(Boolean theme){
         lightTheme = theme;
     }
 }

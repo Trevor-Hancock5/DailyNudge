@@ -10,6 +10,7 @@ package ui;
 import app.StorageManager;
 import com.google.gson.Gson;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -35,6 +36,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 public class SettingsController {
     @FXML
@@ -55,9 +57,43 @@ public class SettingsController {
     private SceneSwitcher switcher;
     private static DashboardController dashboardController;
     private static Stage stage;
+    private static String userName;
+    private static String profileDir;
+    private static String themePreference;
+    private static String streakPreference;
 
     public SettingsController(SceneSwitcher switcher){
         this.switcher = switcher;
+    }
+
+    public static String[] getSettingPreferences(){
+        return new String[] {userName, profileDir, themePreference, streakPreference};
+    }
+
+    public static void setUserName(String name){
+        userName = name;
+    }
+
+    public static String getUserName(){
+        return userName;
+    }
+
+    //TODO: Make way to choose file for picture - 1:1
+    public static void setProfileDir(String dir){
+        profileDir = dir;
+    }
+
+    public static void setThemePreference(String theme){
+        themePreference = theme;
+        SceneSwitcher.setTheme(theme.equals("light"));
+    }
+
+    public static void setStreakPreference(String streak){
+        streakPreference = streak;
+    }
+
+    public static String getStreakPreference(){
+        return streakPreference;
     }
 
     public static void setStage(Stage stage){
@@ -68,22 +104,45 @@ public class SettingsController {
     private void initialize(){
         scrollPane.setContent(backgroundVBox);
         scrollPane.setFitToWidth(true);
+        if(userName != null) {
+            name.setText(userName);
+            dashboardController.title.setText(name.getText() + "'s DailyNudge");
+        }
 
-        Image img = new Image(Objects.requireNonNull(getClass().getResource("/resources/defaultAvatar.jpg")).toExternalForm());
+        Image img;
+        try{
+            img = new Image(Objects.requireNonNull(getClass().getResource(profileDir)).toExternalForm());
+        } catch (NullPointerException | IllegalArgumentException e) {
+            img = new Image(Objects.requireNonNull(getClass().getResource("/resources/defaultAvatar.jpg")).toExternalForm());
+        }
         imageView.setImage(img);
+
+        if(themePreference != null && !themePreference.equals("light")){
+            lightMode.setSelected(false);
+            lightMode.setText("Dark Mode");
+        } else{
+            lightMode.setSelected(true);
+        }
+        changeTheme();
+
+        if(streakPreference != null && !streakPreference.equals("flex")) {
+            flexibleStr.setSelected(false);
+            flexibleStr.setText("Normal Streak");
+        } else{
+            flexibleStr.setSelected(true);
+        }
+        Habit.setStreakRule(!flexibleStr.isSelected());
+        HabitManager.saveHabits();
 
         double radius = Math.min(imageView.getFitWidth(), imageView.getFitHeight()) / 2;
         Circle clip = new Circle(imageView.getFitWidth()/2,imageView.getFitHeight()/2, radius);
         imageView.setClip(clip);
 
-        lightMode.setSelected(true);
-        flexibleStr.setSelected(true);
-
         version.setText("v1.0.0");
     }
 
     public void changeTheme(){
-        if(switcher.getTheme().contains("light")){
+        if(SceneSwitcher.getTheme().contains("light")){
             backgroundVBox.setStyle("-fx-background-color: #f9f9f9;");
         } else{
             backgroundVBox.setStyle("-fx-background-color: #1e1e1e;");
@@ -92,18 +151,19 @@ public class SettingsController {
 
     @FXML
     private void getName(){
-        //TODO: How to save for persistence btwn sessions.
-        //TODO: Make it {Name}'s DailyNudge
-        name.getText();
-        dashboardController.title.setText(name.getText() + "'s DailyNudge");
+        name.requestFocus();
+        userName = name.getText();
+        dashboardController.title.setText(userName + "'s DailyNudge");
     }
 
     @FXML
     private void flexibleStreak() {
         if(flexibleStr.isSelected()){
             flexibleStr.setText("Flexible Streak");
+            streakPreference = "flex";
         } else{
             flexibleStr.setText("Normal Streak");
+            streakPreference = "norm";
         }
         Habit.setStreakRule(!flexibleStr.isSelected());
         HabitManager.saveHabits();
@@ -123,9 +183,11 @@ public class SettingsController {
         if(lightMode.isSelected()){
             lightMode.setText("Light Mode");
             switcher.setTheme(true);
+            themePreference = "light";
         } else{
             lightMode.setText("Dark Mode");
             switcher.setTheme(false);
+            themePreference = "dark";
         }
         switcher.updateTheme();
         changeTheme();

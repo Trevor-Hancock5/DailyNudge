@@ -31,7 +31,7 @@ public class DailyNudge extends Application {
         stage.show();
 
         //Save on window Close
-        stage.setOnCloseRequest(e -> {
+        stage.setOnCloseRequest(_ -> {
             if(HabitManager.saveHabits()) {  // calls FileManager under the hood
                 System.out.println("Habits saved!");
             } else{

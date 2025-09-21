@@ -172,7 +172,7 @@ public class NewHabitController {
             }
             LocalDate startDate = this.startDate.getValue();
 
-            HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate));
+            HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate, SettingsController.getSettingPreferences()));
             HabitManager.saveHabits();
             returnToDashboard();
             dashboardController.updateHabits(dashboardController.allHabits.isSelected());

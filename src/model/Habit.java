@@ -5,6 +5,10 @@
  */
 package model;
 
+import com.sun.scenario.Settings;
+import ui.SettingsController;
+
+import javax.swing.text.DefaultEditorKit;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -13,8 +17,8 @@ import java.util.stream.Collectors;
 
 
 public class Habit {
-    private HashMap<LocalDate, String> notes;
     private String habitNote;
+    private String[] settingPreferences;
     private String name;
     private double completionPercent;
     private int priority;
@@ -25,8 +29,7 @@ public class Habit {
     private int longestStreak;
     private static boolean normalStreak = false;
 
-    public Habit(String name, int priority, String habitNote, ArrayList<Integer> freq, LocalDate startDate){
-        notes = new HashMap<>();
+    public Habit(String name, int priority, String habitNote, ArrayList<Integer> freq, LocalDate startDate, String[] settingPreferences){
         this.habitNote = habitNote;
         this.name = name;
         completionPercent = 0;
@@ -36,6 +39,21 @@ public class Habit {
         this.startDate = startDate;
         currentStreak = -1;
         longestStreak = -1;
+
+        this.settingPreferences = settingPreferences;
+        loadSettings();
+    }
+
+    public void setSettingPreferences(String[] settings){
+        settingPreferences = settings;
+    }
+
+    public void loadSettings(){
+        //Setting preferences - name, profile picture directory, dark/light, flexible/normal streak
+        SettingsController.setUserName(settingPreferences[0]);
+        SettingsController.setProfileDir(settingPreferences[1]);
+        SettingsController.setThemePreference(settingPreferences[2]);
+        SettingsController.setStreakPreference(settingPreferences[3]);
     }
 
     public String getName(){
