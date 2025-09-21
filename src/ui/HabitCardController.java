@@ -13,11 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Habit;
 
-import java.net.URL;
 import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class HabitCardController {
     @FXML
@@ -58,34 +54,12 @@ public class HabitCardController {
     private void complete(){
         int completionState = thisHabit.getEntry(dashboardController.habitDate.getValue());
         if(completionState == 0) {
-            background.setStyle(
-                    "-fx-background-color: #58bf64;" +
-                    "-fx-border-radius: 15;" +
-                    "-fx-background-radius: 15;" +
-                    "-fx-border-color: #333333;" +
-                    "-fx-border-width: 1;"
-            ); //light green
-
             thisHabit.complete(dashboardController.habitDate.getValue());
             setHabit(thisHabit);
         } else if(completionState == 1){
-            background.setStyle(
-                    "-fx-background-color: #ff575a;" +
-                    "-fx-border-radius: 15;" +
-                    "-fx-background-radius: 15;" +
-                    "-fx-border-color: #333333;" +
-                    "-fx-border-width: 1;"
-            ); //red
             thisHabit.uncomplete(dashboardController.habitDate.getValue());
             setHabit(thisHabit);
         } else if(completionState == 2){
-            background.setStyle(
-                    "-fx-background-color: lightgrey;" +
-                    "-fx-border-radius: 15;" +
-                    "-fx-background-radius: 15;" +
-                    "-fx-border-color: #333333;" +
-                    "-fx-border-width: 1;"
-            );
             thisHabit.removeEntry(dashboardController.habitDate.getValue());
             setHabit(thisHabit);
         }
@@ -98,31 +72,34 @@ public class HabitCardController {
     protected void setHabit(Habit habit){
         thisHabit = habit; //So that other methods have the habit that this card is for.
         int completionState = habit.getEntry(dashboardController.habitDate.getValue());
-        if(completionState == 0) {
-            background.setStyle(
-                    "-fx-background-color: lightgrey;" +
-                            "-fx-border-radius: 15;" +
-                            "-fx-background-radius: 15;" +
-                            "-fx-border-color: #333333;" +
-                            "-fx-border-width: 1;"
-            );
-        } else if(completionState == 1){
-            background.setStyle(
-                    "-fx-background-color: #58bf64;" +
-                            "-fx-border-radius: 15;" +
-                            "-fx-background-radius: 15;" +
-                            "-fx-border-color: #333333;" +
-                            "-fx-border-width: 1;"
-            ); //light green
-        } else if(completionState == 2){
-            background.setStyle(
-                    "-fx-background-color: #ff575a;" +
-                            "-fx-border-radius: 15;" +
-                            "-fx-background-radius: 15;" +
-                            "-fx-border-color: #333333;" +
-                            "-fx-border-width: 1;"
-            ); //red
+
+        String borderColor;
+        String partBorder = "-fx-border-color: ";
+        String partBackground = "-fx-background-color: ";
+        String backgroundColor;
+        String pendingBackgroundColor;
+        if(SceneSwitcher.getTheme().contains("light")){
+            pendingBackgroundColor = partBackground + "#f9f9f9;";
+            borderColor = partBorder + "#333333;";
+        } else{
+            pendingBackgroundColor = partBackground + "#1e1e1e;";
+            borderColor = partBorder + "#cccccc;";
         }
+
+
+        if(completionState == 1){
+            backgroundColor = partBackground + "#58bf64;"; //Light green
+        } else if(completionState == 2){
+            backgroundColor = partBackground + "#ff575a;"; //red
+        } else{
+            backgroundColor = pendingBackgroundColor;
+        }
+        background.setStyle(backgroundColor +
+                borderColor +
+                "-fx-border-radius: 15;" +
+                "-fx-background-radius: 15;" +
+                "-fx-border-width: 1;"
+        );
 
         habitName.setText(habit.getName());
         DecimalFormat df = new DecimalFormat("#.##");

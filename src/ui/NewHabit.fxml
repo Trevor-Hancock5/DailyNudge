@@ -37,13 +37,13 @@
             </Label>
             <HBox maxWidth="500.0" prefHeight="33.0" prefWidth="583.0" spacing="25.0">
                <children>
-                  <ToggleButton fx:id="mon" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%;" text="Mon" />
-                  <ToggleButton fx:id="tues" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%;" text="Tues" />
-                  <ToggleButton fx:id="wed" layoutX="105.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%;" text="Wed" />
-                  <ToggleButton fx:id="thurs" layoutX="201.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%;" text="Thurs" />
-                  <ToggleButton fx:id="fri" layoutX="296.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%;" text="Fri" />
-                  <ToggleButton fx:id="sat" layoutX="391.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%;" text="Sat" />
-                  <ToggleButton fx:id="sun" layoutX="487.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%;" text="Sun" />
+                  <ToggleButton fx:id="mon" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Mon" />
+                  <ToggleButton fx:id="tues" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Tues" />
+                  <ToggleButton fx:id="wed" layoutX="105.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Wed" />
+                  <ToggleButton fx:id="thurs" layoutX="201.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Thurs" />
+                  <ToggleButton fx:id="fri" layoutX="296.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Fri" />
+                  <ToggleButton fx:id="sat" layoutX="391.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Sat" />
+                  <ToggleButton fx:id="sun" layoutX="487.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Sun" />
                </children>
                <VBox.margin>
                   <Insets />

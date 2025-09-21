@@ -44,9 +44,7 @@ public class SettingsController {
     @FXML
     private Label version;
     @FXML
-    private ToggleButton lightMd;
-    @FXML
-    private ToggleButton darkMd;
+    private ToggleButton lightMode;
     @FXML
     private ToggleButton flexibleStr;
     @FXML
@@ -78,11 +76,18 @@ public class SettingsController {
         Circle clip = new Circle(imageView.getFitWidth()/2,imageView.getFitHeight()/2, radius);
         imageView.setClip(clip);
 
-        lightMd.setSelected(true);
-        darkMd.setSelected(false);
+        lightMode.setSelected(true);
         flexibleStr.setSelected(true);
 
         version.setText("v1.0.0");
+    }
+
+    public void changeTheme(){
+        if(switcher.getTheme().contains("light")){
+            backgroundVBox.setStyle("-fx-background-color: #f9f9f9;");
+        } else{
+            backgroundVBox.setStyle("-fx-background-color: #1e1e1e;");
+        }
     }
 
     @FXML
@@ -95,8 +100,6 @@ public class SettingsController {
 
     @FXML
     private void flexibleStreak() {
-        System.out.println(flexibleStr.isSelected());
-        System.out.println("If true, flexible streak enabled. False - normal");
         Habit.setStreakRule(!flexibleStr.isSelected());
         HabitManager.saveHabits();
     }
@@ -111,13 +114,16 @@ public class SettingsController {
     }
 
     @FXML
-    private void lightMode(){
-        switcher.setTheme(true);
-    }
-
-    @FXML
-    private void darkMode(){
-        switcher.setTheme(false);
+    private void changeMode(){
+        if(lightMode.isSelected()){
+            lightMode.setText("Light Mode");
+            switcher.setTheme(true);
+        } else{
+            lightMode.setText("Dark Mode");
+            switcher.setTheme(false);
+        }
+        switcher.updateTheme();
+        changeTheme();
     }
 
     @FXML

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -25,9 +26,9 @@
       </HBox>
       <HBox alignment="CENTER" minHeight="100.0" minWidth="225.0" prefHeight="100.0" prefWidth="600.0" spacing="100.0">
          <children>
-            <Button mnemonicParsing="false" onAction="#openSettings" prefHeight="75.0" prefWidth="75.0" text="Settings" />
-            <Button mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="75.0" prefWidth="75.0" text="New Habit" />
-            <ToggleButton fx:id="allHabits" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showAllHabits" prefHeight="75.0" prefWidth="75.0" text="All Habits" />
+            <Button mnemonicParsing="false" onAction="#openSettings" prefHeight="85.0" prefWidth="85.0" text="Settings" />
+            <Button mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="85.0" prefWidth="85.0" text="New Habit" />
+            <ToggleButton fx:id="allHabits" contentDisplay="CENTER" mnemonicParsing="false" onAction="#showAllHabits" prefHeight="85.0" prefWidth="85.0" text="All Habits" />
          </children>
       </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -55,8 +56,14 @@
                     </rowConstraints>
                   </GridPane>
                </children>
+               <padding>
+                  <Insets top="15.0" />
+               </padding>
             </VBox>
          </content>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </ScrollPane>
    </children>
 </VBox>

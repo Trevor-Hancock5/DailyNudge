@@ -86,7 +86,7 @@ public class Habit {
     }
 
     public int getEntry(LocalDate date){
-        String key = date.format(DateTimeFormatter.ofPattern("M/d/yyyy"));
+        String key = date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         //Unmarked Habit = 0
         return habitLog.getOrDefault(key, 0);
     }
@@ -94,7 +94,7 @@ public class Habit {
     public void complete(LocalDate date){
         //If the habit is active today, return true, false otherwise. (True if date in frequency. False if not.)
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 1);
+            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")), 1);
             HabitManager.saveHabits();
             this.streakAndPercentage(date); // Update values
         }
@@ -103,16 +103,16 @@ public class Habit {
     public void uncomplete(LocalDate date){
         //This is useful so that if the user completes it, then marks it failed it can be removed.
         if(frequency.contains(date.getDayOfWeek().getValue())) {
-            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")), 2); //2 is fail
+            this.habitLog.put(date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")), 2); //2 is fail
             HabitManager.saveHabits();
             this.streakAndPercentage(date); // Update values
         }
     }
 
     public void removeEntry(LocalDate date){
-        String key = date.format(DateTimeFormatter.ofPattern("M/d/yyyy"));
+        String key = date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
         if(habitLog.containsKey(key)){
-            habitLog.remove(date.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+            habitLog.remove(date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
             HabitManager.saveHabits();
             streakAndPercentage(date);
         }
@@ -139,6 +139,27 @@ public class Habit {
         computeStreak(date, !normalStreak);
     }
 
+    public String getHabitLog(){
+        //Have to convert to LocalDate, sort, then convert back to String (Otherwise, random order)
+        List<LocalDate> days = new ArrayList<>();
+        for(String day : habitLog.keySet()){
+            days.add(LocalDate.of(Integer.parseInt(day.substring(6)), Integer.parseInt(day.substring(0, 2)), Integer.parseInt(day.substring(3, 5))));
+        }
+
+        days = days.stream().sorted().toList();
+
+        String ret = "";
+        for(LocalDate day : days){
+            String formattedDay = day.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+            if(!ret.isEmpty()) {
+                ret += ", " + formattedDay;
+            } else{
+                ret += formattedDay;
+            }
+        }
+        return ret;
+    }
+
     private void computeStreak(LocalDate date, boolean flexible){
         int numComplete = 0;
         int totalComplete = 0;
@@ -157,7 +178,7 @@ public class Habit {
         for(int i = 0; i < daysList.size(); i++){
             LocalDate day = daysList.get(i);
             if(frequency.contains(day.getDayOfWeek().getValue())){
-                freqDayList.add(day.format(DateTimeFormatter.ofPattern("M/d/yyyy")));
+                freqDayList.add(day.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")));
             }
         }
 

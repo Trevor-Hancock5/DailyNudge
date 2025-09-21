@@ -31,8 +31,7 @@
             </Label>
             <HBox alignment="CENTER">
                <children>
-                  <ToggleButton fx:id="lightMd" mnemonicParsing="false" onAction="#lightMode" style="-fx-background-color: white; -fx-text-fill: black; -fx-font-size: 17;" text="Light Mode" />
-                  <ToggleButton fx:id="darkMd" mnemonicParsing="false" onAction="#darkMode" style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 17;" text="Dark Mode" />
+                  <ToggleButton fx:id="lightMode" mnemonicParsing="false" onAction="#changeMode" text="Light Mode" />
                </children>
             </HBox>
             <Label layoutX="10.0" layoutY="10.0" text="Data">

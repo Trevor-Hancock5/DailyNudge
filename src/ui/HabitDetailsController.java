@@ -30,7 +30,7 @@ public class HabitDetailsController {
     @FXML
     private TextField priority;
     @FXML
-    private TextField habitLog;
+    private TextArea habitLog;
     @FXML
     private TextField completionPercent;
     @FXML
@@ -94,7 +94,7 @@ public class HabitDetailsController {
     private void disableFreq(){
         for(ToggleButton tb : freqButtons){
             tb.setDisable(true);
-            tb.setStyle("-fx-opacity: .75;");
+            tb.setStyle("-fx-opacity: .8;");
         }
     }
 
@@ -104,7 +104,7 @@ public class HabitDetailsController {
         habitNote.setText(habit.getHabitNote());
         startDate.setValue(habit.getStartDate());
         priority.setText(String.valueOf(habit.getPriority()));
-        habitLog.setText("TODO"); //TODO
+        habitLog.setText(habit.getHabitLog()); //TODO
 
         //format frequency
         ArrayList<Integer> freq = habit.getFrequency();
@@ -128,6 +128,18 @@ public class HabitDetailsController {
         currStreak.setText(habit.getCurrStreak() + " Days");
         longStreak.setText(habit.getLongestStreak() + " Days");
 
+        setButtonShape();
+    }
+
+    private void setButtonShape(){
+        for(ToggleButton btn : freqButtons){
+            btn.setStyle("-fx-background-radius: 50%;" +
+                    "-fx-border-radius: 50%;" +
+                    "-fx-min-height: 50;" +
+                    "-fx-max-height: 50;" +
+                    "-fx-min-width: 50;" +
+                    "-fx-max-width: 50;");
+        }
     }
 
     @FXML
@@ -195,6 +207,7 @@ public class HabitDetailsController {
             habit.streakAndPercentage(LocalDate.now());
             setInfo(habit);
         }
+        setButtonShape();
     }
 }
 

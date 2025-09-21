@@ -42,6 +42,7 @@ public class DashboardController {
 
 //    protected String title;
     public static SceneSwitcher switcher;
+    private final int gridGap = 50;
 
     public DashboardController(SceneSwitcher switcher) {
         DashboardController.switcher = switcher;
@@ -81,6 +82,7 @@ public class DashboardController {
         scrollPane.setContent(habitsVBox);
         scrollPane.setFitToWidth(true); // makes VBox width match ScrollPane width
         scrollPane.setFitToHeight(true);
+        fixBackgroundColor();
 
         NewHabitController.setDashboardController(this);
         HabitManager.loadHabits();
@@ -105,15 +107,17 @@ public class DashboardController {
             habit.streakAndPercentage(habitDate.getValue());
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
             Parent habitCardRoot = habitCardLoader.load();
-            habitCardRoot.setStyle(
-                    "-fx-background-color: lightgrey;" +   // background
-                    "-fx-border-radius: 15;" +           // rounded corners
-                    "-fx-background-radius: 15;" +       // match background to border radius
-                    "-fx-border-color: #cccccc;" +       // border color
-                    "-fx-border-width: 1;"
-            );
+//            habitCardRoot.setStyle(
+//                    "-fx-background-color: lightgrey;" +   // background
+//                    "-fx-border-radius: 15;" +           // rounded corners
+//                    "-fx-background-radius: 15;" +       // match background to border radius
+//                    "-fx-border-color: #cccccc;" +       // border color
+//                    "-fx-border-width: 1;"
+//            );
             HabitCardController habitCardController = habitCardLoader.getController();
             habitCardController.setHabit(habit);
+            habitCardRoot.getStylesheets().clear();
+            habitCardRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
 
             //For every 3 columns(0,1,2), increase row by 1.
             gridpane.add(habitCardRoot, column, row);
@@ -132,6 +136,9 @@ public class DashboardController {
             habitDetailsController.setInfo(habit);
             habitDetailsController.setDashboardController(this);
 
+            habitDetailsRoot.getStylesheets().clear();
+            habitDetailsRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
+
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
         //The following is to update the gridpane height and allow the scrollpane to adjust after
@@ -139,6 +146,15 @@ public class DashboardController {
         gridpane.setMinHeight(Region.USE_PREF_SIZE);
         gridpane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         gridpane.setMaxHeight(Region.USE_PREF_SIZE);
+        gridpane.setVgap(gridGap);
+    }
+
+    private void fixBackgroundColor(){
+        if(switcher.getTheme().contains("dark")){
+            habitsVBox.setStyle("-fx-background-color: #1e1e1e");
+        } else{
+            habitsVBox.setStyle("-fx-background-color: #f9f9f9");
+        }
     }
 
     public void updateHabits(boolean allHabits) throws IOException {
@@ -147,6 +163,7 @@ public class DashboardController {
             showAlert("Can't complete future habits. Back to today!");
         }
         gridpane.getChildren().clear();
+        fixBackgroundColor();
         HabitManager.loadHabits();
         int column = 0;
         int row = 0;
@@ -159,6 +176,7 @@ public class DashboardController {
         }
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
 
+        fixBackgroundColor();
 
         for(Habit habit: prioritizedHabits){
             habit.streakAndPercentage(habitDate.getValue());
@@ -166,9 +184,12 @@ public class DashboardController {
             Parent habitCardRoot = habitCardLoader.load();
             HabitCardController habitCardController = habitCardLoader.getController();
             habitCardController.setHabit(habit);
+            habitCardRoot.getStylesheets().clear();
+            habitCardRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
 
             GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
             GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
+            gridpane.setVgap(gridGap);
 
             //For every 3 columns(0,1,2), increase row by 1.
             gridpane.add(habitCardRoot, column, row);
@@ -183,6 +204,9 @@ public class DashboardController {
             habitCardController.setDetailsController(habitDetailsController);
             habitDetailsController.setInfo(habit);
             habitDetailsController.setDashboardController(this);
+
+            habitDetailsRoot.getStylesheets().clear();
+            habitDetailsRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
 
             habitCardController.setHabitDetails(habitDetailsRoot);
         }

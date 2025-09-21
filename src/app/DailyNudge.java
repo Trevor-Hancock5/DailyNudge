@@ -27,6 +27,7 @@ public class DailyNudge extends Application {
     public void start(Stage stage) throws IOException {
         SceneSwitcher switcher = new SceneSwitcher(stage);
         SceneView.DASHBOARD.switchTo(switcher);
+        stage.setTitle("DailyNudge");
         stage.show();
 
         //Save on window Close
