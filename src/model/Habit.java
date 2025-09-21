@@ -5,8 +5,6 @@
  */
 package model;
 
-import javafx.scene.control.ToggleButton;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -182,14 +180,11 @@ public class Habit {
             }
         }
 
-        ArrayList<String> revFreqList = freqDayList.stream()
-                .distinct()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toCollection(ArrayList::new));
+        ArrayList<String> FreqList = freqDayList.stream().distinct().sorted().collect(Collectors.toCollection(ArrayList::new));
         //Reset values
         this.currentStreak = -1;
-        for(int i = 0; i < revFreqList.size(); i++){
-            String day = revFreqList.get(i);
+        for(int i = 0; i < FreqList.size(); i++){
+            String day = FreqList.get(i);
 
             if(habitLog.containsKey(day) && habitLog.get(day) == 1){
                 numComplete++;

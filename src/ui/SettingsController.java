@@ -100,6 +100,11 @@ public class SettingsController {
 
     @FXML
     private void flexibleStreak() {
+        if(flexibleStr.isSelected()){
+            flexibleStr.setText("Flexible Streak");
+        } else{
+            flexibleStr.setText("Normal Streak");
+        }
         Habit.setStreakRule(!flexibleStr.isSelected());
         HabitManager.saveHabits();
     }
