@@ -154,7 +154,7 @@ public class NewHabitController {
 
     @FXML
     private void returnToDashboard() throws IOException {
-        SceneView.DASHBOARD.switchTo(DashboardController.switcher);
+        SceneView.DASHBOARD.switchTo(DashboardController.getSwitcher());
     }
 
     @FXML

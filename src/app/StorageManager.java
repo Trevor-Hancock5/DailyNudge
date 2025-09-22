@@ -22,9 +22,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class to manager storage
+ */
 public class StorageManager {
     private static final File USER_DATA = new File("data/userData.json");
-    private static final Gson gson = new GsonBuilder()
+    private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new TypeAdapter<LocalDate>() {
                 @Override
                 public void write(JsonWriter out, LocalDate value) throws IOException {
@@ -38,24 +41,33 @@ public class StorageManager {
             .create();
 
     public static Gson getGson(){
-        return gson;
+        return GSON;
     }
 
+    /**
+     * Method to load up the habits
+     * @return A list of habits from the data
+     */
     public static List<Habit> loadHabits(){
         List<Habit> ret = new ArrayList<>();
         try(FileReader reader = new FileReader(USER_DATA)){
-            Type habitListType = new TypeToken<List<Habit>>(){}.getType();
-            ret = gson.fromJson(reader, habitListType);
+            Type habitListType = new TypeToken<List<Habit>>() { }.getType();
+            ret = GSON.fromJson(reader, habitListType);
         } catch(IOException e){
             System.out.println(e);
         }
         return ret;
     }
 
+    /**
+     * Method to save habits
+     * @param habits List of habits to save
+     * @return True if saved
+     */
     public static boolean saveHabits(List<Habit> habits){
         boolean ret;
         try(FileWriter writer = new FileWriter(USER_DATA)){
-            gson.toJson(habits, writer);
+            GSON.toJson(habits, writer);
             ret = true;
         } catch (IOException e){
             System.out.println(e);

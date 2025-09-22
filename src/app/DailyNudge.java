@@ -14,6 +14,9 @@ import ui.SceneView;
 
 import java.io.IOException;
 
+/**
+ * Class to start up the app
+ */
 public class DailyNudge extends Application {
     public static void main(String[] args) {
         launch(args);

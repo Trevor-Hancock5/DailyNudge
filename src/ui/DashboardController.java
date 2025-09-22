@@ -11,7 +11,11 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -24,9 +28,12 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Controller for the main screen
+ */
 public class DashboardController {
-    @FXML
-    private GridPane gridpane;
+    private static SceneSwitcher switcher;
+
     @FXML
     protected DatePicker habitDate;
     @FXML
@@ -34,23 +41,27 @@ public class DashboardController {
     @FXML
     protected Label title;
     @FXML
+    private GridPane gridpane;
+    @FXML
     private VBox vBox;
     @FXML
     private ScrollPane scrollPane;
     @FXML
     private VBox habitsVBox;
 
-//    protected String title;
-    public static SceneSwitcher switcher;
     private final int gridGap = 50;
 
+    /**
+     * Constructor to make the Dashboard controller
+     * @param switcher Initialize SceneSwitcher instance
+     */
     public DashboardController(SceneSwitcher switcher) {
         DashboardController.switcher = switcher;
     }
 
-    //Default controller
-    public DashboardController(){}
-
+    public static SceneSwitcher getSwitcher(){
+        return switcher;
+    }
 
     @FXML
     private void showAllHabits() throws IOException {
@@ -101,11 +112,12 @@ public class DashboardController {
         int row = 0;
 
         List<Habit> todayHabits = HabitManager.getTodayHabits(habitDate.getValue());
-        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
+        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator
+                .comparingInt(Habit::getPriority).reversed()).toList();
 
         //Get a habit and load the settings first.
         if(!prioritizedHabits.isEmpty()) {
-            prioritizedHabits.get(0).loadSettings();
+            prioritizedHabits.getFirst().loadSettings();
         }
         if(SettingsController.getStreakPreference() != null) {
             //True means normal streak. False means flexible streak
@@ -124,21 +136,15 @@ public class DashboardController {
             habit.streakAndPercentage(habitDate.getValue());
             FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
             Parent habitCardRoot = habitCardLoader.load();
-//            habitCardRoot.setStyle(
-//                    "-fx-background-color: lightgrey;" +   // background
-//                    "-fx-border-radius: 15;" +           // rounded corners
-//                    "-fx-background-radius: 15;" +       // match background to border radius
-//                    "-fx-border-color: #cccccc;" +       // border color
-//                    "-fx-border-width: 1;"
-//            );
             HabitCardController habitCardController = habitCardLoader.getController();
             habitCardController.setHabit(habit);
             habitCardRoot.getStylesheets().clear();
-            habitCardRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
+            habitCardRoot.getStylesheets().add(getClass().getResource(SceneSwitcher.getTheme())
+                    .toExternalForm());
 
             //For every 3 columns(0,1,2), increase row by 1.
             gridpane.add(habitCardRoot, column, row);
-            //To center each card in it's cell
+            //To center each card in its cell
             GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
             GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
             if(++column > 2){
@@ -146,7 +152,8 @@ public class DashboardController {
                 row++;
             }
 
-            FXMLLoader habitDetailsLoader = new FXMLLoader(getClass().getResource("HabitDetails.fxml"));
+            FXMLLoader habitDetailsLoader = new FXMLLoader(getClass()
+                    .getResource("HabitDetails.fxml"));
             Parent habitDetailsRoot = habitDetailsLoader.load();
             HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
             habitCardController.setDetailsController(habitDetailsController);
@@ -154,7 +161,8 @@ public class DashboardController {
             habitDetailsController.setDashboardController(this);
 
             habitDetailsRoot.getStylesheets().clear();
-            habitDetailsRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
+            habitDetailsRoot.getStylesheets().add(getClass()
+                    .getResource(SceneSwitcher.getTheme()).toExternalForm());
 
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
@@ -170,13 +178,18 @@ public class DashboardController {
     }
 
     private void fixBackgroundColor(){
-        if(switcher.getTheme().contains("dark")){
+        if(SceneSwitcher.getTheme().contains("dark")){
             habitsVBox.setStyle("-fx-background-color: #1e1e1e");
         } else{
             habitsVBox.setStyle("-fx-background-color: #f9f9f9");
         }
     }
 
+    /**
+     * Method to update the habits
+     * @param allHabits If true, then show all habits. Don't otherwise
+     * @throws IOException Throws if file errors occur
+     */
     public void updateHabits(boolean allHabits) throws IOException {
         if(habitDate.getValue().isAfter(LocalDate.now())){
             habitDate.setValue(LocalDate.now());
@@ -194,7 +207,8 @@ public class DashboardController {
         } else{
             todayHabits = HabitManager.getHabits();
         }
-        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
+        List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator
+                .comparingInt(Habit::getPriority).reversed()).toList();
 
         fixBackgroundColor();
 
@@ -207,7 +221,8 @@ public class DashboardController {
             HabitCardController habitCardController = habitCardLoader.getController();
             habitCardController.setHabit(habit);
             habitCardRoot.getStylesheets().clear();
-            habitCardRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
+            habitCardRoot.getStylesheets().add(getClass()
+                    .getResource(SceneSwitcher.getTheme()).toExternalForm());
 
             GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
             GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
@@ -220,7 +235,8 @@ public class DashboardController {
                 row++;
             }
 
-            FXMLLoader habitDetailsLoader = new FXMLLoader(getClass().getResource("HabitDetails.fxml"));
+            FXMLLoader habitDetailsLoader = new FXMLLoader(getClass()
+                    .getResource("HabitDetails.fxml"));
             Parent habitDetailsRoot = habitDetailsLoader.load();
             HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
             habitCardController.setDetailsController(habitDetailsController);
@@ -228,7 +244,8 @@ public class DashboardController {
             habitDetailsController.setDashboardController(this);
 
             habitDetailsRoot.getStylesheets().clear();
-            habitDetailsRoot.getStylesheets().add(getClass().getResource(switcher.getTheme()).toExternalForm());
+            habitDetailsRoot.getStylesheets().add(getClass()
+                    .getResource(SceneSwitcher.getTheme()).toExternalForm());
 
             habitCardController.setHabitDetails(habitDetailsRoot);
         }
@@ -236,6 +253,7 @@ public class DashboardController {
 
     /**
      * Method to make an alert so any controller can pop an alert up
+     * @param text The text to be shown in Header text
      */
     public static void showAlert(String text){
         Alert alert = new Alert(Alert.AlertType.ERROR);

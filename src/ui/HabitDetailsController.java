@@ -168,7 +168,7 @@ public class HabitDetailsController {
             HabitManager.removeHabit(habit);
             //This is so that the data file has the correct information saved to load.
             HabitManager.saveHabits();
-            SceneView.DASHBOARD.switchTo(DashboardController.switcher);
+            SceneView.DASHBOARD.switchTo(DashboardController.getSwitcher());
             window.close();
             dashboardController.updateHabits(dashboardController.allHabits.isSelected());
         } else{
