@@ -1,13 +1,25 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/27/2025
+ * Last Updated: 9/21/2025
  */
 package ui;
 
+/**
+ * Enum class to standardize these strings
+ */
 public enum SceneView {
+    /**
+     * Dashboard String for Scene
+     */
     DASHBOARD("/ui/Dashboard.fxml"),
+    /**
+     * New Habit String for Scene
+     */
     NEW_HABIT("/ui/NewHabit.fxml"),
+    /**
+     * Settings String for Scene
+     */
     SETTINGS("/ui/Settings.fxml");
 
     private final String path;
@@ -20,6 +32,10 @@ public enum SceneView {
         return path;
     }
 
+    /**
+     * Method to switch to another view
+     * @param switcher SceneSwitcher to use to switch
+     */
     public void switchTo(SceneSwitcher switcher){
         switcher.switchTo(this);
     }

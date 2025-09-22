@@ -10,47 +10,56 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="root" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" spacing="25.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.NewHabitController">
-   <children>
-      <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="583.0">
-         <VBox.margin>
-            <Insets right="15.0" top="15.0" />
-         </VBox.margin>
-         <children>
-            <Button mnemonicParsing="false" onAction="#returnToDashboard" text="Return To Dashboard" />
-         </children>
-      </HBox>
-      <Button fx:id="newHabit" mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="50.0" prefWidth="250.0" text="Make New Habit">
+<VBox fx:id="root" alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0" spacing="25.0"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.NewHabitController">
+   <HBox alignment="TOP_RIGHT" prefHeight="28.0" prefWidth="583.0">
+      <VBox.margin>
+         <Insets right="15.0" top="15.0"/>
+      </VBox.margin>
+      <Button mnemonicParsing="false" onAction="#returnToDashboard" text="Return To Dashboard"/>
+   </HBox>
+   <Button fx:id="newHabit" mnemonicParsing="false" onAction="#makeNewHabit" prefHeight="50.0" prefWidth="250.0"
+           text="Make New Habit">
+      <font>
+         <Font size="24.0"/>
+      </font>
+   </Button>
+   <TextField fx:id="habitName" maxWidth="500.0" prefHeight="30.0" promptText="Habit Name"/>
+   <TextField fx:id="priority" layoutX="10.0" layoutY="10.0" maxWidth="500.0" prefHeight="30.0" promptText="Priority"/>
+   <TextField fx:id="habitNote" layoutX="10.0" layoutY="35.0" maxWidth="500.0" prefHeight="30.0"
+              promptText="Habit Note"/>
+   <VBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0" spacing="5.0">
+      <Label text="Choose Frequency of Habit">
          <font>
-            <Font size="24.0" />
+            <Font size="19.0"/>
          </font>
-      </Button>
-      <TextField fx:id="habitName" maxWidth="500.0" prefHeight="30.0" promptText="Habit Name" />
-      <TextField fx:id="priority" layoutX="10.0" layoutY="10.0" maxWidth="500.0" prefHeight="30.0" promptText="Priority" />
-      <TextField fx:id="habitNote" layoutX="10.0" layoutY="35.0" maxWidth="500.0" prefHeight="30.0" promptText="Habit Note" />
-      <VBox alignment="CENTER" prefHeight="100.0" prefWidth="100.0" spacing="5.0">
-         <children>
-            <Label text="Choose Frequency of Habit">
-               <font>
-                  <Font size="19.0" />
-               </font>
-            </Label>
-            <HBox maxWidth="500.0" prefHeight="33.0" prefWidth="583.0" spacing="25.0">
-               <children>
-                  <ToggleButton fx:id="mon" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Mon" />
-                  <ToggleButton fx:id="tues" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Tues" />
-                  <ToggleButton fx:id="wed" layoutX="105.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Wed" />
-                  <ToggleButton fx:id="thurs" layoutX="201.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Thurs" />
-                  <ToggleButton fx:id="fri" layoutX="296.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Fri" />
-                  <ToggleButton fx:id="sat" layoutX="391.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Sat" />
-                  <ToggleButton fx:id="sun" layoutX="487.0" layoutY="10.0" mnemonicParsing="false" style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;" text="Sun" />
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-      <DatePicker fx:id="startDate" prefHeight="30.0" prefWidth="200.0" promptText="Start Date" />
-   </children>
+      </Label>
+      <HBox maxWidth="500.0" prefHeight="33.0" prefWidth="583.0" spacing="25.0">
+         <VBox.margin>
+            <Insets/>
+         </VBox.margin>
+         <ToggleButton fx:id="mon" mnemonicParsing="false"
+                       style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;"
+                       text="Mon"/>
+         <ToggleButton fx:id="tues" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+                       style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;"
+                       text="Tues"/>
+         <ToggleButton fx:id="wed" layoutX="105.0" layoutY="10.0" mnemonicParsing="false"
+                       style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;"
+                       text="Wed"/>
+         <ToggleButton fx:id="thurs" layoutX="201.0" layoutY="10.0" mnemonicParsing="false"
+                       style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;"
+                       text="Thurs"/>
+         <ToggleButton fx:id="fri" layoutX="296.0" layoutY="10.0" mnemonicParsing="false"
+                       style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;"
+                       text="Fri"/>
+         <ToggleButton fx:id="sat" layoutX="391.0" layoutY="10.0" mnemonicParsing="false"
+                       style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;"
+                       text="Sat"/>
+         <ToggleButton fx:id="sun" layoutX="487.0" layoutY="10.0" mnemonicParsing="false"
+                       style="-fx-max-height: 75px; -fx-min-height: 60px; -fx-max-width: 75px; -fx-min-width: 60px; -fx-background-radius: 50%; -fx-border-radius: 50%;"
+                       text="Sun"/>
+      </HBox>
+   </VBox>
+   <DatePicker fx:id="startDate" prefHeight="30.0" prefWidth="200.0" promptText="Start Date"/>
 </VBox>

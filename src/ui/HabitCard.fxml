@@ -7,38 +7,30 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#complete" prefHeight="150.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.HabitCardController">
-   <children>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
-         <children>
-            <Label fx:id="habitName" minWidth="64.0" text="Habit Name" wrapText="true" />
-            <Button mnemonicParsing="false" onAction="#moreInfo" text="⋮">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Button>
-         </children>
-         <padding>
-            <Insets left="10.0" />
-         </padding>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label text="Completion %: " />
-            <Label fx:id="completionPercent" text="\%" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label text="Current Streak: " />
-            <Label fx:id="currStreak" text="#" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label text="Longest Streak: " />
-            <Label fx:id="longestStreak" text="#" />
-         </children>
-      </HBox>
-   </children>
+<VBox fx:id="background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+      onMouseClicked="#complete" prefHeight="150.0" prefWidth="150.0" xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.HabitCardController">
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+      <padding>
+         <Insets left="10.0"/>
+      </padding>
+      <Label fx:id="habitName" minWidth="64.0" text="Habit Name" wrapText="true"/>
+      <Button mnemonicParsing="false" onAction="#moreInfo" text="⋮">
+         <font>
+            <Font name="System Bold" size="12.0"/>
+         </font>
+      </Button>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <Label text="Completion %: "/>
+      <Label fx:id="completionPercent" text="\%"/>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <Label text="Current Streak: "/>
+      <Label fx:id="currStreak" text="#"/>
+   </HBox>
+   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+      <Label text="Longest Streak: "/>
+      <Label fx:id="longestStreak" text="#"/>
+   </HBox>
 </VBox>

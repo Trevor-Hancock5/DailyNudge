@@ -1,13 +1,12 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/23/2025
+ * Last Updated: 9/21/2025
  */
 package ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -21,7 +20,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Controller for New Habit
+ */
 public class NewHabitController {
+    private static DashboardController dashboardController;
+
     @FXML
     private DatePicker startDate;
     @FXML
@@ -50,12 +54,14 @@ public class NewHabitController {
     private VBox root;
 
     private ArrayList<ToggleButton> daysOfWeek;
-    private static DashboardController dashboardController;
 
     public static void setDashboardController(DashboardController controller){
         dashboardController = controller;
     }
 
+    /**
+     * To initialize the NewHabit screen
+     */
     @FXML
     public void initialize() {
         // Run after scene is displayed so focus actually takes effect
@@ -64,7 +70,7 @@ public class NewHabitController {
         priority.setOnAction(_ -> habitNote.requestFocus());
         habitNote.setOnAction(_ -> mon.requestFocus());
 
-        ToggleButton[] dayButtons = new ToggleButton[]{mon, tues, wed, thurs, fri, sat, sun};
+        ToggleButton[] dayButtons = new ToggleButton[] {mon, tues, wed, thurs, fri, sat, sun};
 
         // Set navigation for each toggle button
         for (int i = 0; i < dayButtons.length; i++) {
@@ -93,7 +99,9 @@ public class NewHabitController {
                         event.consume();
                     }
                     case LEFT -> {
-                        if (idx - 1 >= 0) dayButtons[idx - 1].requestFocus();
+                        if (idx - 1 >= 0){
+                            dayButtons[idx - 1].requestFocus();
+                        }
                         event.consume();
                     }
                 }
@@ -102,7 +110,7 @@ public class NewHabitController {
 
         startDate.setOnAction(_ -> newHabit.requestFocus());
         // Automatically show calendar when DatePicker gains focus
-        startDate.focusedProperty().addListener((obs, oldVal, newVal) -> {
+        startDate.focusedProperty().addListener((_, _, newVal) -> {
             if (newVal) { // focus gained
                 startDate.show();
             }
@@ -134,7 +142,8 @@ public class NewHabitController {
         daysOfWeek.add(sun);
 
         //Initialize chosen days to be Mon through Fri
-        for(int i = 0; i < 5; i++){
+        final int weekdays = 5;
+        for(int i = 0; i < weekdays; i++){
             daysOfWeek.get(i).setSelected(true);
         }
     }
@@ -165,14 +174,16 @@ public class NewHabitController {
 
             String habitNote = this.habitNote.getText();
             ArrayList<Integer> frequency = new ArrayList<>();
-            for (int i = 1; i < 8; i++) {
+            final int weekdays = 7;
+            for (int i = 1; i < weekdays + 1; i++) {
                 if (daysOfWeek.get(i - 1).isSelected()) {
                     frequency.add(i);
                 }
             }
             LocalDate startDate = this.startDate.getValue();
 
-            HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate, SettingsController.getSettingPreferences()));
+            HabitManager.addHabit(new Habit(habitName, priority, habitNote, frequency, startDate,
+                    SettingsController.getSettingPreferences()));
             HabitManager.saveHabits();
             returnToDashboard();
             dashboardController.updateHabits(dashboardController.allHabits.isSelected());

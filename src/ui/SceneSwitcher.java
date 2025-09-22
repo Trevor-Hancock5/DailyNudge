@@ -1,11 +1,10 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/27/2025
+ * Last Updated: 9/21/2025
  */
 package ui;
 
-import com.sun.scenario.Settings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,34 +15,44 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class to use to switch JavaFX scenes
+ */
 public class SceneSwitcher {
+    private static boolean lightTheme = true; //light theme - true, dark theme - false
     private final Stage stage;
     private final Map<String, Scene> scenes = new HashMap<>();
-    private static boolean lightTheme = true; //light theme - true, dark theme - false
 
+    /**
+     * Constructor to make this object and set stage
+     * @param stage The main stage for my app
+     */
     public SceneSwitcher(Stage stage) {
         this.stage = stage;
         SettingsController.setStage(stage);
     }
 
-    public void switchTo(SceneView view) {
-        try {
-            // If already loaded, just reuse it
-            if (scenes.containsKey(view.getPath())) {
-                Scene scene = scenes.get(view.getPath());
-                updateTheme();
-                stage.setScene(scene);
-                return;
-            }
-
+    /**
+     * Method to switch scenes on the main stage
+     * @param view The sceneView to switch to
+     */
+    public void switchTo(SceneView view) throws IOException {
+        // If already loaded, just reuse it
+        if (scenes.containsKey(view.getPath())) {
+            Scene scene = scenes.get(view.getPath());
+            updateTheme();
+            stage.setScene(scene);
+        } else {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(view.getPath()));
 
             loader.setControllerFactory(controllerClass -> {
                 try {
                     // Look for a constructor that takes SceneSwitcher
-                    Object controller = controllerClass.getConstructor(SceneSwitcher.class).newInstance(this);
-                    if(controller instanceof DashboardController dashController){
-                        HabitCardController.setDashboardController(dashController); //I forget but convert to Dashboard Controller instance
+                    Object controller = controllerClass.getConstructor(SceneSwitcher.class)
+                            .newInstance(this);
+                    if (controller instanceof DashboardController dashController) {
+                        HabitCardController.setDashboardController(dashController);
+                        //I forget but convert to Dashboard Controller instance
                         SettingsController.setDashboardController(dashController);
                     }
 
@@ -52,27 +61,31 @@ public class SceneSwitcher {
                     // Otherwise just call the no-arg constructor
                     try {
                         return controllerClass.getDeclaredConstructor().newInstance();
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-                        throw new RuntimeException("Failed to create controller: " + controllerClass, ex);
+                    } catch (InstantiationException | IllegalAccessException |
+                             InvocationTargetException | NoSuchMethodException ex) {
+                        throw new RuntimeException("Failed to create controller: "
+                                + controllerClass, ex);
                     }
-                } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                    throw new RuntimeException("Failed to create controller: " + controllerClass, e);
-                }});
-
+                } catch (InvocationTargetException | InstantiationException |
+                         IllegalAccessException e) {
+                    throw new RuntimeException("Failed to create controller: " +
+                            controllerClass, e);
+                }
+            });
 
             Parent root = loader.load();
-            int width = 800;
-            int height = 600;
+            final int width = 800;
+            final int height = 600;
             Scene scene = new Scene(root, width, height);
             scene.getStylesheets().add(getClass().getResource(getTheme()).toExternalForm());
             scenes.put(view.getPath(), scene);
             stage.setScene(scene);
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
+    /**
+     * Method to update the theme of the app overall
+     */
     public void updateTheme(){
         for(Scene scene : scenes.values()){
             scene.getStylesheets().clear();

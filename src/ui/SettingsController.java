@@ -1,9 +1,7 @@
 /*
- * Course: CSC1110A-111
- * Fall 2024
- * Assignment
+ * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/12/2025
+ * Last Updated: 9/21/2025
  */
 package ui;
 
@@ -11,11 +9,12 @@ import app.StorageManager;
 import com.google.gson.Gson;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -25,14 +24,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.Habit;
 import model.HabitManager;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.FileWriter;
 import java.util.List;
 import com.google.gson.reflect.TypeToken;
@@ -44,9 +42,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
+/**
+ * Controller class for settings.
+ */
 public class SettingsController {
+    private static DashboardController dashboardController;
+    private static Stage stage;
+    private static String userName;
+    private static String profileDir;
+    private static String themePreference;
+    private static String streakPreference;
+
     @FXML
     private ImageView imageView;
     @FXML
@@ -62,16 +69,14 @@ public class SettingsController {
     @FXML
     private VBox backgroundVBox;
 
-    private SceneSwitcher switcher;
-    private static DashboardController dashboardController;
-    private static Stage stage;
-    private static String userName;
-    private static String profileDir;
-    private static String themePreference;
-    private static String streakPreference;
+    private final SceneSwitcher switcher;
     private final Image defaultProfile = new Image(Objects.requireNonNull(getClass()
             .getResource("/resources/defaultAvatar.jpg")).toExternalForm());
 
+    /**
+     * Constructor to set SceneSwitcher
+     * @param switcher The SceneSwitcher instance
+     */
     public SettingsController(SceneSwitcher switcher){
         this.switcher = switcher;
     }
@@ -92,6 +97,10 @@ public class SettingsController {
         profileDir = dir;
     }
 
+    /**
+     * Setting the theme for the app
+     * @param theme "light" for light mode and "dark" for dark mode
+     */
     public static void setThemePreference(String theme){
         themePreference = theme;
         SceneSwitcher.setTheme(theme.equals("light"));
@@ -159,11 +168,11 @@ public class SettingsController {
         imageView.setImage(cropped);
 
         double radius = Math.min(imageView.getFitWidth(), imageView.getFitHeight()) / 2;
-        Circle clip = new Circle(imageView.getFitWidth()/2,imageView.getFitHeight()/2, radius);
+        Circle clip = new Circle(imageView.getFitWidth()/2, imageView.getFitHeight()/2, radius);
         imageView.setClip(clip);
     }
 
-    public void changeTheme(){
+    private void changeTheme(){
         if(SceneSwitcher.getTheme().contains("light")){
             backgroundVBox.setStyle("-fx-background-color: #f9f9f9;");
         } else{
@@ -276,7 +285,7 @@ public class SettingsController {
         List<Habit> habits = null;
         try (FileReader reader = new FileReader(file)) {
             Gson gson = StorageManager.getGson();
-            habits = gson.fromJson(reader, new TypeToken<List<Habit>>() {}.getType());
+            habits = gson.fromJson(reader, new TypeToken<List<Habit>>() { } .getType());
             for(Habit habit : habits){
                 habit.streakAndPercentage(dashboardController.habitDate.getValue());
             }
@@ -293,30 +302,25 @@ public class SettingsController {
     }
 
     @FXML
-    private void backup(){
+    private void backup() throws IOException {
         File backupFile = new File("data/userData_backup.json");
-        try {
-            try (FileWriter writer = new FileWriter(backupFile)) {
-                Gson gson = StorageManager.getGson();
-                gson.toJson(HabitManager.getHabits(), writer);
-            }
-        } catch (IOException e){
-            e.printStackTrace();
+        try (FileWriter writer = new FileWriter(backupFile)) {
+            Gson gson = StorageManager.getGson();
+            gson.toJson(HabitManager.getHabits(), writer);
         }
     }
 
     @FXML
-    private void export(){
+    private void export() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("File Location for Exported Data");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        fileChooser.getExtensionFilters().add(new FileChooser
+                .ExtensionFilter("JSON Files", "*.json"));
         File selectedFile = fileChooser.showSaveDialog(stage);
         if(selectedFile != null){
             try(FileWriter file = new FileWriter(selectedFile)){
                 Gson gson = StorageManager.getGson();
                 gson.toJson(HabitManager.getHabits(), file);
-            } catch (IOException e){
-                e.printStackTrace();
             }
         }
     }
@@ -344,13 +348,13 @@ public class SettingsController {
     @FXML
     private void aboutMe(){
         DashboardController.showAlert("""
-            Hello! I am Trevor Hancock, the creator of DailyNudge.
-            Thank you for using DailyNudge. I enjoyed working on this project.
-            I hope that it is a tool that you believe is useful.
-            It was definitely a challenge to make and get right, but I am so
-            glad with how far I was able to get it! 
-            Let me know of any bugs through the feedback button in settings! 
-            """);
+                Hello! I am Trevor Hancock, the creator of DailyNudge.
+                Thank you for using DailyNudge. I enjoyed working on this project.
+                I hope that it is a tool that you believe is useful.
+                It was definitely a challenge to make and get right, but I am so
+                glad with how far I was able to get it!
+                Let me know of any bugs through the feedback button in settings!
+                """);
     }
 
     @FXML

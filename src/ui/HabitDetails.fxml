@@ -13,28 +13,24 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.HabitDetailsController">
    <HBox alignment="CENTER_RIGHT" minWidth="200.0">
-      <children>
-         <Button mnemonicParsing="false" onAction="#deleteHabit" text="Delete Habit">
-            <HBox.margin>
-               <Insets />
-            </HBox.margin>
-         </Button>
-      </children>
       <VBox.margin>
-         <Insets right="10.0" top="10.0" />
+         <Insets right="10.0" top="10.0"/>
       </VBox.margin>
+      <Button mnemonicParsing="false" onAction="#deleteHabit" text="Delete Habit">
+         <HBox.margin>
+            <Insets/>
+         </HBox.margin>
+      </Button>
    </HBox>
    <HBox alignment="CENTER">
-      <children>
-         <TextField fx:id="habitName" alignment="CENTER" editable="false" text="Habit Name">
-            <font>
-               <Font size="20.0" />
-            </font>
-            <padding>
-               <Insets top="-1.0" />
-            </padding>
-         </TextField>
-      </children>
+      <TextField fx:id="habitName" alignment="CENTER" editable="false" text="Habit Name">
+         <font>
+            <Font size="20.0"/>
+         </font>
+         <padding>
+            <Insets top="-1.0"/>
+         </padding>
+      </TextField>
    </HBox>
    <HBox alignment="CENTER_LEFT">
       <padding>
@@ -108,18 +104,30 @@
          </font>
       </Label>
       <HBox spacing="18.0">
-         <children>
-            <ToggleButton fx:id="mon" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Mon" />
-            <ToggleButton fx:id="tues" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Tues" />
-            <ToggleButton fx:id="wed" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Wed" />
-            <ToggleButton fx:id="thurs" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Thurs" />
-            <ToggleButton fx:id="fri" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Fri" />
-            <ToggleButton fx:id="sat" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Sat" />
-            <ToggleButton fx:id="sun" mnemonicParsing="false" style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;" text="Sun" />
-         </children>
          <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
          </padding>
+         <ToggleButton fx:id="mon" mnemonicParsing="false"
+                       style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;"
+                       text="Mon"/>
+         <ToggleButton fx:id="tues" mnemonicParsing="false"
+                       style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;"
+                       text="Tues"/>
+         <ToggleButton fx:id="wed" mnemonicParsing="false"
+                       style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;"
+                       text="Wed"/>
+         <ToggleButton fx:id="thurs" mnemonicParsing="false"
+                       style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;"
+                       text="Thurs"/>
+         <ToggleButton fx:id="fri" mnemonicParsing="false"
+                       style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;"
+                       text="Fri"/>
+         <ToggleButton fx:id="sat" mnemonicParsing="false"
+                       style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;"
+                       text="Sat"/>
+         <ToggleButton fx:id="sun" mnemonicParsing="false"
+                       style="-fx-background-radius: 50%; -fx-min-height: 50; -fx-max-height: 50; -fx-min-width: 50; -fx-max-width: 50;"
+                       text="Sun"/>
       </HBox>
    </HBox>
    <HBox alignment="CENTER_LEFT">
@@ -163,32 +171,28 @@
          <Insets left="15.0" />
       </padding>
       <HBox prefHeight="39.0" prefWidth="549.0">
-         <children>
-            <Label text="Longest Streak: ">
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Label>
-            <TextField fx:id="longStreak" editable="false" text="#">
-               <font>
-                  <Font size="20.0" />
-               </font>
-               <padding>
-                  <Insets top="-1.0" />
-               </padding>
-            </TextField>
-         </children>
+         <Label text="Longest Streak: ">
+            <font>
+               <Font size="20.0"/>
+            </font>
+         </Label>
+         <TextField fx:id="longStreak" editable="false" text="#">
+            <font>
+               <Font size="20.0"/>
+            </font>
+            <padding>
+               <Insets top="-1.0"/>
+            </padding>
+         </TextField>
       </HBox>
       <HBox alignment="CENTER_RIGHT" minWidth="200.0">
-         <children>
-            <Button fx:id="editingButton" mnemonicParsing="false" onAction="#allowEditing" text="Allow Editing" />
-         </children>
          <HBox.margin>
-            <Insets />
+            <Insets/>
          </HBox.margin>
          <padding>
-            <Insets right="10.0" />
+            <Insets right="10.0"/>
          </padding>
+         <Button fx:id="editingButton" mnemonicParsing="false" onAction="#allowEditing" text="Allow Editing"/>
       </HBox>
    </HBox>
 </VBox>

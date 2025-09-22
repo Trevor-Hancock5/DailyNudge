@@ -1,7 +1,7 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/23/2025
+ * Last Updated: 9/21/2025
  */
 package ui;
 
@@ -15,7 +15,12 @@ import model.Habit;
 
 import java.text.DecimalFormat;
 
+/**
+ * Controller for Habit Cards
+ */
 public class HabitCardController {
+    private static DashboardController dashboardController;
+
     @FXML
     private Label habitName;
     @FXML
@@ -30,7 +35,6 @@ public class HabitCardController {
     private Habit thisHabit;
     private Parent habitDetails;
     private HabitDetailsController detailsController;
-    private static DashboardController dashboardController;
     private Scene details;
 
     @FXML

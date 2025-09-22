@@ -1,16 +1,19 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 8/23/2025
+ * Last Updated: 9/21/2025
  */
 package ui;
 
-import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Habit;
@@ -18,9 +21,19 @@ import model.HabitManager;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+/**
+ * Controller to control the Habit Details screen
+ */
 public class HabitDetailsController {
+    private static final String NOT_EDITING = "Allow Editing";
+    private static final String EDITING = "Update Habit?";
+
     @FXML
     private TextField habitName;
     @FXML
@@ -59,8 +72,6 @@ public class HabitDetailsController {
     private List<TextField> textFields;
     private ArrayList<ToggleButton> freqButtons;
     private DashboardController dashboardController;
-    private static final String NOT_EDITING = "Allow Editing";
-    private static final String EDITING = "Update Habit?";
 
     protected void setStage(Stage stage){
         window = stage;
@@ -81,14 +92,16 @@ public class HabitDetailsController {
             text.textProperty().bind(tf.textProperty());
             text.setFont(tf.getFont()); // ensure same font for accurate measurement
 
+            final int extraWidth = 20;
             tf.prefWidthProperty().bind(Bindings.createDoubleBinding(
-                    () -> text.getLayoutBounds().getWidth() + 20, // +20 for some padding
+                    () -> text.getLayoutBounds().getWidth() + extraWidth, // +20 for some padding
                     text.textProperty()
             ));
             tf.setEditable(false);
         }
 
-        habitName.setFocusTraversable(false); // So it doesn't automatically get highlighted on load up
+        // So it doesn't automatically get highlighted on load up
+        habitName.setFocusTraversable(false);
     }
 
     private void disableFreq(){
@@ -104,10 +117,11 @@ public class HabitDetailsController {
         habitNote.setText(habit.getHabitNote());
         startDate.setValue(habit.getStartDate());
         priority.setText(String.valueOf(habit.getPriority()));
-        habitLog.setText(habit.getHabitLog()); //TODO
+        habitLog.setText(habit.getHabitLog());
 
         //format frequency
         ArrayList<Integer> freq = habit.getFrequency();
+        final int weekdays = 7;
         Map<Integer, ToggleButton> frequencyConversion = Map.ofEntries(
                 Map.entry(1, mon),
                 Map.entry(2, tues),
@@ -117,7 +131,7 @@ public class HabitDetailsController {
                 Map.entry(6, sat),
                 Map.entry(7, sun)
         );
-        for(int i = 1; i < 8; i++){
+        for(int i = 1; i < weekdays + 1; i++){
             (frequencyConversion.get(i)).setSelected(false); // initialize all to be unselected
         }
         for(Integer i : freq){
