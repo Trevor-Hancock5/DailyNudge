@@ -16,7 +16,6 @@ import javafx.scene.layout.VBox;
 import model.Habit;
 import model.HabitManager;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -116,21 +115,11 @@ public class NewHabitController {
             }
         });
 
-        newHabit.setOnAction(_ -> {
-            try {
-                makeNewHabit();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        newHabit.setOnAction(_ -> makeNewHabit());
 
         root.setOnKeyPressed(e -> {
             if(e.getCode() == KeyCode.ESCAPE){
-                try {
-                    returnToDashboard();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                returnToDashboard();
             }
         });
 
@@ -153,12 +142,12 @@ public class NewHabitController {
     }
 
     @FXML
-    private void returnToDashboard() throws IOException {
+    private void returnToDashboard() {
         SceneView.DASHBOARD.switchTo(DashboardController.getSwitcher());
     }
 
     @FXML
-    private void makeNewHabit() throws IOException {
+    private void makeNewHabit() {
         String habitName = this.habitName.getText();
         if(habitName.isBlank()){
             DashboardController.showAlert("Name cannot be blank!");

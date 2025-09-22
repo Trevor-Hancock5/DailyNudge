@@ -35,6 +35,7 @@ public class SceneSwitcher {
     /**
      * Method to switch scenes on the main stage
      * @param view The sceneView to switch to
+     * @throws IOException If the view fails to load, it'll throw this exception
      */
     public void switchTo(SceneView view) throws IOException {
         // If already loaded, just reuse it

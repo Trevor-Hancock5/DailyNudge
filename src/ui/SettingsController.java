@@ -294,28 +294,30 @@ public class SettingsController {
                 habit.streakAndPercentage(dashboardController.habitDate.getValue());
             }
         } catch (IOException e) {
-            System.out.println("Error importing habits: " + e);
+            System.out.println("Error importing habits");
         }
         return habits;
     }
 
     @FXML
-    private void save() throws IOException {
+    private void save() {
         HabitManager.saveHabits();
         dashboardController.updateHabits(dashboardController.allHabits.isSelected());
     }
 
     @FXML
-    private void backup() throws IOException {
+    private void backup() {
         File backupFile = new File("data/userData_backup.json");
         try (FileWriter writer = new FileWriter(backupFile)) {
             Gson gson = StorageManager.getGson();
             gson.toJson(HabitManager.getHabits(), writer);
+        } catch (IOException e) {
+            DashboardController.showAlert("Error backing up data");
         }
     }
 
     @FXML
-    private void export() throws IOException {
+    private void export() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("File Location for Exported Data");
         fileChooser.getExtensionFilters().add(new FileChooser
@@ -325,12 +327,14 @@ public class SettingsController {
             try(FileWriter file = new FileWriter(selectedFile)){
                 Gson gson = StorageManager.getGson();
                 gson.toJson(HabitManager.getHabits(), file);
+            } catch (IOException e){
+                DashboardController.showAlert("Error exporting data!");
             }
         }
     }
 
     @FXML
-    private void resetAllData() throws IOException {
+    private void resetAllData() {
         Alert check = new Alert(Alert.AlertType.CONFIRMATION);
         check.setTitle("Reset Data?");
         check.setHeaderText("Are you sure you want to reset all your data?");
@@ -363,7 +367,7 @@ public class SettingsController {
     }
 
     @FXML
-    private void backToDash() throws IOException {
+    private void backToDash() {
         updateName();
         SceneView.DASHBOARD.switchTo(switcher);
         dashboardController.updateHabits(dashboardController.allHabits.isSelected());

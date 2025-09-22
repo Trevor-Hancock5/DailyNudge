@@ -12,7 +12,6 @@ import model.HabitManager;
 import ui.SceneSwitcher;
 import ui.SceneView;
 
-import java.io.IOException;
 
 /**
  * Class to start up the app
@@ -23,7 +22,7 @@ public class DailyNudge extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         SceneSwitcher switcher = new SceneSwitcher(stage);
         SceneView.DASHBOARD.switchTo(switcher);
         stage.setTitle("DailyNudge");

@@ -19,7 +19,6 @@ import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -157,7 +156,7 @@ public class HabitDetailsController {
     }
 
     @FXML
-    private void deleteHabit() throws IOException {
+    private void deleteHabit() {
         //alert to ensure user wants to delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Deletion Confirmation");

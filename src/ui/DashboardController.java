@@ -64,7 +64,7 @@ public class DashboardController {
     }
 
     @FXML
-    private void showAllHabits() throws IOException {
+    private void showAllHabits() {
         updateHabits(allHabits.isSelected());
         if(allHabits.isSelected()){
             allHabits.setText("Today's\nHabits");
@@ -74,22 +74,22 @@ public class DashboardController {
     }
 
     @FXML
-    private void openSettings() throws IOException {
+    private void openSettings() {
         SceneView.SETTINGS.switchTo(switcher);
     }
 
     @FXML
-    private void makeNewHabit() throws IOException {
+    private void makeNewHabit() {
         SceneView.NEW_HABIT.switchTo(switcher);
     }
 
     @FXML
-    private void newDate() throws IOException {
+    private void newDate() {
         updateHabits(allHabits.isSelected());
     }
 
     @FXML
-    private void initialize() throws IOException {
+    private void initialize() {
         scrollPane.setContent(habitsVBox);
         scrollPane.setFitToWidth(true); // makes VBox width match ScrollPane width
         scrollPane.setFitToHeight(true);
@@ -134,37 +134,42 @@ public class DashboardController {
 
         for(Habit habit: prioritizedHabits){
             habit.streakAndPercentage(habitDate.getValue());
-            FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
-            Parent habitCardRoot = habitCardLoader.load();
-            HabitCardController habitCardController = habitCardLoader.getController();
-            habitCardController.setHabit(habit);
-            habitCardRoot.getStylesheets().clear();
-            habitCardRoot.getStylesheets().add(getClass().getResource(SceneSwitcher.getTheme())
-                    .toExternalForm());
+            try{
+                FXMLLoader habitCardLoader = new FXMLLoader(getClass()
+                        .getResource("HabitCard.fxml"));
+                Parent habitCardRoot = habitCardLoader.load();
+                HabitCardController habitCardController = habitCardLoader.getController();
+                habitCardController.setHabit(habit);
+                habitCardRoot.getStylesheets().clear();
+                habitCardRoot.getStylesheets().add(getClass().getResource(SceneSwitcher.getTheme())
+                        .toExternalForm());
 
-            //For every 3 columns(0,1,2), increase row by 1.
-            gridpane.add(habitCardRoot, column, row);
-            //To center each card in its cell
-            GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
-            GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
-            if(++column > 2){
-                column = 0;
-                row++;
+                //For every 3 columns(0,1,2), increase row by 1.
+                gridpane.add(habitCardRoot, column, row);
+                //To center each card in its cell
+                GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
+                GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
+                if (++column > 2) {
+                    column = 0;
+                    row++;
+                }
+
+                FXMLLoader habitDetailsLoader = new FXMLLoader(getClass()
+                        .getResource("HabitDetails.fxml"));
+                Parent habitDetailsRoot = habitDetailsLoader.load();
+                HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
+                habitCardController.setDetailsController(habitDetailsController);
+                habitDetailsController.setInfo(habit);
+                habitDetailsController.setDashboardController(this);
+
+                habitDetailsRoot.getStylesheets().clear();
+                habitDetailsRoot.getStylesheets().add(getClass()
+                        .getResource(SceneSwitcher.getTheme()).toExternalForm());
+
+                habitCardController.setHabitDetails(habitDetailsRoot);
+            } catch (IOException _){
+                showAlert("Error loading habit cards or habit details!");
             }
-
-            FXMLLoader habitDetailsLoader = new FXMLLoader(getClass()
-                    .getResource("HabitDetails.fxml"));
-            Parent habitDetailsRoot = habitDetailsLoader.load();
-            HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
-            habitCardController.setDetailsController(habitDetailsController);
-            habitDetailsController.setInfo(habit);
-            habitDetailsController.setDashboardController(this);
-
-            habitDetailsRoot.getStylesheets().clear();
-            habitDetailsRoot.getStylesheets().add(getClass()
-                    .getResource(SceneSwitcher.getTheme()).toExternalForm());
-
-            habitCardController.setHabitDetails(habitDetailsRoot);
         }
         switcher.updateTheme();
         fixBackgroundColor();
@@ -188,9 +193,8 @@ public class DashboardController {
     /**
      * Method to update the habits
      * @param allHabits If true, then show all habits. Don't otherwise
-     * @throws IOException Throws if file errors occur
      */
-    public void updateHabits(boolean allHabits) throws IOException {
+    public void updateHabits(boolean allHabits) {
         if(habitDate.getValue().isAfter(LocalDate.now())){
             habitDate.setValue(LocalDate.now());
             showAlert("Can't complete future habits. Back to today!");
@@ -216,38 +220,43 @@ public class DashboardController {
             habit.setSettingPreferences(SettingsController.getSettingPreferences());
 
             habit.streakAndPercentage(habitDate.getValue());
-            FXMLLoader habitCardLoader = new FXMLLoader(getClass().getResource("HabitCard.fxml"));
-            Parent habitCardRoot = habitCardLoader.load();
-            HabitCardController habitCardController = habitCardLoader.getController();
-            habitCardController.setHabit(habit);
-            habitCardRoot.getStylesheets().clear();
-            habitCardRoot.getStylesheets().add(getClass()
-                    .getResource(SceneSwitcher.getTheme()).toExternalForm());
+            try {
+                FXMLLoader habitCardLoader = new FXMLLoader(getClass()
+                        .getResource("HabitCard.fxml"));
+                Parent habitCardRoot = habitCardLoader.load();
+                HabitCardController habitCardController = habitCardLoader.getController();
+                habitCardController.setHabit(habit);
+                habitCardRoot.getStylesheets().clear();
+                habitCardRoot.getStylesheets().add(getClass()
+                        .getResource(SceneSwitcher.getTheme()).toExternalForm());
 
-            GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
-            GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
-            gridpane.setVgap(gridGap);
+                GridPane.setHalignment(habitCardRoot, HPos.CENTER); // horizontal center
+                GridPane.setValignment(habitCardRoot, VPos.CENTER); // vertical center (optional)
+                gridpane.setVgap(gridGap);
 
-            //For every 3 columns(0,1,2), increase row by 1.
-            gridpane.add(habitCardRoot, column, row);
-            if(++column > 2){
-                column = 0;
-                row++;
+                //For every 3 columns(0,1,2), increase row by 1.
+                gridpane.add(habitCardRoot, column, row);
+                if (++column > 2) {
+                    column = 0;
+                    row++;
+                }
+
+                FXMLLoader habitDetailsLoader = new FXMLLoader(getClass()
+                        .getResource("HabitDetails.fxml"));
+                Parent habitDetailsRoot = habitDetailsLoader.load();
+                HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
+                habitCardController.setDetailsController(habitDetailsController);
+                habitDetailsController.setInfo(habit);
+                habitDetailsController.setDashboardController(this);
+
+                habitDetailsRoot.getStylesheets().clear();
+                habitDetailsRoot.getStylesheets().add(getClass()
+                        .getResource(SceneSwitcher.getTheme()).toExternalForm());
+
+                habitCardController.setHabitDetails(habitDetailsRoot);
+            } catch (IOException _){
+                showAlert("Error updating habit card or habit details");
             }
-
-            FXMLLoader habitDetailsLoader = new FXMLLoader(getClass()
-                    .getResource("HabitDetails.fxml"));
-            Parent habitDetailsRoot = habitDetailsLoader.load();
-            HabitDetailsController habitDetailsController = habitDetailsLoader.getController();
-            habitCardController.setDetailsController(habitDetailsController);
-            habitDetailsController.setInfo(habit);
-            habitDetailsController.setDashboardController(this);
-
-            habitDetailsRoot.getStylesheets().clear();
-            habitDetailsRoot.getStylesheets().add(getClass()
-                    .getResource(SceneSwitcher.getTheme()).toExternalForm());
-
-            habitCardController.setHabitDetails(habitDetailsRoot);
         }
     }
 

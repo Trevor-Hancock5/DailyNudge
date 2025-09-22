@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import model.Habit;
+import ui.DashboardController;
 
 import java.io.File;
 import java.io.FileReader;
@@ -54,7 +55,7 @@ public class StorageManager {
             Type habitListType = new TypeToken<List<Habit>>() { }.getType();
             ret = GSON.fromJson(reader, habitListType);
         } catch(IOException e){
-            System.out.println(e);
+            DashboardController.showAlert("Error loading data into Dashboard!");
         }
         return ret;
     }
@@ -70,7 +71,7 @@ public class StorageManager {
             GSON.toJson(habits, writer);
             ret = true;
         } catch (IOException e){
-            System.out.println(e);
+            DashboardController.showAlert("Error saving habit data!");
             ret = false;
         }
         return ret;
