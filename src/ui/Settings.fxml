@@ -47,6 +47,7 @@
                   <Button mnemonicParsing="false" onAction="#importData" text="Import" />
                </children>
             </HBox>
+            <Button mnemonicParsing="false" onAction="#resetAllData" text="Reset All Data" />
             <Label layoutX="10.0" layoutY="45.0" text="About">
                <font>
                   <Font name="System Bold" size="36.0" />

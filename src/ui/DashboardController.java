@@ -104,9 +104,15 @@ public class DashboardController {
         List<Habit> prioritizedHabits = todayHabits.stream().sorted(Comparator.comparingInt(Habit::getPriority).reversed()).toList();
 
         //Get a habit and load the settings first.
-        prioritizedHabits.get(0).loadSettings();
-        //True means normal streak. False means flexible streak
-        Habit.setStreakRule(!SettingsController.getStreakPreference().equals("flex"));
+        if(!prioritizedHabits.isEmpty()) {
+            prioritizedHabits.get(0).loadSettings();
+        }
+        if(SettingsController.getStreakPreference() != null) {
+            //True means normal streak. False means flexible streak
+            Habit.setStreakRule(!SettingsController.getStreakPreference().equals("flex"));
+        } else{
+            Habit.setStreakRule(false); //flexible streak
+        }
         HabitManager.saveHabits();
 
         for(Habit habit: prioritizedHabits){
@@ -149,7 +155,9 @@ public class DashboardController {
         }
         switcher.updateTheme();
         fixBackgroundColor();
-        title.setText(SettingsController.getUserName() + "'s DailyNudge");
+        if(SettingsController.getUserName() != null) {
+            title.setText(SettingsController.getUserName() + "'s DailyNudge");
+        }
         //The following is to update the gridpane height and allow the scrollpane to adjust after
         //all the cards have been added
         gridpane.setMinHeight(Region.USE_PREF_SIZE);

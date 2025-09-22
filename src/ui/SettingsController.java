@@ -9,29 +9,34 @@ package ui;
 
 import app.StorageManager;
 import com.google.gson.Gson;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Habit;
 import model.HabitManager;
 
+import java.awt.*;
 import java.io.FileWriter;
 import java.util.List;
 import com.google.gson.reflect.TypeToken;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -83,7 +88,6 @@ public class SettingsController {
         return userName;
     }
 
-    //TODO: Make way to choose file for picture - 1:1
     public static void setProfileDir(String dir){
         profileDir = dir;
     }
@@ -109,10 +113,7 @@ public class SettingsController {
     private void initialize(){
         scrollPane.setContent(backgroundVBox);
         scrollPane.setFitToWidth(true);
-        if(userName != null) {
-            name.setText(userName);
-            dashboardController.title.setText(name.getText() + "'s DailyNudge");
-        }
+        updateName();
 
         Image img;
         try{
@@ -190,9 +191,33 @@ public class SettingsController {
 
     @FXML
     private void getName(){
-        name.requestFocus();
-        userName = name.getText();
-        dashboardController.title.setText(userName + "'s DailyNudge");
+        updateName();
+        name.setStyle("-fx-background-color: lightgreen;" +
+                "-fx-text-fill: black;");
+        Glow glow = new Glow(0.3);
+
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetX(0);
+        dropShadow.setOffsetY(0);
+        dropShadow.setColor(Color.LIMEGREEN);
+        dropShadow.setRadius(20);
+
+        glow.setInput(dropShadow);
+
+        name.setEffect(glow);
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        pause.setOnFinished(_ -> {
+            name.setStyle("");
+            name.setEffect(null);
+        });
+        pause.play();
+    }
+
+    private void updateName(){
+        if(userName != null) {
+            userName = name.getText();
+            dashboardController.title.setText(userName + "'s DailyNudge");
+        }
     }
 
     @FXML
@@ -221,11 +246,11 @@ public class SettingsController {
     private void changeMode(){
         if(lightMode.isSelected()){
             lightMode.setText("Light Mode");
-            switcher.setTheme(true);
+            SceneSwitcher.setTheme(true);
             themePreference = "light";
         } else{
             lightMode.setText("Dark Mode");
-            switcher.setTheme(false);
+            SceneSwitcher.setTheme(false);
             themePreference = "dark";
         }
         switcher.updateTheme();
@@ -233,12 +258,13 @@ public class SettingsController {
     }
 
     @FXML
-    private void importData() throws IOException {
+    private void importData() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Habit Data");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("JSON Files", "*.json")
         );
+        fileChooser.setInitialDirectory(new File("."));
 
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
@@ -329,6 +355,7 @@ public class SettingsController {
 
     @FXML
     private void backToDash() throws IOException {
+        updateName();
         SceneView.DASHBOARD.switchTo(switcher);
         dashboardController.updateHabits(dashboardController.allHabits.isSelected());
     }
