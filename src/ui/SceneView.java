@@ -5,6 +5,8 @@
  */
 package ui;
 
+import java.io.IOException;
+
 /**
  * Enum class to standardize these strings
  */
@@ -36,7 +38,7 @@ public enum SceneView {
      * Method to switch to another view
      * @param switcher SceneSwitcher to use to switch
      */
-    public void switchTo(SceneSwitcher switcher){
+    public void switchTo(SceneSwitcher switcher) throws IOException {
         switcher.switchTo(this);
     }
 }

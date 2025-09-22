@@ -12,62 +12,60 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SettingsController">
+<ScrollPane fx:id="scrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.SettingsController">
    <VBox fx:id="backgroundVBox" alignment="TOP_CENTER" minHeight="400.0" minWidth="583.0" spacing="5.0">
       <padding>
-         <Insets bottom="10.0" top="10.0"/>
+         <Insets bottom="10.0" top="10.0" />
       </padding>
       <Label text="General">
          <font>
-            <Font name="System Bold" size="36.0"/>
+            <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <ToggleButton fx:id="flexibleStr" mnemonicParsing="false" onAction="#flexibleStreak" text="Flexible Streak"/>
-      <Button mnemonicParsing="false" onAction="#feedback" text="Feedback/Report Bug"/>
-      <Button mnemonicParsing="false" onAction="#backToDash" text="Back to Dashboard"/>
+      <ToggleButton fx:id="flexibleStr" mnemonicParsing="false" onAction="#flexibleStreak" text="Flexible Streak" />
+      <Button mnemonicParsing="false" onAction="#feedback" text="Feedback/Report Bug" />
+      <Button mnemonicParsing="false" onAction="#backToDash" text="Back to Dashboard" />
       <Label text="Appearance">
          <font>
-            <Font size="36.0"/>
+            <Font size="36.0" />
          </font>
       </Label>
       <HBox alignment="CENTER">
-         <ToggleButton fx:id="lightMode" mnemonicParsing="false" onAction="#changeMode" text="Light Mode"/>
+         <ToggleButton fx:id="lightMode" mnemonicParsing="false" onAction="#changeMode" text="Light Mode" />
       </HBox>
       <Label layoutX="10.0" layoutY="10.0" text="Data">
          <font>
-            <Font name="System Bold" size="36.0"/>
+            <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <Button fx:id="save" mnemonicParsing="false" text="Save"/>
+      <Button fx:id="save" mnemonicParsing="false" text="Save" />
       <HBox alignment="CENTER" prefHeight="34.0" prefWidth="600.0" spacing="10.0">
-         <Button mnemonicParsing="false" onAction="#backup" text="Backup"/>
-         <Button mnemonicParsing="false" onAction="#export" text="Export"/>
-         <Button mnemonicParsing="false" onAction="#importData" text="Import"/>
+         <Button mnemonicParsing="false" onAction="#backup" text="Backup" />
+         <Button mnemonicParsing="false" onAction="#export" text="Export" />
+         <Button mnemonicParsing="false" onAction="#importData" text="Import" />
       </HBox>
-      <Button mnemonicParsing="false" onAction="#resetAllData" text="Reset All Data"/>
+      <Button mnemonicParsing="false" onAction="#resetAllData" text="Reset All Data" />
       <Label layoutX="10.0" layoutY="45.0" text="About">
          <font>
-            <Font name="System Bold" size="36.0"/>
+            <Font name="System Bold" size="36.0" />
          </font>
       </Label>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
          <padding>
-            <Insets top="10.0"/>
+            <Insets top="10.0" />
          </padding>
          <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../resources/defaultAvatar.jpg"/>
+            <Image url="@../resources/defaultAvatar.jpg" />
          </ImageView>
-         <TextField fx:id="name" maxWidth="200.0" onAction="#getName" promptText="Name"/>
-         <Button mnemonicParsing="false" onAction="#chooseProfile" text="Choose Profile Picture"/>
+         <TextField fx:id="name" maxWidth="200.0" onAction="#getName" promptText="Name" />
+         <Button mnemonicParsing="false" onAction="#chooseProfile" text="Choose Profile Picture" />
          <HBox prefHeight="100.0" prefWidth="200.0">
             <VBox minHeight="-Infinity" spacing="10.0">
                <padding>
-                  <Insets left="10.0" top="5.0"/>
+                  <Insets left="10.0" top="5.0" />
                </padding>
-               <Button minHeight="50.0" mnemonicParsing="false" onAction="#aboutMe" text="About Me"/>
-               <Label fx:id="version" text="Version: "/>
+               <Button minHeight="50.0" mnemonicParsing="false" onAction="#aboutMe" text="About Me" />
+               <Label fx:id="version" text="Version: " />
             </VBox>
          </HBox>
       </VBox>

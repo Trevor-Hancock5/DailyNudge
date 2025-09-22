@@ -122,6 +122,7 @@ public class SettingsController {
     private void initialize(){
         scrollPane.setContent(backgroundVBox);
         scrollPane.setFitToWidth(true);
+        name.setText(userName);
         updateName();
 
         Image img;
@@ -223,9 +224,12 @@ public class SettingsController {
     }
 
     private void updateName(){
-        if(userName != null) {
-            userName = name.getText();
-            dashboardController.title.setText(userName + "'s DailyNudge");
+        userName = name.getText();
+        dashboardController.title.setText(userName + "'s DailyNudge");
+        name.setText(userName);
+
+        if(dashboardController.title.getText().equals("'s DailyNudge")){
+            dashboardController.title.setText("DailyNudge");
         }
     }
 
@@ -336,8 +340,9 @@ public class SettingsController {
             File dataFile = new File("data/userData.json");
             if(dataFile.exists()){
                 if(dataFile.delete()){
-                    System.out.println("Data reset");
                     dashboardController.updateHabits(dashboardController.allHabits.isSelected());
+                    name.setText("");
+                    dashboardController.title.setText("DailyNudge");
                 } else{
                     System.out.println("Reset failed");
                 }

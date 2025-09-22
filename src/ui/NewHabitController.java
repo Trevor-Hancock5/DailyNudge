@@ -126,7 +126,11 @@ public class NewHabitController {
 
         root.setOnKeyPressed(e -> {
             if(e.getCode() == KeyCode.ESCAPE){
-                returnToDashboard();
+                try {
+                    returnToDashboard();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -149,7 +153,7 @@ public class NewHabitController {
     }
 
     @FXML
-    private void returnToDashboard(){
+    private void returnToDashboard() throws IOException {
         SceneView.DASHBOARD.switchTo(DashboardController.switcher);
     }
 

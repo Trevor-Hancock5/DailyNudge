@@ -63,12 +63,12 @@ public class DashboardController {
     }
 
     @FXML
-    private void openSettings(){
+    private void openSettings() throws IOException {
         SceneView.SETTINGS.switchTo(switcher);
     }
 
     @FXML
-    private void makeNewHabit() {
+    private void makeNewHabit() throws IOException {
         SceneView.NEW_HABIT.switchTo(switcher);
     }
 
@@ -113,6 +113,11 @@ public class DashboardController {
         } else{
             Habit.setStreakRule(false); //flexible streak
         }
+
+        if(SettingsController.getUserName() != null) {
+            title.setText(SettingsController.getUserName() + "'s DailyNudge");
+        }
+
         HabitManager.saveHabits();
 
         for(Habit habit: prioritizedHabits){
@@ -155,9 +160,7 @@ public class DashboardController {
         }
         switcher.updateTheme();
         fixBackgroundColor();
-        if(SettingsController.getUserName() != null) {
-            title.setText(SettingsController.getUserName() + "'s DailyNudge");
-        }
+
         //The following is to update the gridpane height and allow the scrollpane to adjust after
         //all the cards have been added
         gridpane.setMinHeight(Region.USE_PREF_SIZE);
