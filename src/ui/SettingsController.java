@@ -16,9 +16,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Path;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Habit;
@@ -61,6 +64,8 @@ public class SettingsController {
     private static String profileDir;
     private static String themePreference;
     private static String streakPreference;
+    private final Image defaultProfile = new Image(Objects.requireNonNull(getClass()
+            .getResource("/resources/defaultAvatar.jpg")).toExternalForm());
 
     public SettingsController(SceneSwitcher switcher){
         this.switcher = switcher;
@@ -111,11 +116,11 @@ public class SettingsController {
 
         Image img;
         try{
-            img = new Image(Objects.requireNonNull(getClass().getResource(profileDir)).toExternalForm());
+            img = new Image(Objects.requireNonNull(new File(profileDir).toURI().toString()));
         } catch (NullPointerException | IllegalArgumentException e) {
-            img = new Image(Objects.requireNonNull(getClass().getResource("/resources/defaultAvatar.jpg")).toExternalForm());
+            img = defaultProfile;
         }
-        imageView.setImage(img);
+        setImage(img);
 
         if(themePreference != null && !themePreference.equals("light")){
             lightMode.setSelected(false);
@@ -134,11 +139,27 @@ public class SettingsController {
         Habit.setStreakRule(!flexibleStr.isSelected());
         HabitManager.saveHabits();
 
+        version.setText("v1.0.0");
+    }
+
+    private void setImage(Image image){
+        // Get min dimension to crop to square
+        double size = Math.min(image.getWidth(), image.getHeight());
+
+        // Center offsets
+        double x = (image.getWidth() - size) / 2;
+        double y = (image.getHeight() - size) / 2;
+
+        // Snapshot to WritableImage
+        PixelReader reader = image.getPixelReader();
+        WritableImage cropped = new WritableImage(reader, (int)x, (int)y, (int)size, (int)size);
+
+        // Now put it into ImageView
+        imageView.setImage(cropped);
+
         double radius = Math.min(imageView.getFitWidth(), imageView.getFitHeight()) / 2;
         Circle clip = new Circle(imageView.getFitWidth()/2,imageView.getFitHeight()/2, radius);
         imageView.setClip(clip);
-
-        version.setText("v1.0.0");
     }
 
     public void changeTheme(){
@@ -146,6 +167,24 @@ public class SettingsController {
             backgroundVBox.setStyle("-fx-background-color: #f9f9f9;");
         } else{
             backgroundVBox.setStyle("-fx-background-color: #1e1e1e;");
+        }
+    }
+
+    @FXML
+    private void chooseProfile(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("."));
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png")
+        );
+        File file = fileChooser.showOpenDialog(stage);
+        if(file != null) {
+            profileDir = file.getAbsolutePath();
+            try {
+                setImage(new Image(Objects.requireNonNull(file.toURI().toString())));
+            } catch (NullPointerException e){
+                setImage(defaultProfile);
+            }
         }
     }
 

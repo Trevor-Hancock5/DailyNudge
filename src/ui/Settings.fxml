@@ -54,12 +54,13 @@
             </Label>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
                <children>
-                  <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true">
+                  <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../resources/defaultAvatar.jpg" />
                      </image>
                   </ImageView>
                   <TextField fx:id="name" maxWidth="200.0" onAction="#getName" promptText="Name" />
+                  <Button mnemonicParsing="false" onAction="#chooseProfile" text="Choose Profile Picture" />
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <VBox minHeight="-Infinity" spacing="10.0">
