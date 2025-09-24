@@ -51,11 +51,14 @@ public class StorageManager {
      */
     public static List<Habit> loadHabits(){
         List<Habit> ret = new ArrayList<>();
-        try(FileReader reader = new FileReader(USER_DATA)){
-            Type habitListType = new TypeToken<List<Habit>>() { }.getType();
-            ret = GSON.fromJson(reader, habitListType);
-        } catch(IOException e){
-            DashboardController.showAlert("Error loading data into Dashboard!");
+        if(USER_DATA.exists()) {
+            try (FileReader reader = new FileReader(USER_DATA)) {
+                Type habitListType = new TypeToken<List<Habit>>() {
+                }.getType();
+                ret = GSON.fromJson(reader, habitListType);
+            } catch (IOException e) {
+                DashboardController.showAlert("Error loading data into Dashboard!");
+            }
         }
         return ret;
     }

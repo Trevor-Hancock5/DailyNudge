@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -83,13 +84,15 @@ public class HabitDetailsController {
     @FXML
     private void initialize(){
         freqButtons = new ArrayList<>(Arrays.asList(mon, tues, wed, thurs, fri, sat, sun));
-        disableFreq();
+        initializeFreq();
         //Only included textFields I wanted to allow editing to
         textFields = new ArrayList<>(Arrays.asList(habitName, habitNote, priority));
         for(TextField tf : textFields){
             Text text = new Text();
             text.textProperty().bind(tf.textProperty());
             text.setFont(tf.getFont()); // ensure same font for accurate measurement
+
+            tf.setOnAction(_ -> DashboardController.SOUND.playSound("textfield"));
 
             final int extraWidth = 20;
             tf.prefWidthProperty().bind(Bindings.createDoubleBinding(
@@ -103,10 +106,11 @@ public class HabitDetailsController {
         habitName.setFocusTraversable(false);
     }
 
-    private void disableFreq(){
+    private void initializeFreq(){
         for(ToggleButton tb : freqButtons){
             tb.setDisable(true);
             tb.setStyle("-fx-opacity: .8;");
+            tb.setOnAction(_ -> DashboardController.SOUND.playSound("toggle"));
         }
     }
 
@@ -148,28 +152,32 @@ public class HabitDetailsController {
         for(ToggleButton btn : freqButtons){
             btn.setStyle("-fx-background-radius: 50%;" +
                     "-fx-border-radius: 50%;" +
-                    "-fx-min-height: 50;" +
-                    "-fx-max-height: 50;" +
-                    "-fx-min-width: 50;" +
-                    "-fx-max-width: 50;");
+                    "-fx-min-height: 55;" +
+                    "-fx-max-height: 55;" +
+                    "-fx-min-width: 55;" +
+                    "-fx-max-width: 55;");
         }
     }
 
     @FXML
-    private void deleteHabit() {
+    private void deleteHabit() throws IOException {
+        DashboardController.SOUND.playSound("button");
         //alert to ensure user wants to delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Deletion Confirmation");
         alert.setHeaderText("Are you sure you'd like to delete " + habitName.getText() + "?");
         alert.setContentText("The action cannot be undone!");
+        DashboardController.SOUND.playSound("pending");
         Optional<ButtonType> result = alert.showAndWait();
+        // To signify that they are about to delete a habit
         if(result.isPresent() && result.get() == ButtonType.OK){
             HabitManager.removeHabit(habit);
             //This is so that the data file has the correct information saved to load.
             HabitManager.saveHabits();
             SceneView.DASHBOARD.switchTo(DashboardController.getSwitcher());
             window.close();
-            dashboardController.updateHabits(dashboardController.allHabits.isSelected());
+            dashboardController.updateHabits();
+            DashboardController.SOUND.playSound("newhabit");
         } else{
             alert.close();
         }
@@ -189,14 +197,14 @@ public class HabitDetailsController {
             startDate.setEditable(true);
             editingButton.setText(EDITING);
         } else{
+            editingButton.setText(NOT_EDITING);
             //The user wants to stop editing and update the habit
             for(TextField tf : textFields){
                 tf.setEditable(false);
             }
-            disableFreq();
+            initializeFreq();
             startDate.setEditable(false);
 
-            editingButton.setText(NOT_EDITING);
             habit.setHabitNote(habitNote.getText());
             habit.setName(habitName.getText());
             habit.setStartDate(startDate.getValue());
@@ -219,9 +227,14 @@ public class HabitDetailsController {
 
             habit.streakAndPercentage(LocalDate.now());
             setInfo(habit);
+            HabitManager.saveHabits();
+            dashboardController.updateHabits();
         }
         setButtonShape();
+        DashboardController.SOUND.playSound("toggle");
     }
+
+
 }
 
 

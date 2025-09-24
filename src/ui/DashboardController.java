@@ -5,6 +5,8 @@
  */
 package ui;
 
+import app.SoundManager;
+import app.StorageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -50,6 +52,7 @@ public class DashboardController {
     private VBox habitsVBox;
 
     private final int gridGap = 50;
+    public static final SoundManager SOUND = new SoundManager();
 
     /**
      * Constructor to make the Dashboard controller
@@ -65,7 +68,8 @@ public class DashboardController {
 
     @FXML
     private void showAllHabits() {
-        updateHabits(allHabits.isSelected());
+        SOUND.playSound("toggle");
+        updateHabits();
         if(allHabits.isSelected()){
             allHabits.setText("Today's\nHabits");
         } else{
@@ -74,18 +78,21 @@ public class DashboardController {
     }
 
     @FXML
-    private void openSettings() {
+    private void openSettings() throws IOException {
+        SOUND.playSound("button");
         SceneView.SETTINGS.switchTo(switcher);
     }
 
     @FXML
-    private void makeNewHabit() {
+    private void makeNewHabit() throws IOException {
+        SOUND.playSound("button");
         SceneView.NEW_HABIT.switchTo(switcher);
     }
 
     @FXML
     private void newDate() {
-        updateHabits(allHabits.isSelected());
+        SOUND.playSound("button");
+        updateHabits();
     }
 
     @FXML
@@ -104,6 +111,9 @@ public class DashboardController {
                 habitDate.show();
             }
         });
+
+        SOUND.playBackgroundMusic();
+        title.setStyle("-fx-font-size: 35;");
 
         gridpane.setHgap(15);
         gridpane.setVgap(25);
@@ -180,6 +190,14 @@ public class DashboardController {
         gridpane.setPrefHeight(Region.USE_COMPUTED_SIZE);
         gridpane.setMaxHeight(Region.USE_PREF_SIZE);
         gridpane.setVgap(gridGap);
+
+        checkTitle();
+    }
+
+    private void checkTitle(){
+        if(title.getText().equals("'s DailyNudge") || title.getText().equals("null's DailyNudge")){
+            title.setText("DailyNudge");
+        }
     }
 
     private void fixBackgroundColor(){
@@ -192,13 +210,13 @@ public class DashboardController {
 
     /**
      * Method to update the habits
-     * @param allHabits If true, then show all habits. Don't otherwise
      */
-    public void updateHabits(boolean allHabits) {
+    public void updateHabits() {
         if(habitDate.getValue().isAfter(LocalDate.now())){
             habitDate.setValue(LocalDate.now());
             showAlert("Can't complete future habits. Back to today!");
         }
+        boolean allHabits = this.allHabits.isSelected();
         gridpane.getChildren().clear();
         fixBackgroundColor();
         HabitManager.loadHabits();
@@ -217,7 +235,6 @@ public class DashboardController {
         fixBackgroundColor();
 
         for(Habit habit: prioritizedHabits){
-            habit.setSettingPreferences(SettingsController.getSettingPreferences());
 
             habit.streakAndPercentage(habitDate.getValue());
             try {
@@ -258,6 +275,15 @@ public class DashboardController {
                 showAlert("Error updating habit card or habit details");
             }
         }
+
+        List<Habit> habits = HabitManager.getHabits();
+        for(Habit habit : habits){
+            habit.setSettingPreferences(SettingsController.getSettingPreferences());
+        }
+        if(!habits.isEmpty()) {
+            habits.getFirst().loadSettings();
+        }
+        checkTitle();
     }
 
     /**
@@ -265,6 +291,7 @@ public class DashboardController {
      * @param text The text to be shown in Header text
      */
     public static void showAlert(String text){
+        SOUND.playSound("error");
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error!");
         alert.setHeaderText(text);

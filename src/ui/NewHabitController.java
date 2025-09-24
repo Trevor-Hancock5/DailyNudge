@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import model.Habit;
 import model.HabitManager;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -52,7 +53,7 @@ public class NewHabitController {
     @FXML
     private VBox root;
 
-    private ArrayList<ToggleButton> daysOfWeek;
+    private ToggleButton[] dayButtons;
 
     public static void setDashboardController(DashboardController controller){
         dashboardController = controller;
@@ -62,14 +63,23 @@ public class NewHabitController {
      * To initialize the NewHabit screen
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
         // Run after scene is displayed so focus actually takes effect
         Platform.runLater(() -> habitName.requestFocus());
-        habitName.setOnAction(_ -> priority.requestFocus());
-        priority.setOnAction(_ -> habitNote.requestFocus());
-        habitNote.setOnAction(_ -> mon.requestFocus());
+        habitName.setOnAction(_ -> {
+            priority.requestFocus();
+            DashboardController.SOUND.playSound("textfield");
+        });
+        priority.setOnAction(_ -> {
+            habitNote.requestFocus();
+            DashboardController.SOUND.playSound("textfield");
+        });
+        habitNote.setOnAction(_ -> {
+            mon.requestFocus();
+            DashboardController.SOUND.playSound("textfield");
+        });
 
-        ToggleButton[] dayButtons = new ToggleButton[] {mon, tues, wed, thurs, fri, sat, sun};
+        dayButtons = new ToggleButton[] {mon, tues, wed, thurs, fri, sat, sun};
 
         // Set navigation for each toggle button
         for (int i = 0; i < dayButtons.length; i++) {
@@ -107,7 +117,11 @@ public class NewHabitController {
             });
         }
 
-        startDate.setOnAction(_ -> newHabit.requestFocus());
+        startDate.setOnAction(_ -> {
+            DashboardController.SOUND.playSound("button");
+            newHabit.requestFocus();
+        });
+
         // Automatically show calendar when DatePicker gains focus
         startDate.focusedProperty().addListener((_, _, newVal) -> {
             if (newVal) { // focus gained
@@ -115,39 +129,45 @@ public class NewHabitController {
             }
         });
 
-        newHabit.setOnAction(_ -> makeNewHabit());
+        newHabit.setOnAction(_ -> {
+            try {
+                makeNewHabit();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         root.setOnKeyPressed(e -> {
             if(e.getCode() == KeyCode.ESCAPE){
-                returnToDashboard();
+                try {
+                    returnToDashboard();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
         startDate.setValue(dashboardController.habitDate.getValue());
-        daysOfWeek = new ArrayList<>();
 
-        daysOfWeek.add(mon);
-        daysOfWeek.add(tues);
-        daysOfWeek.add(wed);
-        daysOfWeek.add(thurs);
-        daysOfWeek.add(fri);
-        daysOfWeek.add(sat);
-        daysOfWeek.add(sun);
+        for(ToggleButton tb : dayButtons){
+            tb.setOnAction(_ -> DashboardController.SOUND.playSound("toggle"));
+        }
 
         //Initialize chosen days to be Mon through Fri
         final int weekdays = 5;
         for(int i = 0; i < weekdays; i++){
-            daysOfWeek.get(i).setSelected(true);
+            dayButtons[i].setSelected(true);
         }
     }
 
     @FXML
-    private void returnToDashboard() {
+    private void returnToDashboard() throws IOException {
+        DashboardController.SOUND.playSound("button");
         SceneView.DASHBOARD.switchTo(DashboardController.getSwitcher());
     }
 
     @FXML
-    private void makeNewHabit() {
+    private void makeNewHabit() throws IOException {
         String habitName = this.habitName.getText();
         if(habitName.isBlank()){
             DashboardController.showAlert("Name cannot be blank!");
@@ -169,7 +189,7 @@ public class NewHabitController {
             ArrayList<Integer> frequency = new ArrayList<>();
             final int weekdays = 7;
             for (int i = 1; i < weekdays + 1; i++) {
-                if (daysOfWeek.get(i - 1).isSelected()) {
+                if (dayButtons[i - 1].isSelected()) {
                     frequency.add(i);
                 }
             }
@@ -179,8 +199,9 @@ public class NewHabitController {
                     SettingsController.getSettingPreferences()));
             HabitManager.saveHabits();
             returnToDashboard();
-            dashboardController.updateHabits(dashboardController.allHabits.isSelected());
+            dashboardController.updateHabits();
             resetUI();
+            DashboardController.SOUND.playSound("newhabit");
         }
     }
 

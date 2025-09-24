@@ -140,7 +140,7 @@ public class Habit {
     public void complete(LocalDate date){
         //If the habit is active today, return true, false otherwise.
         // (True if date in frequency. False if not.)
-        if(frequency.contains(date.getDayOfWeek().getValue())) {
+        if(!startDate.isAfter(date) && frequency.contains(date.getDayOfWeek().getValue())) {
             this.habitLog.put(date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy")), 1);
             HabitManager.saveHabits();
             this.streakAndPercentage(date); // Update values
@@ -153,7 +153,7 @@ public class Habit {
      */
     public void uncomplete(LocalDate date){
         //This is useful so that if the user completes it, then marks it failed it can be removed.
-        if(frequency.contains(date.getDayOfWeek().getValue())) {
+        if(!startDate.isAfter(date) && frequency.contains(date.getDayOfWeek().getValue())) {
             this.habitLog.put(date.format(DateTimeFormatter
                     .ofPattern("MM/dd/yyyy")), 2); //2 is fail
             HabitManager.saveHabits();

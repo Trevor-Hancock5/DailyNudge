@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import model.Habit;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 
 /**
  * Controller for Habit Cards
@@ -39,6 +40,7 @@ public class HabitCardController {
 
     @FXML
     private void moreInfo(){
+        DashboardController.SOUND.playSound("button");
         if(details == null) {
             details = new Scene(habitDetails);
         }
@@ -56,15 +58,25 @@ public class HabitCardController {
 
     @FXML
     private void complete(){
-        int completionState = thisHabit.getEntry(dashboardController.habitDate.getValue());
+        LocalDate userDate = dashboardController.habitDate.getValue();
+        int completionState = thisHabit.getEntry(userDate);
         if(completionState == 0) {
-            thisHabit.complete(dashboardController.habitDate.getValue());
+            thisHabit.complete(userDate);
+            if(thisHabit.activeToday(userDate)) {
+                DashboardController.SOUND.playSound("complete");
+            }
             setHabit(thisHabit);
         } else if(completionState == 1){
-            thisHabit.uncomplete(dashboardController.habitDate.getValue());
+            thisHabit.uncomplete(userDate);
+            if(thisHabit.activeToday(userDate)) {
+                DashboardController.SOUND.playSound("fail");
+            }
             setHabit(thisHabit);
         } else if(completionState == 2){
-            thisHabit.removeEntry(dashboardController.habitDate.getValue());
+            thisHabit.removeEntry(userDate);
+            if(thisHabit.activeToday(userDate)) {
+                DashboardController.SOUND.playSound("pending");
+            }
             setHabit(thisHabit);
         }
     }
