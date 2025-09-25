@@ -102,8 +102,10 @@ public class SettingsController {
      * @param theme "light" for light mode and "dark" for dark mode
      */
     public static void setThemePreference(String theme){
-        themePreference = theme;
-        SceneSwitcher.setTheme(theme.equals("light"));
+        if(theme != null) {
+            themePreference = theme;
+            SceneSwitcher.setTheme(theme.equals("light"));
+        }
     }
 
     public static void setStreakPreference(String streak){
@@ -131,7 +133,11 @@ public class SettingsController {
         } catch (NullPointerException | IllegalArgumentException e) {
             img = defaultProfile;
         }
-        setImage(img);
+        try {
+            setImage(img);
+        } catch (Exception e) {
+            setImage(defaultProfile);
+        }
 
         if(themePreference != null && !themePreference.equals("light")){
             lightMode.setSelected(false);
@@ -183,6 +189,7 @@ public class SettingsController {
 
     @FXML
     private void chooseProfile(){
+        DashboardController.SOUND.playSound("button");
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("."));
         fileChooser.getExtensionFilters().add(
@@ -221,16 +228,20 @@ public class SettingsController {
             name.setEffect(null);
         });
         pause.play();
+        DashboardController.SOUND.playSound("textfield");
+//        dashboardController.updateHabits();
     }
 
     private void updateName(){
         userName = name.getText();
-        dashboardController.title.setText(userName + "'s DailyNudge");
-        name.setText(userName);
-
-        if(dashboardController.title.getText().equals("'s DailyNudge")){
+        if(!(userName == null || userName.isBlank())) {
+            dashboardController.title.setText(userName + "'s DailyNudge");
+            name.setText(userName);
+        } else{
             dashboardController.title.setText("DailyNudge");
         }
+        dashboardController.updateHabits();
+        HabitManager.saveHabits();
     }
 
     @FXML
@@ -244,11 +255,13 @@ public class SettingsController {
         }
         Habit.setStreakRule(!flexibleStr.isSelected());
         HabitManager.saveHabits();
+        DashboardController.SOUND.playSound("toggle");
     }
 
     @FXML
     private void feedback() {
         try {
+            DashboardController.SOUND.playSound("textfield"); //More positive sound!
             Desktop.getDesktop().browse(new URI("https://forms.gle/UVMA5KcSmc4Xyiqm7"));
         } catch (URISyntaxException | IOException e){
             DashboardController.showAlert("Error with opening feedback form. Sorry!");
@@ -257,6 +270,7 @@ public class SettingsController {
 
     @FXML
     private void changeMode(){
+        DashboardController.SOUND.playSound("toggle");
         if(lightMode.isSelected()){
             lightMode.setText("Light Mode");
             SceneSwitcher.setTheme(true);
@@ -268,21 +282,6 @@ public class SettingsController {
         }
         switcher.updateTheme();
         changeTheme();
-    }
-
-    @FXML
-    private void importData() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Import Habit Data");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("JSON Files", "*.json")
-        );
-        fileChooser.setInitialDirectory(new File("."));
-
-        File selectedFile = fileChooser.showOpenDialog(stage);
-        if (selectedFile != null) {
-            HabitManager.saveHabits(readJsonFile(selectedFile));
-        }
     }
 
     private List<Habit> readJsonFile(File file){
@@ -300,13 +299,37 @@ public class SettingsController {
     }
 
     @FXML
+    private void importData() {
+        DashboardController.SOUND.playSound("button");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Habit Data");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("JSON Files", "*.json")
+        );
+        fileChooser.setInitialDirectory(new File("."));
+
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            HabitManager.saveHabits(readJsonFile(selectedFile));
+            dashboardController.updateHabits();
+            updateName();
+            DashboardController.SOUND.playSound("textfield"); //Positive sound to indicate success
+        }
+    }
+
+    @FXML
     private void save() {
+        changeTheme();
+        updateName();
+        dashboardController.updateHabits();
         HabitManager.saveHabits();
-        dashboardController.updateHabits(dashboardController.allHabits.isSelected());
+        DashboardController.SOUND.playSound("textfield"); //Positive sound
     }
 
     @FXML
     private void backup() {
+        updateName();
+        DashboardController.SOUND.playSound("textfield"); // Positive sound
         File backupFile = new File("data/userData_backup.json");
         try (FileWriter writer = new FileWriter(backupFile)) {
             Gson gson = StorageManager.getGson();
@@ -318,6 +341,9 @@ public class SettingsController {
 
     @FXML
     private void export() {
+        DashboardController.SOUND.playSound("button");
+        updateName();
+        HabitManager.saveHabits();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("File Location for Exported Data");
         fileChooser.getExtensionFilters().add(new FileChooser
@@ -339,16 +365,20 @@ public class SettingsController {
         check.setTitle("Reset Data?");
         check.setHeaderText("Are you sure you want to reset all your data?");
         check.setContentText("Once you confirm, there is no way to retrieve your data!");
+        DashboardController.SOUND.playSound("pending"); //Slightly negative sound
         Optional<ButtonType> result = check.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK){
             File dataFile = new File("data/userData.json");
             if(dataFile.exists()){
                 if(dataFile.delete()){
-                    dashboardController.updateHabits(dashboardController.allHabits.isSelected());
+                    DashboardController.SOUND.playSound("textfield"); //positive sound to indicate success
+                    dashboardController.updateHabits();
+                    HabitManager.saveHabits();
                     name.setText("");
+                    setImage(defaultProfile);
                     dashboardController.title.setText("DailyNudge");
                 } else{
-                    System.out.println("Reset failed");
+                    DashboardController.showAlert("Reset Failed");
                 }
             }
         }
@@ -356,6 +386,8 @@ public class SettingsController {
 
     @FXML
     private void aboutMe(){
+        //TODO: DOn't use the dash.alert bro!
+        DashboardController.SOUND.playSound("me");
         DashboardController.showAlert("""
                 Hello! I am Trevor Hancock, the creator of DailyNudge.
                 Thank you for using DailyNudge. I enjoyed working on this project.
@@ -367,10 +399,11 @@ public class SettingsController {
     }
 
     @FXML
-    private void backToDash() {
-        updateName();
+    private void backToDash() throws IOException {
+        DashboardController.SOUND.playSound("button");
+//        updateName();
         SceneView.DASHBOARD.switchTo(switcher);
-        dashboardController.updateHabits(dashboardController.allHabits.isSelected());
+        dashboardController.updateHabits();
     }
 
     protected static void setDashboardController(DashboardController dash){

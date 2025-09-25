@@ -38,7 +38,7 @@
             <Font name="System Bold" size="36.0" />
          </font>
       </Label>
-      <Button fx:id="save" mnemonicParsing="false" text="Save" />
+      <Button mnemonicParsing="false" onAction="#save" text="Save" />
       <HBox alignment="CENTER" prefHeight="34.0" prefWidth="600.0" spacing="10.0">
          <Button mnemonicParsing="false" onAction="#backup" text="Backup" />
          <Button mnemonicParsing="false" onAction="#export" text="Export" />
