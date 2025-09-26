@@ -9,6 +9,7 @@ import app.SoundManager;
 import app.StorageManager;
 import com.google.gson.Gson;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
@@ -338,7 +339,13 @@ public class SettingsController {
 
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
-            HabitManager.saveHabits(readJsonFile(selectedFile));
+            try {
+                HabitManager.saveHabits(readJsonFile(selectedFile));
+            } catch (com.google.gson.JsonSyntaxException _){
+                DashboardController.showAlert("Error importing data!");
+                HabitManager.saveHabits(); // Reset userData so it loads next time
+                Platform.exit(); //Closes blank screen
+            }
             dashboardController.updateHabits();
             updateName();
             

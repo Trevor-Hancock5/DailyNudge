@@ -5,6 +5,11 @@
  */
 package ui;
 
+import app.StorageManager;
+import javafx.application.Platform;
+import model.Habit;
+import model.HabitManager;
+
 import java.io.IOException;
 
 /**
@@ -43,6 +48,11 @@ public enum SceneView {
             switcher.switchTo(this);
         } catch (IOException e) {
             DashboardController.showAlert("Error loading " + this);
+            if(this.equals(DASHBOARD)){
+                HabitManager.saveHabits(); //Resets userData.json
+                //This is here so that a blank screen doesn't pop up
+                Platform.exit();
+            }
         }
     }
 }
