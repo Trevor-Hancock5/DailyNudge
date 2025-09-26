@@ -7,13 +7,7 @@ package ui;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Habit;
@@ -162,12 +156,15 @@ public class HabitDetailsController {
     @FXML
     private void deleteHabit() throws IOException {
         DashboardController.SOUND.playSound("button");
+
         //alert to ensure user wants to delete
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Deletion Confirmation");
         alert.setHeaderText("Are you sure you'd like to delete " + habitName.getText() + "?");
         alert.setContentText("The action cannot be undone!");
+        
         DashboardController.SOUND.playSound("pending");
+
         Optional<ButtonType> result = alert.showAndWait();
         // To signify that they are about to delete a habit
         if(result.isPresent() && result.get() == ButtonType.OK){
@@ -177,6 +174,7 @@ public class HabitDetailsController {
             SceneView.DASHBOARD.switchTo(DashboardController.getSwitcher());
             window.close();
             dashboardController.updateHabits();
+            
             DashboardController.SOUND.playSound("newhabit");
         } else{
             alert.close();
@@ -231,10 +229,9 @@ public class HabitDetailsController {
             dashboardController.updateHabits();
         }
         setButtonShape();
+        
         DashboardController.SOUND.playSound("toggle");
     }
-
-
 }
 
 

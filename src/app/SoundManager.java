@@ -9,6 +9,7 @@ package app;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import ui.DashboardController;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SoundManager {
-    private static final double defaultVolume = 0.25;
+    private static double musicVolume = 0.25;
     private static MediaPlayer backgroundPlayer;
     private final String backgroundDefaultPath = (getClass().getResource("../resources/sounds/backgroundMusic.mp3")).toExternalForm();
     private Map<String, MediaPlayer> sounds;
@@ -36,14 +37,24 @@ public class SoundManager {
         sounds.put("newhabit", new MediaPlayer(new Media(getClass().getResource(startPath + "newHabit.mp3").toExternalForm()))); //Sound for a new habit being made
     }
 
+    public static void setMusicVolume(double vol){
+        musicVolume = vol;
+        backgroundPlayer.setVolume(musicVolume);
+    }
+
     public void playSound(String typeOfSound){
-        //Pending needs to be louder. Fail should be a little quieter. Textfield quiety
-        //TODO implement the button, toggle, and textfield sounds everywhere!!
-        //TODO: Implement a button in settings to disable background or disable sound effects
-        MediaPlayer mediaPlayer = sounds.get(typeOfSound.toLowerCase());
-        mediaPlayer.stop();
-        mediaPlayer.setVolume(0.5);
-        mediaPlayer.play();
+        if(DashboardController.getSoundEffects()) {
+            MediaPlayer mediaPlayer = sounds.get(typeOfSound.toLowerCase());
+            mediaPlayer.stop();
+            if (typeOfSound.equals("pending")) {
+                mediaPlayer.setVolume(0.8);
+            } else if (typeOfSound.equals("fail") || typeOfSound.equals("textfield")) {
+                mediaPlayer.setVolume(0.35);
+            } else {
+                mediaPlayer.setVolume(0.5);
+            }
+            mediaPlayer.play();
+        }
     }
 
     public void playBackgroundMusic(){
@@ -54,7 +65,8 @@ public class SoundManager {
         Media sound = new Media(filePath);
         backgroundPlayer = new MediaPlayer(sound);
         backgroundPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        backgroundPlayer.setVolume(defaultVolume);
+        backgroundPlayer.setVolume(musicVolume);
+        backgroundPlayer.stop(); //This is to ensure that if they stop and then start it can play
         backgroundPlayer.play();
     }
 

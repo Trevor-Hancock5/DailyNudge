@@ -5,16 +5,12 @@
  */
 package ui;
 
+import app.SoundManager;
 import app.StorageManager;
 import com.google.gson.Gson;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -68,10 +64,27 @@ public class SettingsController {
     private ScrollPane scrollPane;
     @FXML
     private VBox backgroundVBox;
+    @FXML
+    private ToggleButton music;
+    @FXML
+    private ToggleButton effects;
+    @FXML
+    private Slider musicSlider;
+    @FXML
+    private Label general;
+    @FXML
+    private Label appearance;
+    @FXML
+    private Label sound;
+    @FXML
+    private Label data;
+    @FXML
+    private Label about;
 
     private final SceneSwitcher switcher;
     private final Image defaultProfile = new Image(Objects.requireNonNull(getClass()
             .getResource("/resources/defaultAvatar.jpg")).toExternalForm());
+    private Label[] labels;
 
     /**
      * Constructor to set SceneSwitcher
@@ -122,10 +135,20 @@ public class SettingsController {
 
     @FXML
     private void initialize(){
+        labels = new Label[] {general, appearance, sound, data, about};
+        for(int i = 0; i < 5; i++){
+            labels[i].setStyle("-fx-font-size: 35;" +
+                    "-fx-font-weight: bold");
+        }
+
         scrollPane.setContent(backgroundVBox);
         scrollPane.setFitToWidth(true);
         name.setText(userName);
         updateName();
+
+        effects.setSelected(true);
+        music.setSelected(true);
+        musicSlider.valueProperty().addListener((_, _, newVal) -> SoundManager.setMusicVolume(((Double) newVal / 100)));
 
         Image img;
         try{
@@ -190,6 +213,7 @@ public class SettingsController {
     @FXML
     private void chooseProfile(){
         DashboardController.SOUND.playSound("button");
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File("."));
         fileChooser.getExtensionFilters().add(
@@ -228,6 +252,7 @@ public class SettingsController {
             name.setEffect(null);
         });
         pause.play();
+        
         DashboardController.SOUND.playSound("textfield");
 //        dashboardController.updateHabits();
     }
@@ -255,6 +280,7 @@ public class SettingsController {
         }
         Habit.setStreakRule(!flexibleStr.isSelected());
         HabitManager.saveHabits();
+        
         DashboardController.SOUND.playSound("toggle");
     }
 
@@ -271,6 +297,7 @@ public class SettingsController {
     @FXML
     private void changeMode(){
         DashboardController.SOUND.playSound("toggle");
+
         if(lightMode.isSelected()){
             lightMode.setText("Light Mode");
             SceneSwitcher.setTheme(true);
@@ -301,6 +328,7 @@ public class SettingsController {
     @FXML
     private void importData() {
         DashboardController.SOUND.playSound("button");
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Habit Data");
         fileChooser.getExtensionFilters().add(
@@ -313,6 +341,7 @@ public class SettingsController {
             HabitManager.saveHabits(readJsonFile(selectedFile));
             dashboardController.updateHabits();
             updateName();
+            
             DashboardController.SOUND.playSound("textfield"); //Positive sound to indicate success
         }
     }
@@ -323,13 +352,16 @@ public class SettingsController {
         updateName();
         dashboardController.updateHabits();
         HabitManager.saveHabits();
+        
         DashboardController.SOUND.playSound("textfield"); //Positive sound
     }
 
     @FXML
     private void backup() {
         updateName();
+        
         DashboardController.SOUND.playSound("textfield"); // Positive sound
+
         File backupFile = new File("data/userData_backup.json");
         try (FileWriter writer = new FileWriter(backupFile)) {
             Gson gson = StorageManager.getGson();
@@ -342,6 +374,7 @@ public class SettingsController {
     @FXML
     private void export() {
         DashboardController.SOUND.playSound("button");
+
         updateName();
         HabitManager.saveHabits();
         FileChooser fileChooser = new FileChooser();
@@ -365,13 +398,16 @@ public class SettingsController {
         check.setTitle("Reset Data?");
         check.setHeaderText("Are you sure you want to reset all your data?");
         check.setContentText("Once you confirm, there is no way to retrieve your data!");
+        
         DashboardController.SOUND.playSound("pending"); //Slightly negative sound
+
         Optional<ButtonType> result = check.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK){
             File dataFile = new File("data/userData.json");
             if(dataFile.exists()){
                 if(dataFile.delete()){
                     DashboardController.SOUND.playSound("textfield"); //positive sound to indicate success
+
                     dashboardController.updateHabits();
                     HabitManager.saveHabits();
                     name.setText("");
@@ -388,6 +424,7 @@ public class SettingsController {
     private void aboutMe(){
         //TODO: DOn't use the dash.alert bro!
         DashboardController.SOUND.playSound("me");
+
         DashboardController.showAlert("""
                 Hello! I am Trevor Hancock, the creator of DailyNudge.
                 Thank you for using DailyNudge. I enjoyed working on this project.
@@ -401,9 +438,34 @@ public class SettingsController {
     @FXML
     private void backToDash() throws IOException {
         DashboardController.SOUND.playSound("button");
+
 //        updateName();
         SceneView.DASHBOARD.switchTo(switcher);
         dashboardController.updateHabits();
+    }
+
+    @FXML
+    private void backgroundMusic(){
+        DashboardController.SOUND.playSound("toggle");
+
+        if(music.isSelected()){
+            DashboardController.setBackgroundMusic(true);
+            DashboardController.SOUND.resumeBackgroundMusic();
+        } else{
+            DashboardController.setBackgroundMusic(false);
+            DashboardController.SOUND.stopBackgroundMusic();
+        }
+    }
+
+    @FXML
+    private void soundEffects(){
+        DashboardController.SOUND.playSound("toggle");
+
+        if(effects.isSelected()){
+            DashboardController.setSoundEffects(true);
+        } else{
+            DashboardController.setSoundEffects(false);
+        }
     }
 
     protected static void setDashboardController(DashboardController dash){

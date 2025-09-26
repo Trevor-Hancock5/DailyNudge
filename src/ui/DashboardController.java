@@ -13,11 +13,9 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -25,7 +23,10 @@ import javafx.scene.layout.VBox;
 import model.Habit;
 import model.HabitManager;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -53,6 +54,8 @@ public class DashboardController {
 
     private final int gridGap = 50;
     public static final SoundManager SOUND = new SoundManager();
+    private static boolean soundEffects = true;
+    private static boolean backgroundMusic = true;
 
     /**
      * Constructor to make the Dashboard controller
@@ -66,9 +69,26 @@ public class DashboardController {
         return switcher;
     }
 
+    public static void setSoundEffects(boolean on){
+        soundEffects = on;
+    }
+
+    public static boolean getSoundEffects(){
+        return soundEffects;
+    }
+
+    public static void setBackgroundMusic(boolean on){
+        backgroundMusic = on;
+    }
+
+    public static boolean getBackgroundMusic(){
+        return backgroundMusic;
+    }
+
     @FXML
     private void showAllHabits() {
         SOUND.playSound("toggle");
+
         updateHabits();
         if(allHabits.isSelected()){
             allHabits.setText("Today's\nHabits");
@@ -112,8 +132,11 @@ public class DashboardController {
             }
         });
 
-        SOUND.playBackgroundMusic();
-        title.setStyle("-fx-font-size: 35;");
+        if(backgroundMusic) {
+            SOUND.playBackgroundMusic();
+        }
+        title.setStyle("-fx-font-size: 35;" +
+                "-fx-font-weight: bold");
 
         gridpane.setHgap(15);
         gridpane.setVgap(25);
@@ -235,7 +258,6 @@ public class DashboardController {
         fixBackgroundColor();
 
         for(Habit habit: prioritizedHabits){
-
             habit.streakAndPercentage(habitDate.getValue());
             try {
                 FXMLLoader habitCardLoader = new FXMLLoader(getClass()
@@ -295,6 +317,18 @@ public class DashboardController {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error!");
         alert.setHeaderText(text);
+
+        Hyperlink link = new Hyperlink("Click here to report this error!");
+        link.setOnAction(_-> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://forms.gle/UVMA5KcSmc4Xyiqm7"));
+            } catch (URISyntaxException | IOException _) {
+                System.err.println("Error loading report form.");
+            }
+        });
+        link.setWrapText(true);
+
+        alert.getDialogPane().setContent(link);
         alert.showAndWait();
     }
 }

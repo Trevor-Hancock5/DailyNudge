@@ -7,10 +7,7 @@ package ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import model.Habit;
@@ -52,6 +49,8 @@ public class NewHabitController {
     private Button newHabit;
     @FXML
     private VBox root;
+    @FXML
+    private Label freqLabel;
 
     private ToggleButton[] dayButtons;
 
@@ -78,6 +77,9 @@ public class NewHabitController {
             mon.requestFocus();
             DashboardController.SOUND.playSound("textfield");
         });
+
+        freqLabel.setStyle("-fx-font-size: 20;" +
+                "-fx-font-weight: bold");
 
         dayButtons = new ToggleButton[] {mon, tues, wed, thurs, fri, sat, sun};
 
@@ -201,6 +203,7 @@ public class NewHabitController {
             returnToDashboard();
             dashboardController.updateHabits();
             resetUI();
+            
             DashboardController.SOUND.playSound("newhabit");
         }
     }

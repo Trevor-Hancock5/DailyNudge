@@ -39,6 +39,12 @@ public class HabitCardController {
     private Scene details;
 
     @FXML
+    private void initialize(){
+        habitName.setStyle("-fx-font-size: 15;" +
+                "-fx-font-weight: bold;");
+    }
+
+    @FXML
     private void moreInfo(){
         DashboardController.SOUND.playSound("button");
         if(details == null) {

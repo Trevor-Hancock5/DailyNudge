@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
@@ -17,7 +18,7 @@
       <padding>
          <Insets bottom="10.0" top="10.0" />
       </padding>
-      <Label text="General">
+      <Label fx:id="general" text="General">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
@@ -25,15 +26,30 @@
       <ToggleButton fx:id="flexibleStr" mnemonicParsing="false" onAction="#flexibleStreak" text="Flexible Streak" />
       <Button mnemonicParsing="false" onAction="#feedback" text="Feedback/Report Bug" />
       <Button mnemonicParsing="false" onAction="#backToDash" text="Back to Dashboard" />
-      <Label text="Appearance">
+      <Label fx:id="appearance" text="Appearance">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER">
-         <ToggleButton fx:id="lightMode" mnemonicParsing="false" onAction="#changeMode" text="Light Mode" />
+      <ToggleButton fx:id="lightMode" mnemonicParsing="false" onAction="#changeMode" text="Light Mode" />
+      <Label fx:id="sound" text="Sound">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <HBox alignment="CENTER" spacing="5.0">
+         <children>
+            <Label text="Background Music Volume:" />
+            <Slider fx:id="musicSlider" maxWidth="200.0" minHeight="20.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" value="25.0" />
+         </children>
       </HBox>
-      <Label layoutX="10.0" layoutY="10.0" text="Data">
+      <HBox alignment="CENTER" spacing="15.0">
+         <children>
+            <ToggleButton fx:id="music" mnemonicParsing="false" onAction="#backgroundMusic" text="Background Music On" />
+            <ToggleButton fx:id="effects" mnemonicParsing="false" onAction="#soundEffects" text="Sound Effects On" />
+         </children>
+      </HBox>
+      <Label fx:id="data" layoutX="10.0" layoutY="10.0" text="Data">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
@@ -45,7 +61,7 @@
          <Button mnemonicParsing="false" onAction="#importData" text="Import" />
       </HBox>
       <Button mnemonicParsing="false" onAction="#resetAllData" text="Reset All Data" />
-      <Label layoutX="10.0" layoutY="45.0" text="About">
+      <Label fx:id="about" layoutX="10.0" layoutY="45.0" text="About">
          <font>
             <Font name="System Bold" size="36.0" />
          </font>
