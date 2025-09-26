@@ -30,7 +30,6 @@ public class DailyNudge extends Application {
         stage.setTitle("DailyNudge");
         stage.show();
 
-        //TODO: Save settings before?
         //Save on window Close
         stage.setOnCloseRequest(_ -> {
             if(HabitManager.saveHabits()) {  // calls FileManager under the hood

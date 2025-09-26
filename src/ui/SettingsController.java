@@ -429,17 +429,32 @@ public class SettingsController {
 
     @FXML
     private void aboutMe(){
-        //TODO: DOn't use the dash.alert bro!
         DashboardController.SOUND.playSound("me");
 
-        DashboardController.showAlert("""
-                Hello! I am Trevor Hancock, the creator of DailyNudge.
-                Thank you for using DailyNudge. I enjoyed working on this project.
-                I hope that it is a tool that you believe is useful.
-                It was definitely a challenge to make and get right, but I am so
-                glad with how far I was able to get it!
-                Let me know of any bugs through the feedback button in settings!
+        Alert me = new Alert(Alert.AlertType.INFORMATION);
+        me.setTitle("About the Developer!");
+        me.setHeaderText("Hello! I am Trevor Hancock. The creator of DailyNudge!");
+
+        Label label = new Label("""
+                Thank you for using DailyNudge. I truly appreciate it!
+                
+                I decided to build DailyNudge to be the habit tracker that I've
+                always wanted. That was the goal and the intention behind every decision
+                from the start. I think I am going to keep building on it because it is a
+                cool project that I LOVED to work on.
+                
+                If you find any bugs, please use the feedback button in the settings to let
+                me know!
+                 - Trevor Hancock (2025) = )
                 """);
+        label.setWrapText(true);
+        me.getDialogPane().setContent(label);
+
+        ImageView iv = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/resources/Professional Picture.JPG").toExternalForm())));
+        iv.setFitWidth(100);
+        iv.setFitHeight(100);
+        me.setGraphic(iv);
+        me.showAndWait();
     }
 
     @FXML
