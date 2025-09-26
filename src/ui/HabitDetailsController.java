@@ -154,7 +154,7 @@ public class HabitDetailsController {
     }
 
     @FXML
-    private void deleteHabit() throws IOException {
+    private void deleteHabit() {
         DashboardController.SOUND.playSound("button");
 
         //alert to ensure user wants to delete

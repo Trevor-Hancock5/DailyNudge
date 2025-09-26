@@ -38,11 +38,11 @@ public enum SceneView {
      * Method to switch to another view
      * @param switcher SceneSwitcher to use to switch
      */
-    public void switchTo(SceneSwitcher switcher) throws IOException {
-//        try {
+    public void switchTo(SceneSwitcher switcher) {
+        try {
             switcher.switchTo(this);
-//        } catch (IOException e) {
-//            DashboardController.showAlert("Error loading " + this);
-//        }
+        } catch (IOException e) {
+            DashboardController.showAlert("Error loading " + this);
+        }
     }
 }

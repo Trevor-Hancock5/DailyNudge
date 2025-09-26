@@ -320,7 +320,7 @@ public class SettingsController {
                 habit.streakAndPercentage(dashboardController.habitDate.getValue());
             }
         } catch (IOException e) {
-            System.out.println("Error importing habits");
+            DashboardController.showAlert("Error importing habits");
         }
         return habits;
     }
@@ -436,7 +436,7 @@ public class SettingsController {
     }
 
     @FXML
-    private void backToDash() throws IOException {
+    private void backToDash() {
         DashboardController.SOUND.playSound("button");
 
 //        updateName();

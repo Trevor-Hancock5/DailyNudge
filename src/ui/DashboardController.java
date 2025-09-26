@@ -98,13 +98,13 @@ public class DashboardController {
     }
 
     @FXML
-    private void openSettings() throws IOException {
+    private void openSettings() {
         SOUND.playSound("button");
         SceneView.SETTINGS.switchTo(switcher);
     }
 
     @FXML
-    private void makeNewHabit() throws IOException {
+    private void makeNewHabit() {
         SOUND.playSound("button");
         SceneView.NEW_HABIT.switchTo(switcher);
     }

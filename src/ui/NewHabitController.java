@@ -62,7 +62,7 @@ public class NewHabitController {
      * To initialize the NewHabit screen
      */
     @FXML
-    public void initialize() throws IOException {
+    public void initialize() {
         // Run after scene is displayed so focus actually takes effect
         Platform.runLater(() -> habitName.requestFocus());
         habitName.setOnAction(_ -> {
@@ -132,20 +132,12 @@ public class NewHabitController {
         });
 
         newHabit.setOnAction(_ -> {
-            try {
-                makeNewHabit();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            makeNewHabit();
         });
 
         root.setOnKeyPressed(e -> {
             if(e.getCode() == KeyCode.ESCAPE){
-                try {
-                    returnToDashboard();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
+                returnToDashboard();
             }
         });
 
@@ -163,13 +155,13 @@ public class NewHabitController {
     }
 
     @FXML
-    private void returnToDashboard() throws IOException {
+    private void returnToDashboard() {
         DashboardController.SOUND.playSound("button");
         SceneView.DASHBOARD.switchTo(DashboardController.getSwitcher());
     }
 
     @FXML
-    private void makeNewHabit() throws IOException {
+    private void makeNewHabit() {
         String habitName = this.habitName.getText();
         if(habitName.isBlank()){
             DashboardController.showAlert("Name cannot be blank!");

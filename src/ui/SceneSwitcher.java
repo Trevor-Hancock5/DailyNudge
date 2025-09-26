@@ -37,7 +37,7 @@ public class SceneSwitcher {
      * @param view The sceneView to switch to
      * @throws IOException If the view fails to load, it'll throw this exception
      */
-    public void switchTo(SceneView view) throws IOException {
+    public void switchTo(SceneView view) throws IOException{
         // If already loaded, just reuse it
         if (scenes.containsKey(view.getPath())) {
             Scene scene = scenes.get(view.getPath());
