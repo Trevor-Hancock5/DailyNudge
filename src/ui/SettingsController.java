@@ -370,7 +370,14 @@ public class SettingsController {
         
         DashboardController.SOUND.playSound("textfield"); // Positive sound
 
-        File backupFile = new File("data/userData_backup.json");
+        File backupFile;
+        // Pick a safe place: %APPDATA%\DailyNudge
+        File appDataDir = new File(System.getenv("APPDATA"), "DailyNudge");
+        if (!appDataDir.exists()) {
+            appDataDir.mkdirs();
+        }
+        backupFile = new File(appDataDir, "userData_backup.json");
+
         try (FileWriter writer = new FileWriter(backupFile)) {
             Gson gson = StorageManager.getGson();
             gson.toJson(HabitManager.getHabits(), writer);
@@ -411,7 +418,7 @@ public class SettingsController {
 
         Optional<ButtonType> result = check.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK){
-            File dataFile = new File("data/userData.json");
+            File dataFile = StorageManager.USER_DATA;
             if(dataFile.exists()){
                 if(dataFile.delete()){
                     //positive sound to indicate success

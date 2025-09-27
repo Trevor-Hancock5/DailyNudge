@@ -27,7 +27,16 @@ import java.util.List;
  * Class to manager storage
  */
 public class StorageManager {
-    private static final File USER_DATA = new File("data/userData.json");
+    public static final File USER_DATA;
+    static {
+        // Pick a safe place: %APPDATA%\DailyNudge
+        File appDataDir = new File(System.getenv("APPDATA"), "DailyNudge");
+        if (!appDataDir.exists()) {
+            appDataDir.mkdirs();
+        }
+        USER_DATA = new File(appDataDir, "userData.json");
+    }
+
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDate.class, new TypeAdapter<LocalDate>() {
                 @Override

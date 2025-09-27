@@ -19,7 +19,7 @@ public class SoundManager {
     private static double musicVolume = 0.25;
     private static MediaPlayer backgroundPlayer;
     private final String backgroundDefaultPath = (getClass()
-            .getResource("../resources/sounds/backgroundMusic.mp3")).toExternalForm();
+            .getResource("/resources/sounds/backgroundMusic.mp3")).toExternalForm();
     private final Map<String, MediaPlayer> sounds;
 
     /**
@@ -27,7 +27,7 @@ public class SoundManager {
      */
     public SoundManager(){
         sounds = new HashMap<>();
-        final String startPath = "../resources/sounds/";
+        final String startPath = "/resources/sounds/";
         sounds.put("button", new MediaPlayer(new Media(getClass()
                 .getResource(startPath + "button.mp3").toExternalForm())));
         sounds.put("toggle", new MediaPlayer(new Media(getClass()

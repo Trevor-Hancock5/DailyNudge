@@ -1,4 +1,4 @@
-# DailyNudge(v1.0.0)
+# DailyNudge (v1.0.0)
 A lightweight daily habit tracker built with JavaFX. Track your habits, view streaks and statistics,
 and customize how you build better habits.
 
@@ -6,15 +6,8 @@ and customize how you build better habits.
 See the [CHANGELOG](CHANGELOG.md) for a list of changes
 
 ## Installation
-**Work in progress**
-1) Clone this repository:
-   ''bash
-   git clone https://github.com/Trevor-Hancock5/DailyNudge.git
-   ''
-2) Run the application:
-   ''bash
-   MainApp.java
-   ''
+You can download the latest release here:
+[DailyNudge Release](https://github.com/Trevor-Hancock5/DailyNudge/releases/tag/1.0.0)
 
 ## Tech Used & Dependencies 
 - Java 23
@@ -54,10 +47,20 @@ See the [CHANGELOG](CHANGELOG.md) for a list of changes
 - Save, backup, export, import, or reset all data
 
 ## Screenshots
-**Coming soon**
+### Dashboard
+![Dashboard](screenshots/DashBoard.png)
+
+### Add Habit
+![Add Habit](screenshots/NewHabit.png)
+
+### Settings
+![Settings](screenshots/Settings.png)
 
 ## Contact
-For questions or support, feel free to email me at [trevor.hancock.125@gmail.com]
+For questions or support, feel free to email me at [trevor.hancock.125@gmail.com](mailto:trevor.hancock.125@gmail.com)
 
 ## License
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+## Attribution
+DN icon created by NajmunNahar on [Flaticon](https://www.flaticon.com/free-icons/dn)
