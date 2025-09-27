@@ -48,7 +48,7 @@ You can download the latest release here:
 
 ## Screenshots
 ### Dashboard
-![Dashboard](Screenshots/DashBoard.png)
+[![Dashboard](Screenshots/DashBoard.png)](Screenshots/DashBoard.png)
 
 ### Add Habit
 ![Add Habit](Screenshots/NewHabit.png)
