@@ -1,7 +1,7 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package ui;
 
@@ -11,7 +11,13 @@ import com.google.gson.Gson;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -85,7 +91,6 @@ public class SettingsController {
     private final SceneSwitcher switcher;
     private final Image defaultProfile = new Image(Objects.requireNonNull(getClass()
             .getResource("/resources/defaultAvatar.jpg")).toExternalForm());
-    private Label[] labels;
 
     /**
      * Constructor to set SceneSwitcher
@@ -136,7 +141,7 @@ public class SettingsController {
 
     @FXML
     private void initialize(){
-        labels = new Label[] {general, appearance, sound, data, about};
+        Label[] labels = new Label[] {general, appearance, sound, data, about};
         for(int i = 0; i < 5; i++){
             labels[i].setStyle("-fx-font-size: 35;" +
                     "-fx-font-weight: bold");
@@ -149,7 +154,8 @@ public class SettingsController {
 
         effects.setSelected(true);
         music.setSelected(true);
-        musicSlider.valueProperty().addListener((_, _, newVal) -> SoundManager.setMusicVolume(((Double) newVal / 100)));
+        musicSlider.valueProperty().addListener((_, _, newVal) -> SoundManager
+                .setMusicVolume((Double) newVal / 100));
 
         Image img;
         try{
@@ -157,11 +163,7 @@ public class SettingsController {
         } catch (NullPointerException | IllegalArgumentException e) {
             img = defaultProfile;
         }
-        try {
-            setImage(img);
-        } catch (Exception e) {
-            setImage(defaultProfile);
-        }
+        setImage(img);
 
         if(themePreference != null && !themePreference.equals("light")){
             lightMode.setSelected(false);
@@ -255,7 +257,6 @@ public class SettingsController {
         pause.play();
         
         DashboardController.SOUND.playSound("textfield");
-//        dashboardController.updateHabits();
     }
 
     private void updateName(){
@@ -413,7 +414,8 @@ public class SettingsController {
             File dataFile = new File("data/userData.json");
             if(dataFile.exists()){
                 if(dataFile.delete()){
-                    DashboardController.SOUND.playSound("textfield"); //positive sound to indicate success
+                    //positive sound to indicate success
+                    DashboardController.SOUND.playSound("textfield");
 
                     dashboardController.updateHabits();
                     HabitManager.saveHabits();
@@ -450,7 +452,8 @@ public class SettingsController {
         label.setWrapText(true);
         me.getDialogPane().setContent(label);
 
-        ImageView iv = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/resources/Professional Picture.JPG").toExternalForm())));
+        ImageView iv = new ImageView(new Image(Objects.requireNonNull(getClass()
+                .getResource("/resources/Professional Picture.JPG").toExternalForm())));
         iv.setFitWidth(100);
         iv.setFitHeight(100);
         me.setGraphic(iv);
@@ -460,8 +463,6 @@ public class SettingsController {
     @FXML
     private void backToDash() {
         DashboardController.SOUND.playSound("button");
-
-//        updateName();
         SceneView.DASHBOARD.switchTo(switcher);
         dashboardController.updateHabits();
     }
@@ -483,11 +484,7 @@ public class SettingsController {
     private void soundEffects(){
         DashboardController.SOUND.playSound("toggle");
 
-        if(effects.isSelected()){
-            DashboardController.setSoundEffects(true);
-        } else{
-            DashboardController.setSoundEffects(false);
-        }
+        DashboardController.setSoundEffects(effects.isSelected());
     }
 
     protected static void setDashboardController(DashboardController dash){

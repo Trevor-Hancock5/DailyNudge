@@ -1,11 +1,11 @@
-## DailyNudge(v0.6.0)
+# DailyNudge(v1.0.0)
 A lightweight daily habit tracker built with JavaFX. Track your habits, view streaks and statistics,
 and customize how you build better habits.
 
-# Changelog
+## Changelog
 See the [CHANGELOG](CHANGELOG.md) for a list of changes
 
-# Installation
+## Installation
 **Work in progress**
 1) Clone this repository:
    ''bash
@@ -16,36 +16,48 @@ See the [CHANGELOG](CHANGELOG.md) for a list of changes
    MainApp.java
    ''
 
-# Dependencies 
-- Gson
+## Tech Used & Dependencies 
+- Java 23
+- JavaFX 23.0.2
+  - JavaFX Media
+- Gson 2.9.1
 
-# Usage
+## Usage
 1. Launch DailyNudge.
 2. Add your first habit via the “New Habit” button.
 3. Mark habits complete by clicking the habit card.
-4. View statistics in the dashboard or by selecting the 3 dots on the habit card to view habit details.
+4. View minimal statistics in the dashboard or by selecting the 3 dots on the habit card to view habit details.
+5. Update preferences using the settings page.
 
-# Features
-- Add and delete habits
-- Mark habits complete for the day
-- Track current streak, longest streak, and completion percentage
+## Features
+### Habit Management
+- Add, edit, and delete habits
+- Mark habits complete, failed, or pending for the day
 - View habits by selected date
-- Automatically updates dashboard when habits are changed
-- No duplicate habits
-- Keyboard shortcuts for quick input
+- No duplicate habits are allowed
+- Keyboard shortcuts for quick input when making a new habit
 
-# Tech Used
-- Java
-- JavaFX
-- Gson for JSON persistence
+### Streak & Stats
+- Track current streak, longest streak, and completion percentage
+- Flexible or normal streak can be chosen
+     - Flexible streak means you only lose the streak if failed twice consecutively. Normal allows no failures.
+- Automatically updated dashboard when habits are changed
 
-# Screenshots
+### Preferences
+- Light or dark mode selection
+- Control music and sound effect preferences
+- Choose profile picture
+- List name for a personalized dashboard
+
+### Data & Feedback
+- Ability to report bugs or provide feedback via the feedback form
+- Save, backup, export, import, or reset all data
+
+## Screenshots
 **Coming soon**
 
-# Contact
+## Contact
 For questions or support, feel free to email me at [trevor.hancock.125@gmail.com]
 
-# License
-**This project is licensed under a Proprietary License.**
-*You may not copy, modify, distribute, or otherwise use this software without explicit permission.
-For more details about licensing or to obtain a commercial license, please contact me.*
+## License
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.

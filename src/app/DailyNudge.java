@@ -1,19 +1,15 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package app;
-
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.HabitManager;
 import ui.SceneSwitcher;
 import ui.SceneView;
-
-import java.io.IOException;
-
 
 /**
  * Class to start up the app

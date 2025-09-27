@@ -1,7 +1,7 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package ui;
 
@@ -107,7 +107,6 @@ public class HabitCardController {
             pendingBackgroundColor = partBackground + "#1e1e1e;";
             borderColor = partBorder + "#cccccc;";
         }
-
 
         if(completionState == 1){
             backgroundColor = partBackground + "#58bf64;"; //Light green

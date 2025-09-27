@@ -1,21 +1,23 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package ui;
 
 import app.SoundManager;
-import app.StorageManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -23,7 +25,7 @@ import javafx.scene.layout.VBox;
 import model.Habit;
 import model.HabitManager;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,6 +37,12 @@ import java.util.List;
  * Controller for the main screen
  */
 public class DashboardController {
+    /**
+     * Variable to manage all sound for the app
+     */
+    public static final SoundManager SOUND = new SoundManager();
+    private static boolean soundEffects = true;
+    private static boolean backgroundMusic = true;
     private static SceneSwitcher switcher;
 
     @FXML
@@ -53,9 +61,6 @@ public class DashboardController {
     private VBox habitsVBox;
 
     private final int gridGap = 50;
-    public static final SoundManager SOUND = new SoundManager();
-    private static boolean soundEffects = true;
-    private static boolean backgroundMusic = true;
 
     /**
      * Constructor to make the Dashboard controller
@@ -79,10 +84,6 @@ public class DashboardController {
 
     public static void setBackgroundMusic(boolean on){
         backgroundMusic = on;
-    }
-
-    public static boolean getBackgroundMusic(){
-        return backgroundMusic;
     }
 
     @FXML

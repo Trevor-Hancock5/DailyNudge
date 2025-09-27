@@ -1,19 +1,24 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package ui;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Habit;
 import model.HabitManager;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;

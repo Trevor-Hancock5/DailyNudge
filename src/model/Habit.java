@@ -1,7 +1,7 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package model;
 
@@ -65,7 +65,7 @@ public class Habit {
      * Method to load the settings into the Settings Controller
      */
     public void loadSettings(){
-        //Setting preferences - name, profile picture directory, dark/light, flexible/normal streak
+        //settingPreferences - name, profile picture directory, dark/light, flexible/normal streak
         SettingsController.setUserName(settingPreferences[0]);
         SettingsController.setProfileDir(settingPreferences[1]);
         SettingsController.setThemePreference(settingPreferences[2]);

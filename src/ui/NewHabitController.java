@@ -1,19 +1,22 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package ui;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import model.Habit;
 import model.HabitManager;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -131,9 +134,7 @@ public class NewHabitController {
             }
         });
 
-        newHabit.setOnAction(_ -> {
-            makeNewHabit();
-        });
+        newHabit.setOnAction(_ -> makeNewHabit());
 
         root.setOnKeyPressed(e -> {
             if(e.getCode() == KeyCode.ESCAPE){

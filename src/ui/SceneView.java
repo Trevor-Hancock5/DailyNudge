@@ -1,13 +1,11 @@
 /*
  * DailyNudge
  * Name: Trevor Hancock
- * Last Updated: 9/21/2025
+ * Last Updated: 9/26/2025
  */
 package ui;
 
-import app.StorageManager;
 import javafx.application.Platform;
-import model.Habit;
 import model.HabitManager;
 
 import java.io.IOException;

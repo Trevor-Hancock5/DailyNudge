@@ -26,3 +26,21 @@
 - No duplicate habits
 - Completion state associated with data
 - Allow selected date for habit view
+
+# * v.1.0.0
+- Made it easy to see all habits and access their details
+- Added keyboard shortcuts for some of the UI
+- Improved the look of the UI significantly
+- Implemented all of Settings UI
+  - Saving, backing up, importing, exporting data
+  - Resetting all data
+  - Provided a feedback/bug report button
+  - Light and dark mode
+  - Change background music volume
+  - Turn on/off background music and sound effects
+  - Added profile picture and name
+  - About me button
+- Implemented the sound effects and background music
+- Habits can be edited in HabitDetails page
+- Habit completion % and streak work as intended
+- Catches all known errors elegantly
