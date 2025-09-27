@@ -48,13 +48,13 @@ You can download the latest release here:
 
 ## Screenshots
 ### Dashboard
-![Dashboard](screenshots/DashBoard.png)
+![Dashboard](Screenshots/DashBoard.png)
 
 ### Add Habit
-![Add Habit](screenshots/NewHabit.png)
+![Add Habit](Screenshots/NewHabit.png)
 
 ### Settings
-![Settings](screenshots/Settings.png)
+![Settings](Screenshots/Settings.png)
 
 ## Contact
 For questions or support, feel free to email me at [trevor.hancock.125@gmail.com](mailto:trevor.hancock.125@gmail.com)
